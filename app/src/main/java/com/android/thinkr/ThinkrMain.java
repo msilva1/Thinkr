@@ -1,4 +1,4 @@
-package com.example.android.thinkr;
+package com.android.thinkr;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
