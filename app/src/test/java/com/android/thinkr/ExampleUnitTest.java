@@ -1,4 +1,4 @@
-package com.example.android.thinkr;
+package com.android.thinkr;
 
 import org.junit.Test;
 
