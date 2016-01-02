@@ -1,4 +1,4 @@
-package com.example.android.thinkr;
+package com.android.thinkr;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
