@@ -1,4 +1,4 @@
-package com.example.android.thinkr;
+package com.android.thinkr;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
