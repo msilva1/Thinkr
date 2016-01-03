@@ -1,4 +1,4 @@
-package com.android.thinkr;
+package com.android.thinkr.service;
 
 import com.bytes.hack.model.Assignment;
 import com.bytes.hack.model.AssignmentList;

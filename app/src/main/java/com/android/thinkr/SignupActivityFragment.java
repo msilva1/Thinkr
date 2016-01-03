@@ -12,6 +12,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.android.thinkr.databinding.FragmentSignupBinding;
+import com.android.thinkr.service.ThinkrServiceImpl;
 import com.bytes.hack.model.account.Account;
 import com.bytes.hack.model.account.User;
 
@@ -69,7 +70,7 @@ public class SignupActivityFragment extends Fragment implements View.OnClickList
                     user.setPassword(mPassword);
                     user.setUserType(mType);
 
-                    final Call<Account> call = ThinkrRestService.getService().signUp(user);
+                    final Call<Account> call = ThinkrServiceImpl.getService().signUp(user);
                     call.enqueue(this);
                 }
                 break;
@@ -133,7 +134,7 @@ public class SignupActivityFragment extends Fragment implements View.OnClickList
     public void onResponse(Response<Account> response, Retrofit retrofit) {
         if (response.isSuccess() && response.body() != null) {
             Preferences.setUser(response.body().getUser());
-            Preferences.signUserIn();
+            Preferences.signUserIn(); // Need to make sure server is logged in too, currently, it might not be.
             Toast.makeText(getActivity(), "Account created", Toast.LENGTH_SHORT).show();
             getActivity().setResult(Activity.RESULT_OK);
             getActivity().finish();

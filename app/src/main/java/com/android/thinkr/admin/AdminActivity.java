@@ -13,20 +13,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.android.thinkr.R;
 import com.android.thinkr.SignupActivity;
-import com.android.thinkr.ThinkrRestService;
-import com.android.thinkr.ThinkrService;
-import com.bytes.hack.model.account.Account;
-import com.bytes.hack.model.account.AccountValidation;
-import com.bytes.hack.model.account.User;
-
-import retrofit.Call;
-import retrofit.Callback;
-import retrofit.Response;
-import retrofit.Retrofit;
 
 public class AdminActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
