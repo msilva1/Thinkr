@@ -2,9 +2,10 @@ package com.android.thinkr.viewmodels;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
+import android.databinding.Observable;
 
 import com.android.thinkr.BR;
-import com.android.thinkr.common.Preferences;
+import com.android.thinkr.common.AccountController;
 import com.bytes.hack.model.account.User;
 
 /**
@@ -14,8 +15,18 @@ public class NavHeaderViewModel extends BaseObservable {
     private static NavHeaderViewModel ourInstance = new NavHeaderViewModel();
     private User mUser;
 
+    private AccountController mAccountController;
+    private OnPropertyChangedCallback mPropertyChangedCallback = new OnPropertyChangedCallback() {
+        @Override
+        public void onPropertyChanged(Observable sender, int propertyId) {
+            if (propertyId == BR.user) setUser(mAccountController.getUser());
+        }
+    };
+
     private NavHeaderViewModel() {
-        mUser = Preferences.getUser();
+        mAccountController = AccountController.getInstance();
+        mUser = mAccountController.getUser();
+        mAccountController.addOnPropertyChangedCallback(mPropertyChangedCallback);
     }
 
     public static NavHeaderViewModel getInstance() {
@@ -24,7 +35,6 @@ public class NavHeaderViewModel extends BaseObservable {
 
     public void setUser(User user) {
         mUser = user;
-        Preferences.setUser(mUser);
         notifyPropertyChanged(BR.username);
         notifyPropertyChanged(BR.userEmail);
     }
