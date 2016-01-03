@@ -3,22 +3,20 @@ package com.android.thinkr.activites;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.android.thinkr.R;
-import com.android.thinkr.activites.SignupActivity;
+import com.android.thinkr.databinding.NavHeaderAdminBinding;
 import com.android.thinkr.fragments.BaseFragment;
 import com.android.thinkr.fragments.LoginFragment;
 import com.android.thinkr.fragments.SignupFragment;
+import com.android.thinkr.viewmodels.NavHeaderViewModel;
 
 public class AdminActivity extends BaseFragmentActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -26,10 +24,25 @@ public class AdminActivity extends BaseFragmentActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        final NavHeaderAdminBinding headerBinding =
+                NavHeaderAdminBinding.inflate(getLayoutInflater());
+        headerBinding.imageView.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        swapFragment(new LoginFragment());
+                        DrawerLayout drawer = getBinding().drawerLayout;
+                        drawer.closeDrawer(GravityCompat.START);
+                    }
+                }
+        );
+        headerBinding.setViewModel(NavHeaderViewModel.getInstance());
+        getBinding().navView.addHeaderView(headerBinding.getRoot());
+
 //        setContentView(R.layout.activity_admin);
 //        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -39,24 +52,6 @@ public class AdminActivity extends BaseFragmentActivity
             }
         });
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, getToolbar(), R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-    }
-
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
     }
 
     @Override
@@ -105,7 +100,7 @@ public class AdminActivity extends BaseFragmentActivity
 
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = getBinding().drawerLayout;
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
