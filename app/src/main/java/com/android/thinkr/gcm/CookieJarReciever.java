@@ -39,10 +39,6 @@ public class CookieJarReciever extends GcmReceiver {
                     Log.i("GCM", "Getting token...");
                     token = InstanceID.getInstance(theActivity.getApplicationContext()).getToken(authorizedEntity,scope);
 
-//                    if (gcm == null) {
-//                        gcm = GoogleCloudMessaging.getInstance(theActivity.getApplicationContext());
-//                    }
-//                    regid = gcm.register(PROJECT_NUMBER);
                     msg = "Device registered, registration ID=" + token;
 
                     Log.i("GCM", "Got token...");
@@ -72,7 +68,7 @@ public class CookieJarReciever extends GcmReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        // TODO: This method is called when the BroadcastReceiver is receiving
+        // TODO: This method is called when the GcmReveiver is receiving
         // an Intent broadcast.
         throw new UnsupportedOperationException("Not yet implemented");
     }
