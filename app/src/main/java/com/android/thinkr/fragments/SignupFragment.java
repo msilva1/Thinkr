@@ -83,7 +83,7 @@ public class SignupFragment extends BaseFragment implements View.OnClickListener
                     user.setPassword(mPassword);
                     user.setUserType(mType);
 
-                    final Call<Account> call = ThinkrServiceImpl.getService().signUp(user);
+                    final Call<Account> call = ThinkrServiceImpl.getService().create(user);
                     call.enqueue(this);
                 }
                 break;

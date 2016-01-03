@@ -39,5 +39,5 @@
     <string name="action_completed">Assignment Completed!</string>
     <string name="action_not_completed">Assignment not completed!</string>
     <string name="web_socket_info">web socket information</string>
-    <string name="action_signout">sign out</string>
+    <string name="action_sign_out">Sign out</string>
 </resources>

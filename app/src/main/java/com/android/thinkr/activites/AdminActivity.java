@@ -102,6 +102,9 @@ public class AdminActivity extends BaseFragmentActivity
             case Student:
                 getActivityBinding().navView.inflateMenu(R.menu.activity_student_drawer);
                 break;
+            default:
+                getBinding().navView.inflateMenu(R.menu.activity_admin_drawer);
+
         }
     }
 
@@ -157,7 +160,7 @@ public class AdminActivity extends BaseFragmentActivity
 
         User user = Preferences.getUser();
         final Call<Account> call = ThinkrServiceImpl.getService()
-                .logOut(user.getUserId(), user.getPassword());
+                .logout(user.getUserId(), user.getPassword());
         call.enqueue(new Callback<Account>() {
             @Override
             public void onResponse(Response<Account> response, Retrofit retrofit) {
@@ -200,10 +203,11 @@ public class AdminActivity extends BaseFragmentActivity
             assignToStudent();
 
         } else if (id == R.id.nav_admin_approve) {
-            approveAssignment();
+            approve();
 
         } else if (id == R.id.nav_teacher_approve_assignment) {
             approve();
+
         } else if (id == R.id.nav_teacher_assign_student) {
         } else if (id == R.id.nav_teacher_create_account) {
             createAccount();
@@ -227,10 +231,6 @@ public class AdminActivity extends BaseFragmentActivity
     }
 
     private void assignToStudent() {
-
-    }
-
-    private void approveAssignment() {
 
     }
 

@@ -145,7 +145,7 @@ public class LoginFragment extends BaseFragment {
             showProgress(true);
 //            mAuthTask = new UserLoginTask(email, password);
 //            mAuthTask.execute((Void) null);
-            final Call<Account> call = ThinkrServiceImpl.getService().logIn(username, password);
+            final Call<Account> call = ThinkrServiceImpl.getService().login(username, password);
             call.enqueue(new Callback<Account>() {
                 @Override
                 public void onResponse(Response<Account> response, Retrofit retrofit) {
