@@ -28,4 +28,11 @@
         <item>Teacher</item>
         <item>Parent</item>
     </string-array>
+    <string name="title_activity_student">StudentActivity</string>
+    <string name="InvalidUserType">Invalid User Type</string>
+    <string name="title_activity_parent">ParentActivity</string>
+    <string name="title_activity_admin">AdminActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>
