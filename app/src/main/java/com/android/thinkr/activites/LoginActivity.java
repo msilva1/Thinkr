@@ -116,8 +116,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 }
         );
 
-        mLoginFormView = binding.loginForm;
-        mProgressView = binding.loginProgress;
+
 
 
     }

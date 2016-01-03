@@ -2,6 +2,7 @@ package com.android.thinkr.activites;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.databinding.Observable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -13,7 +14,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.android.thinkr.BR;
 import com.android.thinkr.R;
+import com.android.thinkr.common.AccountController;
 import com.android.thinkr.common.Preferences;
 import com.android.thinkr.databinding.NavHeaderAdminBinding;
 import com.android.thinkr.fragments.BaseFragment;
@@ -48,38 +51,17 @@ public class AdminActivity extends BaseFragmentActivity
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        swapFragment(new LoginFragment());
-                        DrawerLayout drawer = getBinding().drawerLayout;
+                        if (!Preferences.isSignedIn()) swapFragment(new LoginFragment());
+                        DrawerLayout drawer = getActivityBinding().drawerLayout;
                         drawer.closeDrawer(GravityCompat.START);
                     }
                 }
         );
+
         headerBinding.setViewModel(NavHeaderViewModel.getInstance());
-        getBinding().navView.addHeaderView(headerBinding.getRoot());
+        getActivityBinding().navView.addHeaderView(headerBinding.getRoot());
 
-        // app:menu="@menu/activity_admin_drawer"
-        // Dynamically inflate drawer menu based on user type
-        User user = Preferences.getUser();
-        switch (user.getUserType()) {
-            case Admin:
-                getBinding().navView.inflateMenu(R.menu.activity_admin_drawer);
-                break;
-
-            case Teacher:
-                getBinding().navView.inflateMenu(R.menu.activity_teacher_drawer);
-                break;
-
-            case Parent:
-                getBinding().navView.inflateMenu(R.menu.activity_parent_drawer);
-                break;
-
-            case Student:
-                getBinding().navView.inflateMenu(R.menu.activity_student_drawer);
-                break;
-            default:
-                getBinding().navView.inflateMenu(R.menu.activity_admin_drawer);
-
-        }
+        inflateNavMenu();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -90,6 +72,45 @@ public class AdminActivity extends BaseFragmentActivity
             }
         });
 
+        AccountController.getInstance().addOnPropertyChangedCallback(
+                new Observable.OnPropertyChangedCallback() {
+                    @Override
+                    public void onPropertyChanged(Observable sender, int propertyId) {
+                        if (propertyId == BR.user) updateNavMenu();
+                    }
+                }
+        );
+    }
+
+    private void inflateNavMenu() {
+        // app:menu="@menu/activity_admin_drawer"
+        // Dynamically inflate drawer menu based on user type
+        User user = AccountController.getInstance().getUser();
+        switch (user.getUserType()) {
+            case Admin:
+                getActivityBinding().navView.inflateMenu(R.menu.activity_admin_drawer);
+                break;
+
+            case Teacher:
+                getActivityBinding().navView.inflateMenu(R.menu.activity_teacher_drawer);
+                break;
+
+            case Parent:
+                getActivityBinding().navView.inflateMenu(R.menu.activity_parent_drawer);
+                break;
+
+            case Student:
+                getActivityBinding().navView.inflateMenu(R.menu.activity_student_drawer);
+                break;
+            default:
+                getBinding().navView.inflateMenu(R.menu.activity_admin_drawer);
+
+        }
+    }
+
+    public void updateNavMenu() {
+        getActivityBinding().navView.getMenu().clear();
+        inflateNavMenu();
     }
 
     @Override
@@ -145,8 +166,15 @@ public class AdminActivity extends BaseFragmentActivity
             public void onResponse(Response<Account> response, Retrofit retrofit) {
                 if (response.isSuccess() && response.body() != null) {
                     Preferences.setUser(response.body().getUser());
-                    Preferences.signUserOut(); // Need to make sure server is logged in too, currently, it might not be.
+                    // TODO: 1/3/16 Need to make sure server is logged in too, currently, it might not be.
+                    Preferences.signUserOut();
                     Toast.makeText(getBaseContext(), "User logged out", Toast.LENGTH_SHORT).show();
+                    AdminActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            updateNavMenu();
+                        }
+                    });
                     setResult(Activity.RESULT_OK);
 
                 } else {
@@ -193,7 +221,7 @@ public class AdminActivity extends BaseFragmentActivity
         } else if (id == R.id.nav_parent_view_assignment) {
         }
 
-        DrawerLayout drawer = getBinding().drawerLayout;
+        DrawerLayout drawer = getActivityBinding().drawerLayout;
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

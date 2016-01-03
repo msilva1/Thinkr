@@ -37,8 +37,9 @@ public class ThinkrMainActivity extends AppCompatActivity {
         });
 
         if (!Preferences.isSignedIn()) {
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
+            // TODO: 1/3/16 Launch login fragment
+//            Intent intent = new Intent(this, LoginActivity.class);
+//            startActivity(intent);
         }
 
         switch (Preferences.getUser().getUserType()) {

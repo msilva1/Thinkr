@@ -3,6 +3,7 @@ package com.android.thinkr.fragments;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.thinkr.R;
+import com.android.thinkr.activites.BaseFragmentActivity;
 import com.android.thinkr.activites.SignupActivity;
 import com.android.thinkr.common.Preferences;
 import com.android.thinkr.databinding.FragmentLoginBinding;
@@ -153,6 +155,7 @@ public class LoginFragment extends BaseFragment {
                             Preferences.setUser(response.body().getUser());
                             Preferences.signUserIn();
 
+                            ((BaseFragmentActivity) getActivity()).swapFragment(new ThinkrMainFragment());
                             Toast.makeText(getContext(), "Successful call! logged in as " + account.getUser().getUserId(), Toast.LENGTH_SHORT).show();
                         } else {
                             mUserView.setError("Account does not exist. Please try again.");
@@ -210,5 +213,14 @@ public class LoginFragment extends BaseFragment {
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
         return password.length() > 4;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == USER_REGISTRATION) {
+            if (resultCode == Activity.RESULT_OK) {
+                ((BaseFragmentActivity) getActivity()).swapFragment(new ThinkrMainFragment());
+            }
+        }
     }
 }

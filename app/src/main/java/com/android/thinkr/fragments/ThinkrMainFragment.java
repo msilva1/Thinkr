@@ -1,24 +1,19 @@
 package com.android.thinkr.fragments;
 
-import android.support.v4.app.Fragment;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import com.android.thinkr.R;
 
 /**
  * A placeholder fragment containing a simple view.
  */
-public class ThinkrMainFragment extends Fragment {
+public class ThinkrMainFragment extends BaseFragment {
 
-    public ThinkrMainFragment() {
+    @Override
+    public int getFragmentTitle() {
+        return R.string.app_name;
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_thinkr_main, container, false);
+    protected int getLayoutId() {
+        return R.layout.fragment_thinkr_main;
     }
 }

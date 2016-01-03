@@ -86,7 +86,7 @@ public abstract class BaseFragmentActivity extends AppCompatActivity
         return false;
     }
 
-    protected ActivityAdminBinding getBinding() {
+    protected ActivityAdminBinding getActivityBinding() {
         return mBinding;
     }
 

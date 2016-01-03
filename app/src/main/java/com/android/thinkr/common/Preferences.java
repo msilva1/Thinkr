@@ -2,9 +2,11 @@ package com.android.thinkr.common;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.android.thinkr.ThinkrApplication;
+import com.android.thinkr.viewmodels.NavHeaderViewModel;
 import com.bytes.hack.model.account.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -18,18 +20,20 @@ public class Preferences {
     private static final String PREF_NAME = "thinkr";
     private static final Gson GSON = new GsonBuilder().create();
 
+    @NonNull
     public static User getUser() {
         User user = new User();
         final String userString = getPreferences().getString(Keys.user, "{}");
         try {
             user = GSON.fromJson(userString, User.class);
-        } catch (JsonSyntaxException e){
+        } catch (JsonSyntaxException e) {
             Log.e(Preferences.class.getSimpleName(), "Failed to deserialize user");
         }
         return user;
     }
 
     public static void setUser(User user) {
+        AccountController.getInstance().setUser(user);
         final String userString = GSON.toJson(user);
         SharedPreferences.Editor editor = getPreferences().edit();
         editor.putString(Keys.user, userString);
@@ -43,6 +47,7 @@ public class Preferences {
     }
 
     public static void signUserOut() {
+        NavHeaderViewModel.getInstance().setUser(new User());
         SharedPreferences.Editor editor = getPreferences().edit();
         editor.putBoolean(Keys.signedIn, false);
         editor.apply();
@@ -60,4 +65,6 @@ public class Preferences {
         String signedIn = "signedIn";
         String user = "user";
     }
+
+
 }
