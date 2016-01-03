@@ -32,6 +32,7 @@ import android.widget.Toast;
 
 import com.android.thinkr.databinding.ActivityLoginBinding;
 import com.android.thinkr.service.ThinkrServiceImpl;
+import com.android.thinkr.gcm.CookieJarReciever;
 import com.bytes.hack.model.account.Account;
 import com.bytes.hack.model.account.AccountValidation;
 

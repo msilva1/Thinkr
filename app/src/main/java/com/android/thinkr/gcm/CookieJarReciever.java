@@ -17,14 +17,20 @@ public class CookieJarReciever extends GcmReceiver {
     private GoogleCloudMessaging gcm;
     private String token;
     private Activity theActivity;
+    private Context context;
     private String PROJECT_NUMBER = "830091460192";
     private String gcmIdMsg;
 
     public CookieJarReciever(Activity activity) {
         theActivity = activity;
     }
+    public CookieJarReciever(){
+
+    }
 
     public void acquireRegId(){
+        if(theActivity==null)return;
+
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... params) {
@@ -64,6 +70,10 @@ public class CookieJarReciever extends GcmReceiver {
     }
     public String getGcmIdMsg(){
         return gcmIdMsg;
+    }
+
+    public void setContext(Context con){
+        context = con;
     }
 
     @Override
