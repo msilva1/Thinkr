@@ -1,4 +1,4 @@
-package com.android.thinkr;
+package com.android.thinkr.activites;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,12 +11,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.android.thinkr.admin.AdminActivity;
+import com.android.thinkr.R;
+import com.android.thinkr.common.Preferences;
 import com.android.thinkr.parent.ParentActivity;
 import com.android.thinkr.student.StudentActivity;
 import com.android.thinkr.teacher.TeacherActivity;
 
-public class ThinkrMain extends AppCompatActivity {
+public class ThinkrMainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +61,7 @@ public class ThinkrMain extends AppCompatActivity {
 
             default:
                 Toast.makeText(
-                    ThinkrMain.this, getString(R.string.InvalidUserType), Toast.LENGTH_SHORT).show();
+                    ThinkrMainActivity.this, getString(R.string.InvalidUserType), Toast.LENGTH_SHORT).show();
         }
     }
 

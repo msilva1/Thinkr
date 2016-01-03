@@ -1,4 +1,4 @@
-package com.android.thinkr.admin;
+package com.android.thinkr.activites;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,17 +15,20 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.android.thinkr.R;
-import com.android.thinkr.SignupActivity;
+import com.android.thinkr.activites.SignupActivity;
+import com.android.thinkr.fragments.BaseFragment;
+import com.android.thinkr.fragments.LoginFragment;
+import com.android.thinkr.fragments.SignupFragment;
 
-public class AdminActivity extends AppCompatActivity
+public class AdminActivity extends BaseFragmentActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+//        setContentView(R.layout.activity_admin);
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -38,7 +41,7 @@ public class AdminActivity extends AppCompatActivity
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawer, getToolbar(), R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
@@ -124,5 +127,10 @@ public class AdminActivity extends AppCompatActivity
         // Show user fragment
         startActivity(new Intent(this, SignupActivity.class));
 
+    }
+
+    @Override
+    protected BaseFragment getFragment() {
+        return new SignupFragment();
     }
 }

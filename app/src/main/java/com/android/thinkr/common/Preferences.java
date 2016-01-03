@@ -1,9 +1,10 @@
-package com.android.thinkr;
+package com.android.thinkr.common;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.android.thinkr.ThinkrApplication;
 import com.bytes.hack.model.account.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

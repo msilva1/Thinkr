@@ -1,8 +1,8 @@
-package com.android.thinkr;
+package com.android.thinkr.fragments;
 
 import android.app.Activity;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +11,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.android.thinkr.R;
+import com.android.thinkr.common.Preferences;
 import com.android.thinkr.databinding.FragmentSignupBinding;
 import com.android.thinkr.service.ThinkrServiceImpl;
 import com.bytes.hack.model.account.Account;
@@ -24,7 +26,7 @@ import retrofit.Retrofit;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class SignupActivityFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener, Callback<Account> {
+public class SignupFragment extends BaseFragment implements View.OnClickListener, AdapterView.OnItemSelectedListener, Callback<Account> {
 
     private FragmentSignupBinding mBinding;
     private Spinner mSpinner;
@@ -34,13 +36,24 @@ public class SignupActivityFragment extends Fragment implements View.OnClickList
     private User.Type mType = User.Type.Student;
     private String mUserId;
 
-    public SignupActivityFragment() {
+    public SignupFragment() {
+    }
+
+    @Override
+    public int getFragmentTitle() {
+        return R.string.action_sign_up;
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.fragment_signup;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mBinding = FragmentSignupBinding.inflate(inflater, container, false);
+        final View view = super.onCreateView(inflater, container, savedInstanceState);
+        mBinding = DataBindingUtil.bind(view);
         mBinding.signUpButton.setOnClickListener(this);
 
         mSpinner = mBinding.userTypeSpinner;

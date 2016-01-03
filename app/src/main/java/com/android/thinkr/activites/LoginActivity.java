@@ -1,4 +1,4 @@
-package com.android.thinkr;
+package com.android.thinkr.activites;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -30,6 +30,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.thinkr.common.Preferences;
+import com.android.thinkr.R;
 import com.android.thinkr.databinding.ActivityLoginBinding;
 import com.android.thinkr.service.ThinkrServiceImpl;
 import com.bytes.hack.model.account.Account;
