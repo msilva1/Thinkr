@@ -24,6 +24,15 @@ public interface ThinkrService {
     @POST("/WebServices/account/login/{id}/{password}")
     Call<Account> logIn(@Path("id") String id, @Path("password") String password);
 
+
+    @Headers({
+            "Content-Type: application/json",
+            "Accept: application/json"
+    })
+    @POST("/WebServices/account/logout/{id}/{password}")
+    Call<Account> logOut(@Path("id") String id, @Path("password") String password);
+
+
     @Headers({
             "Content-Type: application/json",
             "Accept: application/json"

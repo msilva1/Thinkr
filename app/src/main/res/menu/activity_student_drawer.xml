@@ -3,21 +3,13 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_admin_create_account"
+            android:id="@+id/nav_student_view_assignment"
             android:icon="@drawable/ic_menu_send"
-            android:title="Create Account" />
+            android:title="View Assignment" />
         <item
-            android:id="@+id/nav_admin_create_assignment"
+            android:id="@+id/nav_student_submit"
             android:icon="@drawable/ic_menu_send"
-            android:title="Create Assignment" />
-        <item
-            android:id="@+id/nav_admin_assign_student"
-            android:icon="@drawable/ic_menu_send"
-            android:title="Assign to Student" />
-        <item
-            android:id="@+id/nav_admin_approve"
-            android:icon="@drawable/ic_menu_send"
-            android:title="Approve Assignment" />
+            android:title="Submit Assignment" />
     </group>
 
     <item android:title="Communicate">
