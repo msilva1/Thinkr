@@ -1,14 +1,23 @@
 package com.android.thinkr.fragments;
 
 import android.content.Context;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import com.android.thinkr.R;
+
+import org.java_websocket.client.WebSocketClient;
+import org.java_websocket.drafts.Draft_17;
+import org.java_websocket.handshake.ServerHandshake;
+
+import java.net.URI;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -24,11 +33,10 @@ public class CommFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private static final String SERVER_ADDRESS = "ws://52.34.251.80:9005";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
+    private WebSocketClient conn;
+    private EditText commText;
     private OnFragmentInteractionListener mListener;
 
     public CommFragment() {
@@ -56,11 +64,53 @@ public class CommFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+
+        if (conn != null) {
+            if (conn.getConnection().isOpen()) {
+                print("Disconnecting...");
+                conn.close();
+                return;
+            }
+        }
+
+        URI uri = null;
+        try {
+            uri = new URI(SERVER_ADDRESS);
+        } catch (Exception e) {
+            Snackbar.make(
+                    getView(),
+                    e.getMessage(),
+                    Snackbar.LENGTH_INDEFINITE);
+        }
+
+        if (uri == null) return;
+
+        // Create the connection
+        conn = new WsClient(uri);
+        conn.connect();
+    }
+
+    private void send(Location location) {
+        if (conn != null && conn.getConnection().isOpen()) {
+
+            send("Track sent to server.");
+        } else {
+            commText.append("Connection is inactive" + "\n");
         }
     }
+
+    /**
+     * Sends a message/data to the server.
+     * The current server implementation effectively broadcasts this message to all connected clients.
+     */
+    private void send(String message) {
+        if (conn != null && conn.getConnection().isOpen()) {
+            conn.send(message);
+        } else {
+            commText.append("Connection is inactive" + "\n");
+        }
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -106,5 +156,62 @@ public class CommFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    /**
+     * Prints the specified message to the main comm view.
+     * This can be invoked from a background thread.
+     * @param message the message to be displayed
+     */
+    private void print(final String message) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                commText.append(message + "\n");
+                commText.setSelection(commText.getText().length());
+            }
+        });
+    }
+
+    /**
+     * Web Socket client
+     * Connects to the server using the specified address and
+     * DRAFT 17 of the WebSocket specification.
+     *
+     * Current implementation echoes the message/data sent from clients.
+     * Goal is to process information and update compass/waypoint as applicable
+     */
+    private class WsClient extends WebSocketClient {
+
+        /**
+         * Create a new WebSocket client using the specified address.
+         * Using WebSocket draft 17
+         *
+         * @param address the server websocket address. Protocol starts with ws://
+         * @see Draft_17
+         */
+        public WsClient(URI address) {
+            super(address, new Draft_17());
+        }
+
+        @Override
+        public void onOpen(ServerHandshake handshake) {
+            print("Connection established.");
+        }
+
+        @Override
+        public void onMessage(final String message) {
+            print(message);
+        }
+
+        @Override
+        public void onClose(int code, String reason, boolean remote) {
+            print("Connection closed.");
+        }
+
+        @Override
+        public void onError(final Exception ex) {
+            print("Error: " + ex.getMessage());
+        }
     }
 }
