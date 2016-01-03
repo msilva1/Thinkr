@@ -1,5 +1,6 @@
 package com.android.thinkr.activites;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -10,18 +11,32 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.android.thinkr.R;
 import com.android.thinkr.common.Preferences;
 import com.android.thinkr.databinding.NavHeaderAdminBinding;
 import com.android.thinkr.fragments.BaseFragment;
+import com.android.thinkr.fragments.CommFragment;
 import com.android.thinkr.fragments.LoginFragment;
 import com.android.thinkr.fragments.SignupFragment;
+import com.android.thinkr.service.ThinkrServiceImpl;
 import com.android.thinkr.viewmodels.NavHeaderViewModel;
+import com.bytes.hack.model.account.Account;
 import com.bytes.hack.model.account.User;
+
+import retrofit.Call;
+import retrofit.Callback;
+import retrofit.Response;
+import retrofit.Retrofit;
 
 public class AdminActivity extends BaseFragmentActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    @Override
+    protected BaseFragment getFragment() {
+        return new SignupFragment();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +96,7 @@ public class AdminActivity extends BaseFragmentActivity
         switch (user.getUserType()) {
             case Admin:
                 getMenuInflater().inflate(R.menu.admin, menu);
-            break;
+                break;
 
             case Teacher:
                 getMenuInflater().inflate(R.menu.teacher, menu);
@@ -95,7 +110,7 @@ public class AdminActivity extends BaseFragmentActivity
                 getMenuInflater().inflate(R.menu.student, menu);
                 break;
         }
-        getMenuInflater().inflate(R.menu.admin, menu);
+
         return true;
     }
 
@@ -109,9 +124,39 @@ public class AdminActivity extends BaseFragmentActivity
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        } else if (id == R.id.action_signout) {
+
+            signout();
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void signout() {
+
+        User user = Preferences.getUser();
+        final Call<Account> call = ThinkrServiceImpl.getService()
+                .logOut(user.getUserId(), user.getPassword());
+        call.enqueue(new Callback<Account>() {
+            @Override
+            public void onResponse(Response<Account> response, Retrofit retrofit) {
+                if (response.isSuccess() && response.body() != null) {
+                    Preferences.setUser(response.body().getUser());
+                    Preferences.signUserOut(); // Need to make sure server is logged in too, currently, it might not be.
+                    Toast.makeText(getBaseContext(), "User logged out", Toast.LENGTH_SHORT).show();
+                    setResult(Activity.RESULT_OK);
+
+                } else {
+                    Toast.makeText(getBaseContext(), "Unable to log user out", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                Toast.makeText(getBaseContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -130,6 +175,7 @@ public class AdminActivity extends BaseFragmentActivity
             approveAssignment();
 
         } else if (id == R.id.nav_teacher_approve_assignment) {
+            approve();
         } else if (id == R.id.nav_teacher_assign_student) {
         } else if (id == R.id.nav_teacher_create_account) {
             createAccount();
@@ -146,6 +192,10 @@ public class AdminActivity extends BaseFragmentActivity
         DrawerLayout drawer = getBinding().drawerLayout;
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void approve() {
+        swapFragment(new CommFragment());
     }
 
     private void assignToStudent() {
@@ -167,8 +217,4 @@ public class AdminActivity extends BaseFragmentActivity
 
     }
 
-    @Override
-    protected BaseFragment getFragment() {
-        return new SignupFragment();
-    }
 }
