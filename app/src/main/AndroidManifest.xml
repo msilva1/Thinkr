@@ -8,6 +8,12 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
     <uses-permission android:name="android.permission.READ_PROFILE"/>
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
+     <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <permission android:name="com.android.thinkr.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+    <uses-permission android:name="com.android.thinkr.permission.C2D_MESSAGE" />
+
 
     <application
         android:name=".ThinkrApplication"
@@ -16,10 +22,12 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity
             android:name=".ThinkrMain"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
+
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -44,6 +52,24 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.android.thinkr.ThinkrMain"/>
         </activity>
+
+        <service
+            android:name="com.android.thinkr.gcm.CookieJarGcmListenerService"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+            </intent-filter>
+        </service>
+        <receiver
+            android:name="com.google.android.gms.gcm.GcmReceiver"
+            android:exported="true"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <category android:name="com.example.gcm" />
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>
