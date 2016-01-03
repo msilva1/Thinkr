@@ -16,7 +16,7 @@ import java.io.IOException;
 public class CookieJarReciever extends GcmReceiver {
     private GoogleCloudMessaging gcm;
     private String token;
-    private Context context;
+    private static Context context;
     private String PROJECT_NUMBER = "830091460192";
     private String gcmIdMsg;
 
@@ -41,7 +41,7 @@ public class CookieJarReciever extends GcmReceiver {
                 String msg = "";
                 try {
                     Log.i("GCM", "Getting token...");
-                    token = InstanceID.getInstance(context).getToken(authorizedEntity,scope);
+                    token = InstanceID.getInstance(context).getToken(authorizedEntity, scope);
 
                     msg = "Device registered, registration ID=" + token;
 
@@ -78,6 +78,7 @@ public class CookieJarReciever extends GcmReceiver {
     public void onReceive(Context context, Intent intent) {
         Log.i("GCM",intent.toString());
         Log.i("GCM", intent.getExtras().toString());
+        Toast.makeText(context, "Received homework notification", Toast.LENGTH_LONG).show();
 //        Log.i("GCM", intent.getScheme());
         // TODO: This method is called when the GcmReveiver is receiving
         // an Intent broadcast.
