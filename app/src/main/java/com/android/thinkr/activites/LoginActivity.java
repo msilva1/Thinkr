@@ -30,11 +30,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.thinkr.common.Preferences;
 import com.android.thinkr.R;
-import com.android.thinkr.databinding.ActivityLoginBinding;
+import com.android.thinkr.common.Preferences;
+import com.android.thinkr.databinding.FragmentLoginBinding;
 import com.android.thinkr.service.ThinkrServiceImpl;
-import com.android.thinkr.gcm.CookieJarReciever;
 import com.bytes.hack.model.account.Account;
 import com.bytes.hack.model.account.AccountValidation;
 
@@ -81,7 +80,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        final ActivityLoginBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
+        final FragmentLoginBinding binding = DataBindingUtil.setContentView(this, R.layout.fragment_login);
         // Set up the login form.
         mUserView = binding.userId;
         populateAutoComplete();
