@@ -40,7 +40,6 @@ import java.util.List;
 
 import retrofit.Call;
 import retrofit.Callback;
-import retrofit.GsonConverterFactory;
 import retrofit.Response;
 import retrofit.Retrofit;
 
@@ -50,6 +49,8 @@ import static android.Manifest.permission.READ_CONTACTS;
  * A login screen that offers login via email/password.
  */
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
+
+    public static final int USER_REGISTRATION = 1;
 
     /**
      * Id to identity READ_CONTACTS permission request.
@@ -108,8 +109,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(getBaseContext(), SignupActivity.class);
-                        startActivity(intent);
-
+                        startActivityForResult(intent, USER_REGISTRATION);
                     }
                 }
         );
@@ -185,7 +185,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         View focusView = null;
 
         // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) || !isPasswordValid(password)) {
+        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
             cancel = true;
@@ -214,19 +214,17 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(true);
 //            mAuthTask = new UserLoginTask(email, password);
 //            mAuthTask.execute((Void) null);
-            Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl("http://thinkr.azurewebsites.net")
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
-
-            final ThinkrService service = retrofit.create(ThinkrService.class);
-            final Call<Account> call = service.logIn(username, password);
+            final Call<Account> call = ThinkrRestService.getService().logIn(username, password);
             call.enqueue(new Callback<Account>() {
                 @Override
                 public void onResponse(Response<Account> response, Retrofit retrofit) {
                     final Account account = response.body();
                     if (response.isSuccess() && account != null) {
                         if ((account.getValidation().getAccountStatus() == AccountValidation.Account.Valid)) {
+                            Preferences.setUser(response.body().getUser());
+                            Preferences.signUserIn();
+                            finish();
+
                             Toast.makeText(LoginActivity.this, "Successful call! logged in as " + account.getUser().getUserId(), Toast.LENGTH_SHORT).show();
                         } else {
                             mUserView.setError("Account does not exist. Please try again.");
@@ -332,6 +330,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mUserView.setAdapter(adapter);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == USER_REGISTRATION) {
+            if (resultCode == RESULT_OK) {
+                finish();
+            }
+        }
+    }
 
     private interface ProfileQuery {
         String[] PROJECTION = {
