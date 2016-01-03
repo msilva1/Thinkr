@@ -31,7 +31,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.thinkr.databinding.ActivityLoginBinding;
-import com.android.thinkr.gcm.CookieJarReciever;
+import com.android.thinkr.service.ThinkrServiceImpl;
 import com.bytes.hack.model.account.Account;
 import com.bytes.hack.model.account.AccountValidation;
 
@@ -216,7 +216,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(true);
 //            mAuthTask = new UserLoginTask(email, password);
 //            mAuthTask.execute((Void) null);
-            final Call<Account> call = ThinkrRestService.getService().logIn(username, password);
+            final Call<Account> call = ThinkrServiceImpl.getService().logIn(username, password);
             call.enqueue(new Callback<Account>() {
                 @Override
                 public void onResponse(Response<Account> response, Retrofit retrofit) {

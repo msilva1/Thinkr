@@ -1,4 +1,4 @@
-package com.android.thinkr;
+package com.android.thinkr.service;
 
 import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
@@ -6,7 +6,7 @@ import retrofit.Retrofit;
 /**
  * Created by M. Silva on 1/2/16.
  */
-public class ThinkrRestService {
+public class ThinkrServiceImpl {
     private static ThinkrService thinkrService;
 
     public static ThinkrService getService() {

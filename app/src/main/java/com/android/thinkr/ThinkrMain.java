@@ -9,6 +9,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
+
+import com.android.thinkr.admin.AdminActivity;
+import com.android.thinkr.parent.ParentActivity;
+import com.android.thinkr.student.StudentActivity;
+import com.android.thinkr.teacher.TeacherActivity;
 
 public class ThinkrMain extends AppCompatActivity {
 
@@ -32,6 +38,29 @@ public class ThinkrMain extends AppCompatActivity {
         if (!Preferences.isSignedIn()) {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
+        }
+
+        switch (Preferences.getUser().getUserType()) {
+
+            case Admin:
+                startActivity(new Intent(this, AdminActivity.class));
+                break;
+
+            case Student:
+                startActivity(new Intent(this, StudentActivity.class));
+                break;
+
+            case Parent:
+                startActivity(new Intent(this, ParentActivity.class));
+                break;
+
+            case Teacher:
+                startActivity(new Intent(this, TeacherActivity.class));
+                break;
+
+            default:
+                Toast.makeText(
+                    ThinkrMain.this, getString(R.string.InvalidUserType), Toast.LENGTH_SHORT).show();
         }
     }
 
