@@ -28,4 +28,14 @@
         <item>Teacher</item>
         <item>Parent</item>
     </string-array>
+
+    <string-array name="teacher_menu_array">
+        <item>Assignments</item>
+        <item>Students</item>
+    </string-array>
+    <string name="title_activity_nav_drawer">NavDrawerActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
 </resources>
