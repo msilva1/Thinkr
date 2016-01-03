@@ -1,5 +1,6 @@
 package com.android.thinkr.admin;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -12,8 +13,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.android.thinkr.R;
+import com.android.thinkr.SignupActivity;
+import com.android.thinkr.ThinkrRestService;
+import com.android.thinkr.ThinkrService;
+import com.bytes.hack.model.account.Account;
+import com.bytes.hack.model.account.AccountValidation;
+import com.bytes.hack.model.account.User;
+
+import retrofit.Call;
+import retrofit.Callback;
+import retrofit.Response;
+import retrofit.Retrofit;
 
 public class AdminActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -82,13 +95,17 @@ public class AdminActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.nav_createAccount) {
+            createAccount();
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_createAssignment) {
+            createAssignment();
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_assignToStudent) {
+            assignToStudent();
+
+        } else if (id == R.id.nav_approveAssignment) {
+            approveAssignment();
 
         } else if (id == R.id.nav_share) {
 
@@ -99,5 +116,24 @@ public class AdminActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void assignToStudent() {
+
+    }
+
+    private void approveAssignment() {
+
+    }
+
+    private void createAssignment() {
+
+    }
+
+    private void createAccount() {
+
+        // Show user fragment
+        startActivity(new Intent(this, SignupActivity.class));
+
     }
 }

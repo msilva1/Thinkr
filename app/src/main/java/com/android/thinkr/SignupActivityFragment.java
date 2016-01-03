@@ -12,6 +12,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.android.thinkr.databinding.FragmentSignupBinding;
+import com.bytes.hack.model.account.Account;
 import com.bytes.hack.model.account.User;
 
 import retrofit.Call;
@@ -22,7 +23,7 @@ import retrofit.Retrofit;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class SignupActivityFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener, Callback<User> {
+public class SignupActivityFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener, Callback<Account> {
 
     private FragmentSignupBinding mBinding;
     private Spinner mSpinner;
@@ -68,7 +69,7 @@ public class SignupActivityFragment extends Fragment implements View.OnClickList
                     user.setPassword(mPassword);
                     user.setUserType(mType);
 
-                    final Call<User> call = ThinkrRestService.getService().signUp(user);
+                    final Call<Account> call = ThinkrRestService.getService().signUp(user);
                     call.enqueue(this);
                 }
                 break;
@@ -129,9 +130,9 @@ public class SignupActivityFragment extends Fragment implements View.OnClickList
     }
 
     @Override
-    public void onResponse(Response<User> response, Retrofit retrofit) {
+    public void onResponse(Response<Account> response, Retrofit retrofit) {
         if (response.isSuccess() && response.body() != null) {
-            Preferences.setUser(response.body());
+            Preferences.setUser(response.body().getUser());
             Preferences.signUserIn();
             Toast.makeText(getActivity(), "Account created", Toast.LENGTH_SHORT).show();
             getActivity().setResult(Activity.RESULT_OK);
