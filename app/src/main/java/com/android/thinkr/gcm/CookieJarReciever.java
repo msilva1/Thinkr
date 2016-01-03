@@ -78,8 +78,11 @@ public class CookieJarReciever extends GcmReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        Log.i("GCM",intent.toString());
+        Log.i("GCM", intent.getExtras().toString());
+        Log.i("GCM", intent.getScheme());
         // TODO: This method is called when the GcmReveiver is receiving
         // an Intent broadcast.
-        throw new UnsupportedOperationException("Not yet implemented");
+//        throw new UnsupportedOperationException("Not yet implemented");
     }
 }
