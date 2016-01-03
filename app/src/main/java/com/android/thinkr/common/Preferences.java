@@ -42,6 +42,12 @@ public class Preferences {
         editor.apply();
     }
 
+    public static void signUserOut() {
+        SharedPreferences.Editor editor = getPreferences().edit();
+        editor.putBoolean(Keys.signedIn, false);
+        editor.apply();
+    }
+
     public static boolean isSignedIn() {
         return getPreferences().getBoolean(Keys.signedIn, false);
     }
