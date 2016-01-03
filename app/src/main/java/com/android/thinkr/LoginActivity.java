@@ -31,6 +31,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.thinkr.databinding.ActivityLoginBinding;
+import com.android.thinkr.gcm.CookieJarReciever;
 import com.bytes.hack.model.account.Account;
 import com.bytes.hack.model.account.AccountValidation;
 
@@ -115,6 +116,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         mLoginFormView = binding.loginForm;
         mProgressView = binding.loginProgress;
+
     }
 
     private void populateAutoComplete() {
