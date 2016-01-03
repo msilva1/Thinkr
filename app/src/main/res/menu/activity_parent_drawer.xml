@@ -2,20 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group android:checkableBehavior="single">
+
         <item
-            android:id="@+id/nav_admin_create_account"
+            android:id="@+id/nav_parent_view_assignment"
             android:icon="@drawable/ic_menu_send"
-            android:title="Create Account" />
+            android:title="View Assignment" />
         <item
-            android:id="@+id/nav_admin_create_assignment"
-            android:icon="@drawable/ic_menu_send"
-            android:title="Create Assignment" />
-        <item
-            android:id="@+id/nav_admin_assign_student"
+            android:id="@+id/nav_parent_assign_to_student"
             android:icon="@drawable/ic_menu_send"
             android:title="Assign to Student" />
         <item
-            android:id="@+id/nav_admin_approve"
+            android:id="@+id/nav_parent_approve"
             android:icon="@drawable/ic_menu_send"
             android:title="Approve Assignment" />
     </group>
