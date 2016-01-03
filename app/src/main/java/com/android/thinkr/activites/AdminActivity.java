@@ -139,7 +139,7 @@ public class AdminActivity extends BaseFragmentActivity
 
         User user = Preferences.getUser();
         final Call<Account> call = ThinkrServiceImpl.getService()
-                .logOut(user.getUserId(), user.getPassword());
+                .logout(user.getUserId(), user.getPassword());
         call.enqueue(new Callback<Account>() {
             @Override
             public void onResponse(Response<Account> response, Retrofit retrofit) {
