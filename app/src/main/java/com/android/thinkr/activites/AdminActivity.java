@@ -81,7 +81,7 @@ public class AdminActivity extends BaseFragmentActivity
         switch (user.getUserType()) {
             case Admin:
                 getMenuInflater().inflate(R.menu.admin, menu);
-            break;
+                break;
 
             case Teacher:
                 getMenuInflater().inflate(R.menu.teacher, menu);
