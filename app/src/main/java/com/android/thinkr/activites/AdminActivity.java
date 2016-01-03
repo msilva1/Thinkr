@@ -76,6 +76,9 @@ public class AdminActivity extends BaseFragmentActivity
             case Student:
                 getBinding().navView.inflateMenu(R.menu.activity_student_drawer);
                 break;
+            default:
+                getBinding().navView.inflateMenu(R.menu.activity_admin_drawer);
+
         }
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -172,10 +175,11 @@ public class AdminActivity extends BaseFragmentActivity
             assignToStudent();
 
         } else if (id == R.id.nav_admin_approve) {
-            approveAssignment();
+            approve();
 
         } else if (id == R.id.nav_teacher_approve_assignment) {
             approve();
+
         } else if (id == R.id.nav_teacher_assign_student) {
         } else if (id == R.id.nav_teacher_create_account) {
             createAccount();
@@ -199,10 +203,6 @@ public class AdminActivity extends BaseFragmentActivity
     }
 
     private void assignToStudent() {
-
-    }
-
-    private void approveAssignment() {
 
     }
 
