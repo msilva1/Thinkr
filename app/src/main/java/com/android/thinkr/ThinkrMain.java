@@ -15,7 +15,6 @@ import com.android.thinkr.admin.AdminActivity;
 import com.android.thinkr.parent.ParentActivity;
 import com.android.thinkr.student.StudentActivity;
 import com.android.thinkr.teacher.TeacherActivity;
-import com.bytes.hack.model.account.User;
 
 public class ThinkrMain extends AppCompatActivity {
 
