@@ -17,14 +17,20 @@ public class CookieJarReciever extends GcmReceiver {
     private GoogleCloudMessaging gcm;
     private String token;
     private Activity theActivity;
+    private Context context;
     private String PROJECT_NUMBER = "830091460192";
     private String gcmIdMsg;
 
     public CookieJarReciever(Activity activity) {
         theActivity = activity;
     }
+    public CookieJarReciever(){
+
+    }
 
     public void acquireRegId(){
+        if(theActivity==null)return;
+
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... params) {
@@ -39,10 +45,6 @@ public class CookieJarReciever extends GcmReceiver {
                     Log.i("GCM", "Getting token...");
                     token = InstanceID.getInstance(theActivity.getApplicationContext()).getToken(authorizedEntity,scope);
 
-//                    if (gcm == null) {
-//                        gcm = GoogleCloudMessaging.getInstance(theActivity.getApplicationContext());
-//                    }
-//                    regid = gcm.register(PROJECT_NUMBER);
                     msg = "Device registered, registration ID=" + token;
 
                     Log.i("GCM", "Got token...");
@@ -70,9 +72,13 @@ public class CookieJarReciever extends GcmReceiver {
         return gcmIdMsg;
     }
 
+    public void setContext(Context con){
+        context = con;
+    }
+
     @Override
     public void onReceive(Context context, Intent intent) {
-        // TODO: This method is called when the BroadcastReceiver is receiving
+        // TODO: This method is called when the GcmReveiver is receiving
         // an Intent broadcast.
         throw new UnsupportedOperationException("Not yet implemented");
     }

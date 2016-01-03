@@ -34,6 +34,7 @@ import com.android.thinkr.common.Preferences;
 import com.android.thinkr.R;
 import com.android.thinkr.databinding.ActivityLoginBinding;
 import com.android.thinkr.service.ThinkrServiceImpl;
+import com.android.thinkr.gcm.CookieJarReciever;
 import com.bytes.hack.model.account.Account;
 import com.bytes.hack.model.account.AccountValidation;
 
@@ -119,6 +120,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mLoginFormView = binding.loginForm;
         mProgressView = binding.loginProgress;
 
+        CookieJarReciever cjr = new CookieJarReciever(this);
+        cjr.acquireRegId();
     }
 
     private void populateAutoComplete() {
