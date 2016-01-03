@@ -16,6 +16,8 @@ import org.java_websocket.drafts.Draft_17;
 import org.java_websocket.handshake.ServerHandshake;
 
 import java.net.URI;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class CommFragment extends BaseFragment {
 
@@ -27,6 +29,9 @@ public class CommFragment extends BaseFragment {
     private Button approveButton;
     private Button rejectButton;
 
+    private Timer timer;
+    private FragmentCommBinding binding;
+
     public CommFragment() {
         // Required empty public constructor
     }
@@ -35,7 +40,7 @@ public class CommFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        FragmentCommBinding binding =  DataBindingUtil.bind(view);
+        binding = DataBindingUtil.bind(view);
 
         commText =  binding.webSocketComm;
         approveButton = binding.approveButton;
@@ -91,6 +96,21 @@ public class CommFragment extends BaseFragment {
         // Create the connection
         conn = new WsClient(uri);
         conn.connect();
+
+
+        new Timer().scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        send("alarm-check");
+                        //Toast.makeText(getActivity(), "alarm-check", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+            }
+        }, 1000, 5000);
     }
 
     /**
@@ -116,6 +136,22 @@ public class CommFragment extends BaseFragment {
             public void run() {
                 commText.append(message + "\n");
                 commText.setSelection(commText.getText().length());
+            }
+        });
+    }
+
+    /**
+     * Prints the specified message to the main comm view.
+     * This can be invoked from a background thread.
+     * @param message the message to be displayed
+     */
+    private void alert(final String message) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+
+                binding.tamperedTextView.setText("Tampered!");
+                binding.tamperedTextView.setVisibility(View.VISIBLE);
             }
         });
     }
@@ -159,7 +195,22 @@ public class CommFragment extends BaseFragment {
 
         @Override
         public void onMessage(final String message) {
-            print(message);
+
+            if(message.toLowerCase().contains("alarm")) {
+                if(message.toLowerCase().contains("alert")) {
+                    alert(message);
+                } else {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            binding.tamperedTextView.setText("");
+                            binding.tamperedTextView.setVisibility(View.INVISIBLE);
+                        }
+                    });
+                }
+            } else {
+                print(message);
+            }
         }
 
         @Override
