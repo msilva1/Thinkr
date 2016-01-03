@@ -3,6 +3,7 @@ package com.android.thinkr;
 import android.app.Application;
 import android.content.Context;
 
+import com.android.thinkr.gcm.CookieJarReciever;
 import com.bytes.hack.model.account.User;
 
 /**
@@ -16,5 +17,8 @@ public class ThinkrApplication extends Application {
     public void onCreate() {
         super.onCreate();
         context = getApplicationContext();
+
+        CookieJarReciever cjr = new CookieJarReciever(context);
+        cjr.acquireRegId();
     }
 }
