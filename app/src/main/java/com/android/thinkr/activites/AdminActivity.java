@@ -103,7 +103,7 @@ public class AdminActivity extends BaseFragmentActivity
                 getActivityBinding().navView.inflateMenu(R.menu.activity_student_drawer);
                 break;
             default:
-                getBinding().navView.inflateMenu(R.menu.activity_admin_drawer);
+                getActivityBinding().navView.inflateMenu(R.menu.activity_admin_drawer);
 
         }
     }
