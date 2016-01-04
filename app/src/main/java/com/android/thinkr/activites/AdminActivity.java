@@ -116,7 +116,7 @@ public class AdminActivity extends BaseFragmentActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        User user = Preferences.getUser();
+        User user = AccountController.getInstance().getUser();
         switch (user.getUserType()) {
             case Admin:
                 getMenuInflater().inflate(R.menu.admin, menu);
