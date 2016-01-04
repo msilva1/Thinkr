@@ -1,7 +1,6 @@
 package com.android.thinkr.activites;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.databinding.Observable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -23,6 +22,7 @@ import com.android.thinkr.fragments.BaseFragment;
 import com.android.thinkr.fragments.CommFragment;
 import com.android.thinkr.fragments.LoginFragment;
 import com.android.thinkr.fragments.SignupFragment;
+import com.android.thinkr.fragments.ThinkrMainFragment;
 import com.android.thinkr.service.ThinkrServiceImpl;
 import com.android.thinkr.viewmodels.NavHeaderViewModel;
 import com.bytes.hack.model.account.Account;
@@ -38,7 +38,8 @@ public class AdminActivity extends BaseFragmentActivity
 
     @Override
     protected BaseFragment getFragment() {
-        return new SignupFragment();
+        if (!Preferences.isSignedIn()) return new LoginFragment();
+        else return new ThinkrMainFragment();
     }
 
     @Override
@@ -197,28 +198,25 @@ public class AdminActivity extends BaseFragmentActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_admin_approve) {
-        } else if (id == R.id.nav_admin_assign_student) {
-        } else if (id == R.id.nav_admin_create_account) {
-            assignToStudent();
+        switch (id) {
+            case R.id.nav_admin_approve:
+            case R.id.nav_teacher_approve_assignment:
+            case R.id.nav_parent_approve:
+                approve();
+                break;
+            case R.id.nav_teacher_assign_student:
+            case R.id.nav_admin_assign_student:
+            case R.id.nav_parent_assign_to_student:
+                assignToStudent();
+                break;
+            case R.id.nav_admin_create_account:
+            case R.id.nav_teacher_create_account:
+                createAccount();
+                break;
 
-        } else if (id == R.id.nav_admin_approve) {
-            approve();
-
-        } else if (id == R.id.nav_teacher_approve_assignment) {
-            approve();
-
-        } else if (id == R.id.nav_teacher_assign_student) {
-        } else if (id == R.id.nav_teacher_create_account) {
-            createAccount();
-        } else if (id == R.id.nav_teacher_create_assignment) {
-        } else if (id == R.id.nav_teacher_view_assignment) {
-        } else if (id == R.id.nav_common_send) {
-        } else if (id == R.id.nav_common_talk) {
-        } else if (id == R.id.nav_student_view_assignment) {
-        } else if (id == R.id.nav_parent_approve) {
-        } else if (id == R.id.nav_parent_assign_to_student) {
-        } else if (id == R.id.nav_parent_view_assignment) {
+            case R.id.nav_teacher_create_assignment:
+                createAssignment();
+                break;
         }
 
         DrawerLayout drawer = getActivityBinding().drawerLayout;
@@ -239,10 +237,9 @@ public class AdminActivity extends BaseFragmentActivity
     }
 
     private void createAccount() {
-
         // Show user fragment
-        startActivity(new Intent(this, SignupActivity.class));
-
+//        startActivity(new Intent(this, SignupActivity.class));
+        swapFragment(new SignupFragment());
     }
 
 }

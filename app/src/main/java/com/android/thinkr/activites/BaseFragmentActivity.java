@@ -11,6 +11,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.inputmethod.InputMethodManager;
 
 import com.android.thinkr.R;
 import com.android.thinkr.databinding.ActivityAdminBinding;
@@ -69,10 +70,13 @@ public abstract class BaseFragmentActivity extends AppCompatActivity
             getSupportActionBar().setTitle(fragment.getFragmentTitle());
             mToggle.syncState();
         }
+
+        hideKeyboard();
     }
 
     @Override
     public void onBackPressed() {
+        hideKeyboard();
         DrawerLayout drawer = mBinding.drawerLayout;
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -92,5 +96,12 @@ public abstract class BaseFragmentActivity extends AppCompatActivity
 
     protected Toolbar getToolbar() {
         return mToolbar;
+    }
+
+    protected void hideKeyboard() {
+        if (getCurrentFocus() != null) {
+            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        }
     }
 }
