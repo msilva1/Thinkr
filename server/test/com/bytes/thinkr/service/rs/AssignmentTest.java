@@ -9,6 +9,8 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriBuilder;
 
+import com.bytes.thinkr.model.IValidationEnum;
+import com.bytes.thinkr.model.ValidationInfo;
 import org.glassfish.jersey.client.ClientConfig;
 import org.junit.Assert;
 import org.junit.Before;
@@ -18,7 +20,6 @@ import com.bytes.thinkr.model.account.User;
 import com.bytes.thinkr.model.assignment.Answer;
 import com.bytes.thinkr.model.assignment.Assignment;
 import com.bytes.thinkr.model.assignment.AssignmentList;
-import com.bytes.thinkr.model.assignment.AssignmentValidation;
 import com.bytes.thinkr.model.assignment.Question;
 import com.bytes.thinkr.service.impl.AssignmentServiceImpl;
 
@@ -67,9 +68,9 @@ public class AssignmentTest extends RestClientTest {
 			Assignment response1 = target.path("create").path(uid).request().accept(MediaType.APPLICATION_JSON)
 					.post(Entity.entity(assignment, MediaType.APPLICATION_JSON), Assignment.class);
 				
-			AssignmentValidation.Assignment status = response1.getValidation().getAssignmentStatus();
-			Assert.assertTrue((status == AssignmentValidation.Assignment.Valid) || 
-				(status == AssignmentValidation.Assignment.Existing) );
+			String status = response1.getValidation().get(ValidationInfo.Type.Assignment);
+			Assert.assertTrue((status == ValidationInfo.Common.Valid.toString()) ||
+				(status == ValidationInfo.Assignment.Existing.toString()) );
 		}
 	
 		// Assign odd-numbered assignments to user: kent
@@ -80,10 +81,10 @@ public class AssignmentTest extends RestClientTest {
 				Assignment response2  = target.path(String.format("assign/%1$s/%2$s", uid, aid))
 					.request().accept(MediaType.APPLICATION_JSON)
 					.post(Entity.entity(user, MediaType.APPLICATION_JSON), Assignment.class);
-				
-				AssignmentValidation.Assignment status = response2.getValidation().getAssignmentStatus();
-				Assert.assertTrue((status == AssignmentValidation.Assignment.Assigned) || 
-					(status == AssignmentValidation.Assignment.AlreadyAssigned) );
+
+				String status = response2.getValidation().get(ValidationInfo.Type.Assignment);
+				Assert.assertTrue((status == ValidationInfo.Assignment.Assigned.toString()) ||
+					(status == ValidationInfo.Assignment.AlreadyAssigned.toString()) );
 			}
 		}
 		
@@ -102,10 +103,10 @@ public class AssignmentTest extends RestClientTest {
 		Assignment temp = createAssignment(assignmentName+1, category, (int) (Math.random()*90));
 		
 		Assignment a = AssignmentServiceImpl.getInstance().create(uid, temp);
-		System.out.println(a.getValidation().getAssignmentStatus());
+		System.out.println(a.getValidation().get(ValidationInfo.Type.Assignment));
 		
 		Assignment b = AssignmentServiceImpl.getInstance().assign(uid, aid);
-		System.out.println(b.getValidation().getAssignmentStatus());
+		System.out.println(b.getValidation().get(ValidationInfo.Type.Assignment));
 		
 		AssignmentList list = AssignmentServiceImpl.getInstance().getAssignmentList(uid);
 		System.out.println("Local assigned list size: " + list.getAssignments().size());

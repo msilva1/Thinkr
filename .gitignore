@@ -1,6 +1,7 @@
 # Kent ignore rules
 server/samples
 server/samples/
+server/target/
 
 #built application files
 *.apk

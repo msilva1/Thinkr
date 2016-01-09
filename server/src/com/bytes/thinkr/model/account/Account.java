@@ -1,13 +1,9 @@
 package com.bytes.thinkr.model.account;
 
-import java.util.Date;
+import com.bytes.thinkr.model.ValidationInfo;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.*;
+import java.util.Date;
 
 @XmlRootElement
 @XmlType(name = "Account")
@@ -27,47 +23,38 @@ public class Account {
 	static {
 		
 		INVALID = new Account();
-		INVALID.getValidation().setAccountStatus(AccountValidation.Account.Invalid);
+		INVALID.getValidation().add(ValidationInfo.Type.Account, ValidationInfo.Common.Invalid);
 		
 		EXISTING = new Account();
-		EXISTING.getValidation().setUserIdStatus(AccountValidation.UserId.Existing);
+		EXISTING.getValidation().add(ValidationInfo.Type.UserId, ValidationInfo.UserId.Existing);
 	
-		
 		NOT_FOUND = new Account();
-		NOT_FOUND.getValidation().setAccountStatus(AccountValidation.Account.Unspecified);
+		NOT_FOUND.getValidation().add(ValidationInfo.Type.Account, ValidationInfo.Common.Unspecified);
 		
 		INVALID_PASSWORD = new Account();
-		INVALID_PASSWORD.getValidation().setAccountStatus(AccountValidation.Account.InvalidPassword);
-		
+		INVALID_PASSWORD.getValidation().add(ValidationInfo.Type.Account, ValidationInfo.Account.InvalidPassword);
 
 		INVALID_ID_OR_PASSWORD = new Account();
-		INVALID_ID_OR_PASSWORD.getValidation().setAccountStatus(AccountValidation.Account.InvalidIdOrPassword);
-
-		
-		
+		INVALID_ID_OR_PASSWORD.getValidation().add(ValidationInfo.Type.Account, ValidationInfo.Account.InvalidIdOrPassword);
 	}
 
 	@XmlElement 
 	private User user;
 	
 	@XmlElement 
-	private AccountValidation validation;
+	private ValidationInfo validation;
 
-	@XmlElement
-	private Session session;
-	
 	@XmlTransient
 	private Date dateCreated;
 	
 	
 	public Account() {
-		this(new AccountValidation());
+		this(new ValidationInfo());
 	}
 	
-	public Account(AccountValidation validationInfo) {
+	public Account(ValidationInfo validationInfo) {
 		setValidation(validationInfo);
 		setUser(new User());
-		setSession(new Session());
 		setDateCreated(new Date());
 	}
 	
@@ -78,8 +65,7 @@ public class Account {
 				"%1$s " + System.lineSeparator() + 
 				"Date Created: %2$s " + System.lineSeparator() +
 				"Account Validation: %3$s " + System.lineSeparator(),
-				user, dateCreated.toInstant(), validation);
-		
+				user, dateCreated.toInstant(), getValidation());
 	}
 	
 	/**
@@ -110,32 +96,11 @@ public class Account {
 		this.dateCreated = dateCreated;
 	}
 
-	/**
-	 * @return the validationInfo
-	 */
-	public AccountValidation getValidation() {
+	public ValidationInfo getValidation() {
 		return validation;
 	}
 
-	/**
-	 * @param validationInfo the validationInfo to set
-	 */
-	public void setValidation(AccountValidation validationInfo) {
-		this.validation = validationInfo;
+	public void setValidation(ValidationInfo validation) {
+		this.validation = validation;
 	}
-
-	/**
-	 * @return the session
-	 */
-	public Session getSession() {
-		return session;
-	}
-
-	/**
-	 * @param session the session to set
-	 */
-	public void setSession(Session session) {
-		this.session = session;
-	}
-
 }

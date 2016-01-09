@@ -1,8 +1,9 @@
 package com.bytes.thinkr.service.validator;
 
+import com.bytes.thinkr.model.IValidationEnum;
+import com.bytes.thinkr.model.ValidationInfo;
 import com.bytes.thinkr.model.account.User;
 import com.bytes.thinkr.model.assignment.Assignment;
-import com.bytes.thinkr.model.assignment.AssignmentValidation;
 
 public class AssignmentValidator {
 
@@ -19,7 +20,7 @@ public class AssignmentValidator {
 	 * @param assignment
 	 * @return
 	 */
-	public static AssignmentValidation.AssignmentId isAssignmentIdValid(User user, Assignment assignment) {
+	public static IValidationEnum isAssignmentIdValid(User user, Assignment assignment) {
 
 		// User is (administrator or teacher)
 		
@@ -27,22 +28,22 @@ public class AssignmentValidator {
 		String name = assignment.getName().toString();
 		String category = assignment.getCategory().toString();
 		
-		return AssignmentValidation.AssignmentId.Valid;
+		return ValidationInfo.Common.Valid;
 	}
 
 	
-	public static AssignmentValidation.Assignment isAssignmentValid() {
+	public static IValidationEnum isAssignmentValid() {
 		
-		return AssignmentValidation.Assignment.Valid;
+		return ValidationInfo.Common.Valid;
 	}
 	
-	public static AssignmentValidation.AssignmentId isIdValid(User user, Assignment assignment) {
+	public static IValidationEnum isIdValid(User user, Assignment assignment) {
 
 		String userId = user.getUserId();
 		String name = assignment.getName().toString();
 		String category = assignment.getCategory().toString();
 		
-		return AssignmentValidation.AssignmentId.Valid;
+		return ValidationInfo.Common.Valid;
 	}
 	
 	/**
@@ -50,9 +51,9 @@ public class AssignmentValidator {
 	 * @param assignment 
 	 * @return
 	 */
-	public static AssignmentValidation.Answer isAnswerValid(Assignment assignment) {
+	public static IValidationEnum isAnswerValid(Assignment assignment) {
 
-		return AssignmentValidation.Answer.Valid;
+		return ValidationInfo.Common.Valid;
 	}	
 		
 	/**
@@ -60,11 +61,9 @@ public class AssignmentValidator {
 	 * @param assignment
 	 * @return
 	 */
-	public static AssignmentValidation.Question isQuestionValid(Assignment assignment) {
+	public static IValidationEnum isQuestionValid(Assignment assignment) {
 
-		return AssignmentValidation.Question.Valid;
+		return ValidationInfo.Common.Valid;
 	}
-	
-	
 
 }

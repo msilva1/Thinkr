@@ -28,7 +28,7 @@ public class AssignmentService implements IAssignmentService {
 	@Produces(MediaType.TEXT_HTML)
 	public String getHtml() {
 
-		String title = "Nanobytes: Assignment Service";
+		String title = "Thinkr: Assignment Service";
 		String message = "Welcome to Assignment REST Service Landing Page";
 
 		return String.format(

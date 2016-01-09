@@ -1,8 +1,8 @@
 package com.bytes.thinkr.service.validator;
 
+import com.bytes.thinkr.model.IValidationEnum;
+import com.bytes.thinkr.model.ValidationInfo;
 import org.apache.commons.validator.routines.EmailValidator;
-
-import com.bytes.thinkr.model.account.AccountValidation;
 
 public class AccountValidator {
 
@@ -15,8 +15,8 @@ public class AccountValidator {
 	 * @param userId
 	 * @return
 	 */
-	public static AccountValidation.UserId isUserIdValid(String userId) {
-		return AccountValidation.UserId.Valid;
+	public static IValidationEnum isUserIdValid(String userId) {
+		return ValidationInfo.Common.Valid;
 	}
 
 	/**
@@ -26,12 +26,12 @@ public class AccountValidator {
 	 * @param email the value validation is being performed on. A <tt>null</tt> value is considered invalid.
 	 * @return true if the email is valid
 	 */
-	public static AccountValidation.Email isEmailValid(String email) {
+	public static IValidationEnum isEmailValid(String email) {
 		
 		if (EmailValidator.getInstance().isValid(email)) {
-			return AccountValidation.Email.Valid;
+			return ValidationInfo.Common.Valid;
 		} else {
-			return AccountValidation.Email.Invalid;
+			return ValidationInfo.Common.Invalid;
 		}
 		
 	}
@@ -46,11 +46,11 @@ public class AccountValidator {
 	 * @param password the string to be validated
 	 * @return true if the password is valid.
 	 */
-	public static AccountValidation.Password isPasswordValid(String password) {
+	public static IValidationEnum isPasswordValid(String password) {
 		if (password != null && password.length() >= 8) {
-			return AccountValidation.Password.Valid;
+			return ValidationInfo.Common.Valid;
 		} else {
-			return AccountValidation.Password.TooShort;
+			return ValidationInfo.Password.TooShort;
 		}
 	}
 

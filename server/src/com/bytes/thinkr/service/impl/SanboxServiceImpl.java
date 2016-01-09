@@ -4,12 +4,14 @@ import com.bytes.thinkr.model.assignment.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Created by Kent on 1/8/2016.
  */
 public class SanboxServiceImpl {
 
+    private static final Logger LOGGER = Logger.getLogger(SanboxServiceImpl.class.getName());
 
     public static Answer createAnswer(){
         Answer answer = new Answer();

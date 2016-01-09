@@ -8,10 +8,11 @@ import java.util.logging.Logger;
 
 import javax.inject.Singleton;
 
+import com.bytes.thinkr.model.IValidationEnum;
+import com.bytes.thinkr.model.ValidationInfo;
 import com.bytes.thinkr.model.account.User;
 import com.bytes.thinkr.model.assignment.Assignment;
 import com.bytes.thinkr.model.assignment.AssignmentList;
-import com.bytes.thinkr.model.assignment.AssignmentValidation;
 import com.bytes.thinkr.service.IAssignmentService;
 import com.bytes.thinkr.service.validator.AssignmentValidator;
 
@@ -39,7 +40,7 @@ public class AssignmentServiceImpl implements IAssignmentService {
 	
 	/** The singleton instance */
 	private static AssignmentServiceImpl instance;
-	public static AssignmentServiceImpl getInstance() {
+	public static IAssignmentService getInstance() {
 		if (instance == null) {
 			instance = new AssignmentServiceImpl();
 		}
@@ -49,37 +50,38 @@ public class AssignmentServiceImpl implements IAssignmentService {
 	/** Singleton constructor */
 	private AssignmentServiceImpl() {
 		
-		assignments = new HashMap<String, Assignment>();
-		assignmentMap = new HashMap<String, Set<Assignment>>();
+		assignments = new HashMap<>();
+		assignmentMap = new HashMap<>();
 	}
 
 	@Override
 	public Assignment create(String userId, Assignment assignment) {
 	
-		User user = AccountServiceImpl.getInstance().getUser(userId);
-		AssignmentValidation validationInfo = new AssignmentValidation();
-		validationInfo.setAssignmentId(AssignmentValidator.isAssignmentIdValid(user, assignment));
-		validationInfo.setQuestionsStatus(AssignmentValidator.isQuestionValid(assignment));
-		validationInfo.setAnswerStatus(AssignmentValidator.isAnswerValid(assignment));
+		User user = AccountServiceImpl.getInstance().find(userId).getUser();
+		ValidationInfo validationInfo = new ValidationInfo();
+		IValidationEnum aidStatus = AssignmentValidator.isAssignmentIdValid(user, assignment);
+		IValidationEnum questionStatus = AssignmentValidator.isQuestionValid(assignment);
+		IValidationEnum answerStatus =  AssignmentValidator.isAnswerValid(assignment);
 		
-		if (validationInfo.getAssignmentId() == AssignmentValidation.AssignmentId.Valid && 
-			validationInfo.getQuestionsStatus() == AssignmentValidation.Question.Valid &&
-			validationInfo.getAnswerStatus() == AssignmentValidation.Answer.Valid) {
-			
-			validationInfo.setAssignmentStatus(AssignmentValidation.Assignment.Valid);
-			
+		if (aidStatus == ValidationInfo.Common.Valid &&
+			questionStatus == ValidationInfo.Common.Valid &&
+			answerStatus == ValidationInfo.Common.Valid) {
+
 			// id = {teacher user id} + {assignment name} + {assignment category}
 			String id = getAssignmentId(user, assignment);
 
 			// Existing account
 			if (assignments.containsKey(id)) {
 				return Assignment.EXISTING;
-				
+
 			} else {
 				// Save assignment to server
 				assignment.setId(id);
 				assignments.put(id, assignment);
-				assignment.setValidation(validationInfo);
+				assignment.setValidation(validationInfo
+                    .add(ValidationInfo.Type.AssignmentId, aidStatus)
+                    .add(ValidationInfo.Type.Question, questionStatus)
+                    .add(ValidationInfo.Type.Answer, answerStatus));
 				return assignment;
 			}
 		}
@@ -146,7 +148,7 @@ public class AssignmentServiceImpl implements IAssignmentService {
 	@Override
 	public Assignment assign(String userId, String assignmentId) {
 		
-		User user = AccountServiceImpl.getInstance().getUser(userId);
+		User user = AccountServiceImpl.getInstance().find(userId).getUser();
 		if (user != User.INVALID && 
 			isExistingAssignmentValid(assignmentId)) {
 			

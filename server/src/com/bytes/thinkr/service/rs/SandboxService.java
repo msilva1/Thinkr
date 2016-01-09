@@ -1,21 +1,21 @@
 package com.bytes.thinkr.service.rs;
 
+import com.bytes.thinkr.model.account.Account;
+import com.bytes.thinkr.model.account.AccountList;
+import com.bytes.thinkr.model.account.User;
+import com.bytes.thinkr.model.assignment.Answer;
+import com.bytes.thinkr.model.assignment.Assignment;
+import com.bytes.thinkr.model.assignment.AssignmentList;
+import com.bytes.thinkr.model.assignment.Question;
+import com.bytes.thinkr.service.impl.AccountServiceImpl;
+import com.bytes.thinkr.service.impl.AssignmentServiceImpl;
+import com.bytes.thinkr.service.impl.SanboxServiceImpl;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-
-import com.bytes.thinkr.model.account.Account;
-import com.bytes.thinkr.model.account.User;
-import com.bytes.thinkr.model.assignment.*;
-import com.bytes.thinkr.model.sandbox.Todo;
-import com.bytes.thinkr.service.impl.AccountServiceImpl;
-import com.bytes.thinkr.service.impl.AssignmentServiceImpl;
-import com.bytes.thinkr.service.impl.SanboxServiceImpl;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * <p>This class is meant for testing different REST interfaces (i.e., XML, JSON, etc...) </p>
@@ -54,20 +54,6 @@ public class SandboxService {
 		return user;
 	}
 
-	@GET
-	@Path("todo")
-	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	public Todo getTodoXml() {
-
-		Todo todo = new Todo();
-		todo.setSummary("This is my second todo");
-		todo.setDescription("This is my first todo");
-		todo.addTask("task1", "Return package");
-		todo.addTask("task2", "Clean pool");
-		todo.setType(Todo.Type.Admin);
-
-		return todo;
-	}
 	
 	@GET
 	@Path("account")
@@ -75,11 +61,18 @@ public class SandboxService {
 	public Account getAccountXml() {
 
 		User user = new User("Kent", "Kentative@live.com", "ChangeMe", User.Type.Admin);
-		Account account = AccountServiceImpl.getInstance().createAccount(user);
-
-		return account;
+        return AccountServiceImpl.getInstance().createAccount(user);
 	}
-	
+
+
+    @GET
+    @Path("accountlist")
+    @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+    public AccountList getAccountList() {
+        return AccountServiceImpl.getInstance().findAll();
+    }
+
+
 	@GET
 	@Path("assignment")
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
@@ -88,14 +81,14 @@ public class SandboxService {
 		return SanboxServiceImpl.createAssignment();
 	}
 	
-	
 	@GET
 	@Path("question")
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	public Question getQuestion() {
 		return SanboxServiceImpl.createQuestion();
 	}
-	
+
+
 	@GET
 	@Path("answer")
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })

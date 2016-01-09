@@ -1,90 +1,59 @@
 package com.bytes.thinkr.service;
 
 import com.bytes.thinkr.model.account.Account;
-import com.bytes.thinkr.model.account.SessionList;
+import com.bytes.thinkr.model.account.AccountList;
 import com.bytes.thinkr.model.account.User;
 
 public interface IAccountService {
 
 
-	/**
-	 * 
-	 * @param user the user account with administrator privilege and valid credentials
-	 * @return the created account
-	 */
-	public Account createAccount(User user);	
-	
-	/**
-	 * 
-	 * @param user the user account matching the account to be updated or 
-	 * a user with administrator privilege and valid credentials
-	 * @param account the updated account
-	 * @return the updated account
-	 * TODO - fix me
-	 */
-	public Account updateAccount(Account account);
-	
-	/**
-	 * 
-	 * @param user the user account matching the account to be deleted or 
-	 * the user account with administrator privilege and valid credentials
-	 * @param accountId the account id to be deleted
-	 * @return the deleted account
-	 * TODO - fix me
-	 */
-	public Account deleteAccount(String accountId);
-	
-	
-	/**
-	 * Logs in the specified account if the following criteria are met:  
-	 * <ul>
-	 * 	<li>user exists
-	 * 	<li>credential is valid
-	 *  <li>user is currently not logged in
-	 * </ul>
-	 *   
-	 * TODO encrypt password in transit
-	 * 
-	 * @param userId the id of the user to be logged in
-	 * @param password the password of the user to be logged in
-	 * @return
-	 */
-	public Account login(String userId, String password);
-	
-	
-	/**
-	 * Logs out the specified account if the following criteria are met:  
-	 * <ul>
-	 * 	<li>user exists
-	 * 	<li>credential is valid
-	 *  <li>user is currently logged in
-	 * </ul>
-	 *   
-	 * TODO encrypt password in transit
-	 * 
-	 * @param userId the id of the user to be logged out
-	 * @param password the password of the user to be logged out
-	 * @return
-	 */
-	public Account logout(String userId, String password);
-	
+    /**
+     * @param user the user account with administrator privilege and valid credentials
+     * @return the created account
+     */
+    Account createAccount(User user);
 
-	/**
-	 * Returns the list of user matching the logged in state. This can be use to obtain
-	 * the list of logged in users. 
-	 * @param isLoggedIn
-	 * @return the list of sessions matching the specified logged in state
-	 */
-	public SessionList getSessions(boolean isLoggedIn);
-	
-	/**
-	 * Verify if the specified user information matches with the server account
-	 * Validates all specified information. If not specified, 
-	 * the validation result ignores the missing value. 
-	 * @param user
-	 * @return true if valid
-	 */
-	public boolean isExistingUserValid(User userId);
+    /**
+     * @param user    the user account matching the account to be updated or
+     *                a user with administrator privilege and valid credentials
+     * @param account the updated account
+     * @return the updated account
+     * TODO - fix me
+     */
+    Account updateAccount(Account account);
 
-	
+    /**
+     * @param user      the user account matching the account to be deleted or
+     *                  the user account with administrator privilege and valid credentials
+     * @param accountId the account id to be deleted
+     * @return the deleted account
+     * TODO - fix me
+     */
+    Account deleteAccount(String accountId);
+
+
+    /**
+     * Verify if the specified user information matches with the server account
+     * Validates all specified information. If not specified,
+     * the validation result ignores the missing value.
+     *
+     * @param user
+     * @return true if valid
+     */
+    boolean isExistingUserValid(User userId);
+
+    /**
+     * Return the account corresponding to the specified user id.
+     *
+     * @param accountId the account id (same as user id)
+     * @return the account associated with the specified id
+     * TODO - admin required
+     */
+    Account find(String accountId);
+
+    /**
+     * Return all account.
+     * @return the all accounts on the server     *
+     */
+    AccountList findAll();
 }

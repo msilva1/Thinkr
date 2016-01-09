@@ -1,20 +1,18 @@
 package com.bytes.thinkr.service.rs;
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.UriBuilder;
-
+import com.bytes.thinkr.model.account.AccountList;
+import com.bytes.thinkr.model.account.User;
+import com.bytes.thinkr.model.session.Session;
 import org.glassfish.jersey.client.ClientConfig;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.bytes.thinkr.model.account.Account;
-import com.bytes.thinkr.model.account.Session;
-import com.bytes.thinkr.model.account.SessionList;
-import com.bytes.thinkr.model.account.User;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.UriBuilder;
 
 public class AccountTest extends RestClientTest {
 
@@ -59,11 +57,11 @@ public class AccountTest extends RestClientTest {
 			createAccount(userIds[3] +i, userEmails[3], userPass[3] +i, User.Type.Student);
 		}
 		
-		SessionList sessions = target.path("account/getSessions/false").request()
-			.accept(MediaType.APPLICATION_XML).get(SessionList.class);
+		AccountList accounts = target.path("account/find").request()
+			.accept(MediaType.APPLICATION_JSON).get(AccountList.class);
 
-		System.out.println("User created: " + sessions.getSessions().size());
-		Assert.assertTrue(sessions.getSessions().size() == (count*4)+1);
+		System.out.println("User created: " + accounts.getAccounts().size());
+		Assert.assertTrue(accounts.getAccounts().size() == (count*4)+1);
 	}
 	
 	/**
@@ -107,21 +105,18 @@ public class AccountTest extends RestClientTest {
 	 */
 	private void  login(String id, String pass) {
 		
-		Account account = target.path(String.format("account/login/%1$s/%2$s", id, pass)).request()
-			.accept(MediaType.APPLICATION_XML).post(Entity.text(null), Account.class);
+		Session session = target.path(String.format("session/login/%1$s/%2$s", id, pass)).request()
+			.accept(MediaType.APPLICATION_XML).post(Entity.text(null), Session.class);
 		
-		Session session = account.getSession();
 		System.out.println(id +"/" + pass + " logged in status: " + session.isLoggedIn());
 		Assert.assertTrue(session.isLoggedIn());
 
 	}
 	
 	private void  logout(String id, String pass) {
-		
-		Account account = target.path(String.format("account/logout/%1$s/%2$s", id, pass)).request()
-			.accept(MediaType.APPLICATION_XML).post(Entity.text(null), Account.class);
-			
-		Session session = account.getSession();
+
+		Session session = target.path(String.format("session/logout/%1$s/%2$s", id, pass)).request()
+			.accept(MediaType.APPLICATION_XML).post(Entity.text(null), Session.class);
 			
 		System.out.println(id +"/" + pass + " logged out status: " + session.isLoggedIn());
 		Assert.assertTrue(!session.isLoggedIn());
@@ -136,14 +131,18 @@ public class AccountTest extends RestClientTest {
 	 * @param type
 	 * @return
 	 */
-	private String createAccount(String userId, String email, String password, User.Type type) {
+	private void createAccount(String userId, String email, String password, User.Type type) {
 		
-		System.out.println("Creating account: " + userId + " " + email + ", " + password + " " + type);
-		
+		System.out.print("Creating account: " + userId);
+
 		User user = new User(userId, email, password, User.Type.Teacher);
-			
-		return target.path("account").path("create").request().accept(MediaType.APPLICATION_XML)
-			.post(Entity.entity(user, MediaType.APPLICATION_XML), String.class);
+
+		String account = target.path("account").path("create")
+				.request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
+				.post(Entity.entity(user, MediaType.APPLICATION_JSON), String.class);
+
+		System.out.println(" Response: " + account);
+//		System.out.println(" Response: " + account.getValidation().get(ValidationInfo.Type.Account));
 	}
 
 }

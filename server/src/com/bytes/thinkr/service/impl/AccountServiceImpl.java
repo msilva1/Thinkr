@@ -1,35 +1,25 @@
 package com.bytes.thinkr.service.impl;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import com.bytes.thinkr.model.IValidationEnum;
+import com.bytes.thinkr.model.ValidationInfo;
+import com.bytes.thinkr.model.account.Account;
+import com.bytes.thinkr.model.account.AccountList;
+import com.bytes.thinkr.model.account.User;
+import com.bytes.thinkr.service.IAccountService;
+import com.bytes.thinkr.service.IAccountServiceLocal;
+import com.bytes.thinkr.service.util.PasswordUtil;
+import com.bytes.thinkr.service.validator.AccountValidator;
+
+import javax.inject.Singleton;
 import java.util.Calendar;
-import java.util.Date;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.inject.Singleton;
-
-import com.bytes.thinkr.model.account.Account;
-import com.bytes.thinkr.model.account.AccountValidation;
-import com.bytes.thinkr.model.account.Session;
-import com.bytes.thinkr.model.account.SessionList;
-import com.bytes.thinkr.model.account.User;
-import com.bytes.thinkr.service.IAccountService;
-import com.bytes.thinkr.service.validator.AccountValidator;
-
 @Singleton
-public class AccountServiceImpl implements IAccountService {
+public class AccountServiceImpl implements IAccountService, IAccountServiceLocal {
 
-	/*
-	 * The password encryption algorithm 
-	 * One-way has: MD5
-	 * -- http://www.ietf.org/rfc/rfc1321.txt 
-	 * Two-way hash: SHA-1 
-	 * -- http://csrc.nist.gov/publications/PubsFIPS.html SHA-256 SHA-384 SHA-512
-	 */
-	private static final String PWD_ENCRYPT_ALG = "MD5";
-	
 	private static final Logger LOGGER = Logger.getLogger(AccountServiceImpl.class.getName());
 	
 	/** 
@@ -54,34 +44,9 @@ public class AccountServiceImpl implements IAccountService {
 
 	
 	private AccountServiceImpl() {
-		
-		accounts = new HashMap<String, Account>();
-		
+		accounts = new HashMap<>();
 	}
-	
-		
-	/**
-	 * Returns a list of users matching the logged in status
-	 * @return the list of user IDs and their sessions
-	 */
-	public SessionList getSessions(boolean isLoggedIn) {
-		
-		SessionList sessionList = new SessionList();
-		
-		for (Account a : accounts.values()) {
-			Session s = a.getSession();
-			if (s.isLoggedIn() == isLoggedIn) {
-				
-				if (LOGGER.isLoggable(Level.FINE)) {
-					LOGGER.log(Level.FINE, "User found: " + a.getUser());
-				}
-				
-				sessionList.getSessions().put(a.getUser().getUserId(), s);
-			}
-		}
-		
-		return sessionList;
-	}
+
 
 	/**
 	 * User is valid base on these criteria
@@ -121,7 +86,7 @@ public class AccountServiceImpl implements IAccountService {
 		Account account = accounts.get(userId.toLowerCase());
 
 		// hex value comparison, case doesn't matter
-		if (!encryptPassword(userPassword).equals(account.getUser().getPassword())) {
+		if (!PasswordUtil.encryptPassword(userPassword).equals(account.getUser().getPassword())) {
 			if (LOGGER.isLoggable(Level.FINE)) {
 				LOGGER.log(Level.FINE, "User password does not match: " + userId);
 			}
@@ -133,7 +98,19 @@ public class AccountServiceImpl implements IAccountService {
 		}
 		return true;
 	}
-	
+
+	@Override
+	public Account find(String userId) {
+
+		String id = userId.toLowerCase();
+		if (accounts.containsKey(id)) {
+
+			return accounts.get(id);
+		}
+
+		return Account.INVALID;
+	}
+
 	@Override
 	public Account createAccount(User user) {
 		
@@ -149,52 +126,14 @@ public class AccountServiceImpl implements IAccountService {
 		
 	}
 
+    @Override
+    public AccountList findAll() {
+        AccountList accountList = new AccountList();
+        accountList.setAccounts(accounts.values());
+        return accountList;
+    }
 
-	@Override
-	public Account login(String userId, String password) {
-		return logUser(userId, password, true);
-	}
 
-
-	@Override
-	public Account logout(String userId, String password) {
-		return logUser(userId, password, false);
-	}
-	
-	
-	/**
-	 * Encrypt the plain password using a message digest algorithm (MD5) 
-	 * 
-	 * Note:
-	 * Validate the plain password before calling this method.
-	 * This is a one-way hash 
-	 * TODO Add salt and iterations
-	 * 
-	 * @param password the password to be hashed, NOT nullable
-	 * @return the hashed password.
-	 */
-	private static String encryptPassword(String password) {
-
-		StringBuilder pwd = new StringBuilder();
-		try {
-			
-			byte[] encryptedPwd = MessageDigest.getInstance(PWD_ENCRYPT_ALG).digest(password.getBytes());
-			
-			// Convert byte to Hex
-			for (byte b : encryptedPwd)
-				pwd.append(Integer.toString((b & 0xFF), 16));
-
-		} catch (NoSuchAlgorithmException e) {
-
-			LOGGER.log(Level.SEVERE, "Unable to encrypt password using: " + PWD_ENCRYPT_ALG, e);
-		}
-
-		if (LOGGER.isLoggable(Level.FINE)) {
-			LOGGER.log(Level.FINE, "Plain password: " + password + " digest: " + pwd.toString());
-		}
-		
-		return pwd.toString();
-	}
 	
 	/**
 	 * Request to create an <tt>Account</tt>.
@@ -211,55 +150,33 @@ public class AccountServiceImpl implements IAccountService {
 		if (accounts.containsKey(userId.toLowerCase())) {
 			return Account.EXISTING;
 		}
-		
-		AccountValidation.UserId idStatus = AccountValidator.isUserIdValid(userId);
-		AccountValidation.Password pwdStatus = AccountValidator.isPasswordValid(password);
-		AccountValidation.Email emailStatus = AccountValidator.isEmailValid(userEmail);
+
+        IValidationEnum idStatus = AccountValidator.isUserIdValid(userId);
+        IValidationEnum pwdStatus = AccountValidator.isPasswordValid(password);
+        IValidationEnum emailStatus = AccountValidator.isEmailValid(userEmail);
 
 		Account account = new Account();
 
-		if (idStatus == AccountValidation.UserId.Valid && 
-			pwdStatus == AccountValidation.Password.Valid && 
-			emailStatus == AccountValidation.Email.Valid) {
+		if (idStatus == ValidationInfo.Common.Valid &&
+			pwdStatus == ValidationInfo.Common.Valid &&
+			emailStatus == ValidationInfo.Common.Valid) {
 			
-			account.setUser(new User(userId, userEmail, encryptPassword(password), userType));
+			account.setUser(new User(
+                userId,
+                userEmail,
+                PasswordUtil.encryptPassword(password),
+                userType));
 		}
 
 		account.setDateCreated(Calendar.getInstance().getTime());
-		account.setValidation(new AccountValidation(idStatus, pwdStatus, emailStatus));
+        ValidationInfo validationInfo = new ValidationInfo();
+        account.setValidation(validationInfo
+                .add(ValidationInfo.Type.UserId, idStatus)
+                .add(ValidationInfo.Type.Password, pwdStatus)
+                .add(ValidationInfo.Type.Email, emailStatus));
 		
 		// Save account to server
 		accounts.put(userId.toLowerCase(), account);
-		
-		return account;
-	}
-	
-	/**
-	 * 
-	 * @param userId
-	 * @param password
-	 * @param state
-	 * @return
-	 */
-	private Account logUser(String userId, String password, boolean state) {
-		
-		if (!isExistingUserValid(new User(userId, password)))
-		{
-			return Account.INVALID_ID_OR_PASSWORD;
-		}
-		
-		// retrieves the existing account
-		Account account = accounts.get(userId.toLowerCase());
-		Session session = account.getSession();
-		
-		// starts a new session
-		session.setLoggedIn(state);
-		session.setDuration(0);
-		session.setLoggedInTime(new Date());
-		
-		if (LOGGER.isLoggable(Level.FINE)) {
-			LOGGER.log(Level.FINE, "logged state: " + state);
-		}
 		
 		return account;
 	}
@@ -277,17 +194,4 @@ public class AccountServiceImpl implements IAccountService {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-
-	public User getUser(String userId) {
-		
-		String id = userId.toLowerCase();
-		if (accounts.containsKey(id)) {
-			
-			return accounts.get(id).getUser();
-		}
-		
-		return User.INVALID;
-	}
-
 }

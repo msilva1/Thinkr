@@ -15,7 +15,7 @@ public class AssignmentList {
 	private Set<Assignment> assignments;
 
 	public AssignmentList() {
-		assignments = new HashSet<Assignment>();
+		assignments = new HashSet<>();
 	}
 
 	/**
