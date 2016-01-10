@@ -1,8 +1,15 @@
 package com.bytes.thinkr.model.assignment;
 
-/**
- * Created by Kent on 1/8/2016.
- */
+import javax.persistence.Embeddable;
+import javax.persistence.Entity;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
+@Embeddable
+@XmlType
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Point {
 
     private int min;

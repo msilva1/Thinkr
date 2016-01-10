@@ -1,4 +1,5 @@
-package com.bytes.thinkr.db;//=====================================================================
+package com.bytes.thinkr.db;
+//=====================================================================
 //
 //  File:    connectDS.java
 //  Summary: This Microsoft JDBC Driver for SQL Server sample application

@@ -1,32 +1,23 @@
 package com.bytes.thinkr.model.account;
 
+import javax.persistence.Embeddable;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
 
-/**
- * Created by Kent on 12/5/2015.
- */
-@XmlType
+@Embeddable
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class User {
 
-	public static final User INVALID;
-	
-	public enum Type {
+    public enum Type {
 		Unspecified,
 		Teacher,
 		Student,
 		Parent,
 		Admin
 	}
-	
-	static {
-		INVALID = new User("invalid");
-	}
-	
+
 	private String userId;
 	private Type userType;
 	private String password;
@@ -44,7 +35,6 @@ public class User {
 		this(userId, "--", password, Type.Unspecified);
 	}
 
-	
 	/**
 	 * Create a new user.
 	 * @param userId - user display name, can be duplicate
@@ -69,58 +59,39 @@ public class User {
 				"User Password1: %4$s " + System.lineSeparator(),
 				getUserType(), getUserId(), getEmail(), getPassword());
 	}
-	
-	public String getUserId() {
-		return userId;
-	}
 
-	public void setUserId(String userId) {
-		this.userId = userId.toLowerCase();
-	}
+    //region properties
+    public String getUserId() {
+        return userId;
+    }
 
-	/**
-	 * @return the userType
-	 */
-	public Type getUserType() {
-		return userType;
-	}
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
-	/**
-	 * @param userType the userType to set
-	 */
-	public void setUserType(Type userType) {
-		this.userType = userType;
-	}
+    public Type getUserType() {
+        return userType;
+    }
 
-	/**
-	 * @return the password
-	 */
-	public String getPassword() {
-		return password;
-	}
+    public void setUserType(Type userType) {
+        this.userType = userType;
+    }
 
+    public String getPassword() {
+        return password;
+    }
 
-	/**
-	 * @param password the password to set
-	 */
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
+    public String getEmail() {
+        return email;
+    }
 
-	/**
-	 * @return the email
-	 */
-	public String getEmail() {
-		return email;
-	}
-
-
-	/**
-	 * @param email the email to set
-	 */
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    //endregion
 
 }

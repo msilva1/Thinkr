@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -13,14 +14,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
+@Entity
 @XmlRootElement
-@XmlType(name = "Assignment")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Assignment {
 
-    /**
-     * The list of assignment categories
-     */
+    /**  The list of assignment categories */
     public enum Category {
         Unspecified,
         Homework,
@@ -29,9 +28,7 @@ public class Assignment {
         Others
     }
 
-    /**
-     * Indicates that this assignment already existed
-     */
+    //region static instances
     public static final Assignment EXISTING;
     public static final Assignment INVALID;
     public static final Assignment ASSIGNED;
@@ -51,19 +48,19 @@ public class Assignment {
         AlREADY_ASSIGNED = new Assignment();
         AlREADY_ASSIGNED.getValidation().add(ValidationInfo.Type.Assignment, ValidationInfo.Assignment.Assigned);
     }
+    //endregion
 
-    @XmlElement
-    private Score score;
+    //region fields
+
+    @Embedded @XmlElement private Score score;
 
     private String name;
 
     private String id;
 
-    @XmlTransient
-    private Date createdDate;
+    @Temporal(value = TemporalType.DATE) @XmlTransient private Date createdDate;
 
-    @XmlElement
-    private List<Question> questions;
+    @OneToMany @XmlElement private List<Question> questions;
 
     private Category category;
 
@@ -71,6 +68,8 @@ public class Assignment {
 
     @XmlElement
     private ValidationInfo validation;
+
+    //endregion
 
     public Assignment() {
         this(new ValidationInfo());
@@ -101,6 +100,7 @@ public class Assignment {
         setCreatedDate(new Date());
     }
 
+    //region properties
     public Score getScore() {
         return score;
     }
@@ -164,4 +164,5 @@ public class Assignment {
     public void setValidation(ValidationInfo validation) {
         this.validation = validation;
     }
+    //endregion
 }

@@ -95,7 +95,6 @@ public class AccountTest extends RestClientTest {
 			logout(userIds[3]+i, userPass[3]+i);
 			
 		}
-		
 	}
 	
 	/**

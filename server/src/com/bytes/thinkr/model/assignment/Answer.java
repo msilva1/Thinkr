@@ -3,11 +3,13 @@ package com.bytes.thinkr.model.assignment;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+@Entity
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Answer {
@@ -18,9 +20,16 @@ public class Answer {
 		Multiple   // Default. Use this if multiple answers are provided (multiple-choice question)
 	}
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	@ElementCollection
 	@XmlElement
 	private List<String> answers;
 
+	@Embedded
+	@XmlElement
 	private Point point;
 	
 	private Type type;
@@ -56,5 +65,13 @@ public class Answer {
 
 	public void setType(Type type) {
 		this.type = type;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 }

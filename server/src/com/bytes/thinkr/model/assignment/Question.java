@@ -1,15 +1,22 @@
 package com.bytes.thinkr.model.assignment;
 
-import java.util.List;
-
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+@Entity
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Question {
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public enum Subject {
 
@@ -21,17 +28,19 @@ public class Question {
         Other
     }
 
-    public enum AnswerType {
-        Text,
-        Choice,
-        Other
-    }
+    //region fields
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @OneToOne private Answer answer;
     private Subject subject;
-    private Answer answer;
     private String question;
     private boolean isCompleted;
     private boolean isAttempted;
+
+    //endregion
 
     public Question() {
         setSubject(Subject.Undefined);

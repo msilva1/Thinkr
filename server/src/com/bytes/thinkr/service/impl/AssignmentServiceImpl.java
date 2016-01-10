@@ -10,6 +10,7 @@ import javax.inject.Singleton;
 
 import com.bytes.thinkr.model.IValidationEnum;
 import com.bytes.thinkr.model.ValidationInfo;
+import com.bytes.thinkr.model.account.Account;
 import com.bytes.thinkr.model.account.User;
 import com.bytes.thinkr.model.assignment.Assignment;
 import com.bytes.thinkr.model.assignment.AssignmentList;
@@ -115,26 +116,12 @@ public class AssignmentServiceImpl implements IAssignmentService {
 		return (user.getUserId() + assignment.getName() + assignment.getCategory()).toLowerCase();
 	}
 
-	/**
-	 * @return the assignments
-	 */
-	public HashMap<String, Assignment> getAssignments() {
-		return assignments;
-	}
-
-	/**
-	 * @param assignments the assignments to set
-	 */
-	public void setAssignments(HashMap<String, Assignment> assignments) {
-		this.assignments = assignments;
-	}
-
 	@Override
 	public AssignmentList getAssignmentList(String userId) {
 		
 		// Special case for debugging
 		AssignmentList assignedList = new AssignmentList();
-		if (userId == "all") {
+		if (userId.equals("all")) {
 			assignedList.getAssignments().addAll(assignments.values());
 			return assignedList;
 		}
@@ -147,19 +134,18 @@ public class AssignmentServiceImpl implements IAssignmentService {
 
 	@Override
 	public Assignment assign(String userId, String assignmentId) {
-		
-		User user = AccountServiceImpl.getInstance().find(userId).getUser();
-		if (user != User.INVALID && 
-			isExistingAssignmentValid(assignmentId)) {
-			
-			Set<Assignment> assignedList;	
+
+		Account account = AccountServiceImpl.getInstance().find(userId);
+		if (account != Account.INVALID && isExistingAssignmentValid(assignmentId)) {
+
+			Set<Assignment> assignedList;
 			if (assignmentMap.containsKey(userId)) {
 				// user already has assigned assignments
 				assignedList = assignmentMap.get(userId);		
 				
 			} else {
 				// create a new entry
-				assignedList = new HashSet<Assignment>();
+				assignedList = new HashSet<>();
 				assignmentMap.put(userId, assignedList);
 			}
 			

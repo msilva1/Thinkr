@@ -2,9 +2,11 @@ package com.bytes.thinkr.model.session;
 
 import com.bytes.thinkr.model.ValidationInfo;
 
+import javax.persistence.Entity;
 import javax.xml.bind.annotation.*;
 import java.util.Date;
 
+@Entity
 @XmlRootElement
 @XmlType(name = "Session")
 @XmlAccessorType(XmlAccessType.FIELD)
