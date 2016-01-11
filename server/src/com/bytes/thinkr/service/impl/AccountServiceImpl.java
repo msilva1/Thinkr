@@ -6,13 +6,12 @@ import com.bytes.thinkr.model.account.Account;
 import com.bytes.thinkr.model.account.AccountList;
 import com.bytes.thinkr.model.account.User;
 import com.bytes.thinkr.service.IAccountService;
-import com.bytes.thinkr.service.IAccountServiceLocal;
+import com.bytes.thinkr.model.IAccountServiceLocal;
 import com.bytes.thinkr.service.util.PasswordUtil;
 import com.bytes.thinkr.service.validator.AccountValidator;
 
 import javax.inject.Singleton;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;

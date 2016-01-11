@@ -12,7 +12,6 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlType;
 
 @Entity
 @XmlRootElement
@@ -51,21 +50,32 @@ public class Assignment {
     //endregion
 
     //region fields
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @Embedded @XmlElement private Score score;
+    @Embedded
+    @XmlElement
+    private Score score;
 
     private String name;
 
-    private String id;
+    private String identifier;
 
-    @Temporal(value = TemporalType.DATE) @XmlTransient private Date createdDate;
+    @Temporal(value = TemporalType.DATE)
+    @XmlTransient
+    private Date createdDate;
 
-    @OneToMany @XmlElement private List<Question> questions;
+    @OneToMany
+    @XmlElement
+    private List<Question> questions;
 
+    @Enumerated(value = EnumType.STRING)
     private Category category;
 
     private int duration;
 
+    @Transient
     @XmlElement
     private ValidationInfo validation;
 
@@ -117,12 +127,12 @@ public class Assignment {
         this.name = name;
     }
 
-    public String getId() {
-        return id;
+    public String getIdentifier() {
+        return identifier;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
     }
 
     public Date getCreatedDate() {
@@ -164,5 +174,15 @@ public class Assignment {
     public void setValidation(ValidationInfo validation) {
         this.validation = validation;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     //endregion
+
 }

@@ -53,16 +53,24 @@ public class Account {
 	private Date dateCreated;
 	
 	public Account() {
-		this(new ValidationInfo());
+        this(new User(), new Date(), new ValidationInfo());
 	}
 	
+    public Account(User user) {
+        this(user, new Date(), new ValidationInfo());
+    }
+
 	public Account(ValidationInfo validationInfo) {
-		setValidation(validationInfo);
-		setUser(new User());
-		setDateCreated(new Date());
+		this(new User(), new Date(), validationInfo);
 	}
 
-	public String toString() {
+    public Account(User user, Date date, ValidationInfo validationInfo) {
+        setUser(user);
+        setDateCreated(date);
+        setValidation(validationInfo);
+    }
+
+    public String toString() {
 		
 		return String.format(
 				"%1$s " + System.lineSeparator() + 
@@ -71,16 +79,17 @@ public class Account {
 				getUser(), getDateCreated().toInstant(), getValidation());
 	}
 
-	public Long getId() {
-		return id;
-	}
+	//region properties
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	//region setters/getters
-	public User getUser() {
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public User getUser() {
 		return user;
 	}
 

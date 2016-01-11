@@ -1,8 +1,9 @@
 package com.bytes.thinkr.model.session;
 
 import com.bytes.thinkr.model.ValidationInfo;
+import org.hibernate.annotations.GeneratorType;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 import javax.xml.bind.annotation.*;
 import java.util.Date;
 
@@ -14,12 +15,18 @@ public class Session {
 
 	public static final Session INVALID_ID_OR_PASSWORD;
 
-	private boolean loggedIn;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private boolean loggedIn;
 	
 	private Date loggedInTime;
 	
 	private int duration;
 
+    @Transient
     @XmlElement
     private ValidationInfo validation;
 
@@ -83,5 +90,13 @@ public class Session {
 
     public void setValidation(ValidationInfo validation) {
         this.validation = validation;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

@@ -31,7 +31,8 @@ public class Answer {
 	@Embedded
 	@XmlElement
 	private Point point;
-	
+
+    @Enumerated(value = EnumType.STRING)
 	private Type type;
 	
 	public Answer() {

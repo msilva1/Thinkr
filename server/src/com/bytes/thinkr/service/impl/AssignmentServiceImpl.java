@@ -77,7 +77,7 @@ public class AssignmentServiceImpl implements IAssignmentService {
 
 			} else {
 				// Save assignment to server
-				assignment.setId(id);
+				assignment.setIdentifier(id);
 				assignments.put(id, assignment);
 				assignment.setValidation(validationInfo
                     .add(ValidationInfo.Type.AssignmentId, aidStatus)
@@ -152,13 +152,13 @@ public class AssignmentServiceImpl implements IAssignmentService {
 			Assignment assignment = assignments.get(assignmentId);
 			if(assignedList.add(assignment)) {
 				if (LOGGER.isLoggable(Level.INFO)) {
-					LOGGER.log(Level.FINE, "Assigned " + assignment.getId() + " to " + userId);
+					LOGGER.log(Level.FINE, "Assigned " + assignment.getIdentifier() + " to " + userId);
 				}
 				return Assignment.ASSIGNED;
 				
 			} else {
 				if (LOGGER.isLoggable(Level.FINE)) {
-					LOGGER.log(Level.FINE, "Existing assignment found: " + assignment.getId());
+					LOGGER.log(Level.FINE, "Existing assignment found: " + assignment.getIdentifier());
 				}
 				return Assignment.AlREADY_ASSIGNED;
 			}

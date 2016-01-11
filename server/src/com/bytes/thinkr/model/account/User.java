@@ -1,6 +1,8 @@
 package com.bytes.thinkr.model.account;
 
 import javax.persistence.Embeddable;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -19,7 +21,10 @@ public class User {
 	}
 
 	private String userId;
+
+    @Enumerated(value = EnumType.STRING)
 	private Type userType;
+
 	private String password;
 	private String email;
 

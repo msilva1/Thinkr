@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+
+        <!-- Azure SQL Connection String -->
+        <!-- jdbc:sqlserver://bytes.database.windows.net:1433;database=ThinkrDB;user=kentative@bytes;password=Azure2016;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30; -->
+        <!-- Azure Connection -->
+        <!--<property name="connection.url">jdbc:sqlserver://bytes.database.windows.net:1433;database=ThinkrDB;user=kentative@bytes;password=Azure2016;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;</property>-->
+        <!--<property name="connection.driver_class">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>-->
+        <!--<property name="connection.username">kentative</property>-->
+        <!--<property name="connection.password">Azure2016</property>-->
+
+        <!-- Kent's Local Connection -->
+        <property name="connection.url">
+            jdbc:sqlserver://bytes.database.windows.net:1433;database=ThinkrDB;user=kentative@bytes;password=Azure2016;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;
+        </property>
+        <property name="connection.driver_class">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>
+        <property name="connection.username">kentative</property>
+        <property name="connection.password">Azure2016</property>
+
+        <!--<property name="hibernate.dialect">org.hibernate.dialect.HSQLDialect</property>-->
+        <property name="default_schema">thinkr</property>
+        <property name="show_sql">true</property>
+        <property name="hibernate.hbm2ddl.auto">create</property>
+
+        <mapping package="com.bytes.thinkr.model"/>
+        <mapping class="com.bytes.thinkr.model.Test"/>
+
+        <mapping package="com.bytes.thinkr.model.account"/>
+        <mapping class="com.bytes.thinkr.model.account.Account"/>
+        <mapping class="com.bytes.thinkr.model.account.User"/>
+
+        <mapping package="com.bytes.thinkr.model.assignment"/>
+        <mapping class="com.bytes.thinkr.model.assignment.Assignment"/>
+        <mapping class="com.bytes.thinkr.model.assignment.Question"/>
+        <mapping class="com.bytes.thinkr.model.assignment.Answer"/>
+        <mapping class="com.bytes.thinkr.model.assignment.Point"/>
+        <mapping class="com.bytes.thinkr.model.assignment.Score"/>
+
+        <mapping package="com.bytes.thinkr.model.session"/>
+        <mapping class="com.bytes.thinkr.model.session.Session"/>
+
+        <!-- DB schema will be updated if needed -->
+        <!-- <property name="hbm2ddl.auto">update</property> -->
+    </session-factory>
+</hibernate-configuration>
