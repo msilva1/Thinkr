@@ -39,6 +39,7 @@ public class Account {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "accountId")
 	private Long id;
 
     @Embedded
@@ -51,25 +52,32 @@ public class Account {
 
 	@Temporal(value = TemporalType.DATE)
 	private Date dateCreated;
-	
+
+    /** Default constructor for code generation. */
 	public Account() {
-        this(new User(), new Date(), new ValidationInfo());
+        this(new User(), new ValidationInfo());
 	}
-	
+
+    /**
+     * Creates an <tt>Account</tt> with no validation information.
+     * @param user the user information
+     */
     public Account(User user) {
-        this(user, new Date(), new ValidationInfo());
+        this(user, new ValidationInfo());
     }
 
-	public Account(ValidationInfo validationInfo) {
-		this(new User(), new Date(), validationInfo);
-	}
-
-    public Account(User user, Date date, ValidationInfo validationInfo) {
+    /**
+     * Creates an <tt>Account</tt> with validation information.
+     * @param user the user information
+     * @param validationInfo the validation information
+     */
+     public Account(User user, ValidationInfo validationInfo) {
         setUser(user);
-        setDateCreated(date);
         setValidation(validationInfo);
+        setDateCreated(new Date());
     }
 
+    @Override
     public String toString() {
 		
 		return String.format(

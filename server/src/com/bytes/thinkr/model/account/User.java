@@ -1,16 +1,19 @@
 package com.bytes.thinkr.model.account;
 
-import javax.persistence.Embeddable;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @Embeddable
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class User {
+
+    private static final String DEFAULT_USER_ID = "Anonymous";
+    private static final String DEFAULT_EMAIL = "address@email.com";
+    private static final String DEFAULT_PASSWORD = "ChangeMe";
 
     public enum Type {
 		Unspecified,
@@ -22,22 +25,28 @@ public class User {
 
 	private String userId;
 
+    @Embedded
+    @XmlElement
+    private Name name;
+
     @Enumerated(value = EnumType.STRING)
 	private Type userType;
 
 	private String password;
+
+    @Column(unique=true)
 	private String email;
 
 	public User() {
-		this("Anonymous", "--", "--", Type.Unspecified);
+		this(DEFAULT_USER_ID, DEFAULT_EMAIL, DEFAULT_PASSWORD, Type.Unspecified);
 	}
-	
+
 	public User(String userId) {
-		this(userId, "--", "--", Type.Unspecified);
+		this(userId, DEFAULT_EMAIL, DEFAULT_PASSWORD, Type.Unspecified);
 	}
 
 	public User(String userId, String password) {
-		this(userId, "--", password, Type.Unspecified);
+		this(userId, DEFAULT_EMAIL, password, Type.Unspecified);
 	}
 
 	/**
@@ -48,12 +57,13 @@ public class User {
 	 */
 	public User(String userId, String userEmail, String password, Type userType) {
 
-		setUserType(userType);
 		setUserId(userId);
 		setEmail(userEmail);
 		setPassword(password);
-		
-	}	
+		setUserType(userType);
+        setName(new Name(userId));
+
+	}
 
 	public String toString() {
 		
@@ -97,6 +107,15 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public Name getName() {
+        return name;
+    }
+
+    public void setName(Name name) {
+        this.name = name;
+    }
+
     //endregion
 
 }

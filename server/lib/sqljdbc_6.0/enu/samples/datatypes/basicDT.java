@@ -61,7 +61,7 @@ public class basicDT {
          Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
          con = DriverManager.getConnection(connectionUrl);
 
-         // Create and execute an SQL statement that returns some data
+         // Create and execute an SQL statement that returns some entity
          // and display it.
          String SQL = "SELECT * FROM DataTypesTable";
          stmt = con.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
@@ -69,7 +69,7 @@ public class basicDT {
          rs.next();
          displayRow("ORIGINAL DATA", rs);
          
-         // Update the data in the result set.
+         // Update the entity in the result set.
          rs.updateString(2, "B");
          rs.updateString(3, "Some updated text.");
          rs.updateBoolean(4, true);
@@ -87,7 +87,7 @@ public class basicDT {
          
          rs.updateRow();
 
-         // Get the updated data from the database and display it.
+         // Get the updated entity from the database and display it.
          rs = stmt.executeQuery(SQL);
          rs.next();
          displayRow("UPDATED DATA", rs);

@@ -15,7 +15,7 @@ import org.junit.Test;
  * Test pattern is as follow:
  * 	1. define connection parameters
  *  2. define message parameters
- *  3. define the sendTask (Runnable) to send test-specific data to the server
+ *  3. define the sendTask (Runnable) to send test-specific entity to the server
  * @author Kent
  *
  */

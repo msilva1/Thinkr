@@ -52,6 +52,7 @@ public class Assignment {
     //region fields
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "AssignmentId")
     private Long id;
 
     @Embedded

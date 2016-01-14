@@ -41,7 +41,7 @@ public class readLargeData {
           Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
           con = DriverManager.getConnection(connectionUrl);
          
-          // Create test data as an example.
+          // Create test entity as an example.
           StringBuffer buffer = new StringBuffer(4000);
           for (int i = 0; i < 4000; i++) 
               buffer.append( (char) ('A'));
@@ -58,7 +58,7 @@ public class readLargeData {
           // to avoid OutOfMemoryError when the SELECT statement produces very large
           // results. 
 
-          // Create and execute an SQL statement that returns some data.
+          // Create and execute an SQL statement that returns some entity.
           String SQL = "SELECT Title, DocumentSummary " +
 	      		       "FROM Production.Document";
           stmt = con.createStatement();
@@ -68,7 +68,7 @@ public class readLargeData {
           System.out.println("Response buffering mode is: " +
              SQLstmt.getResponseBuffering());              
           
-          // Get the updated data from the database and display it.
+          // Get the updated entity from the database and display it.
           rs = stmt.executeQuery(SQL);
 	                  
           while (rs.next()) {
@@ -78,7 +78,7 @@ public class readLargeData {
                   char output[] = new char[40];
                   while (reader.read(output) != -1)
                   {
-                      // Do something with the chunk of the data that was                       
+                      // Do something with the chunk of the entity that was
                       // read.
                   }		 		 
  

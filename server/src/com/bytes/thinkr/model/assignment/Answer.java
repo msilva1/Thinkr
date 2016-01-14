@@ -22,9 +22,11 @@ public class Answer {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "AnswerId")
 	private Long id;
 
 	@ElementCollection
+    @CollectionTable(name = "Answer_Entries")
 	@XmlElement
 	private List<String> answers;
 

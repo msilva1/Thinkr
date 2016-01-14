@@ -45,7 +45,7 @@ public class SQLDatabaseTest {
             e.printStackTrace();
         }
         finally {
-            // Close the connections after the data has been handled.
+            // Close the connections after the entity has been handled.
             if (prepsInsertPerson != null) try { prepsInsertPerson.close(); } catch(Exception e) {}
             if (prepsUpdateAge != null) try { prepsUpdateAge.close(); } catch(Exception e) {}
             if (resultSet != null) try { resultSet.close(); } catch(Exception e) {}

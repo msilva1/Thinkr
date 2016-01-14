@@ -18,6 +18,7 @@ public class Session {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "SessionId")
     private Long id;
 
     private boolean loggedIn;

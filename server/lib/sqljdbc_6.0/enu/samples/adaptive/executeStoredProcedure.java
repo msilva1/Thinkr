@@ -38,7 +38,7 @@ public class executeStoredProcedure {
           Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
           con = DriverManager.getConnection(connectionUrl);
  
-          // Create test data as an example.
+          // Create test entity as an example.
           StringBuffer buffer = new StringBuffer(4000);
           for (int i = 0; i < 4000; i++) 
              buffer.append( (char) ('A'));
@@ -51,7 +51,7 @@ public class executeStoredProcedure {
              pstmt.executeUpdate();
              pstmt.close();
 
-             // Query test data by using a stored procedure.
+             // Query test entity by using a stored procedure.
              CallableStatement cstmt = 
                 con.prepareCall("{call dbo.GetLargeDataValue(?, ?, ?, ?)}");
 
@@ -73,11 +73,11 @@ public class executeStoredProcedure {
 
              // If your application needs to re-read any portion of the value, 
              // it must call the mark method on the InputStream or Reader to 
-             // start buffering data that is to be re-read after a subsequent
+             // start buffering entity that is to be re-read after a subsequent
              // call to the reset method.	  	 	  
              reader.mark(4000);
 
-             // Read the first half of data.
+             // Read the first half of entity.
              char output1[] = new char[2000];
              reader.read(output1);
              String stringOutput1 = new String(output1);
@@ -85,7 +85,7 @@ public class executeStoredProcedure {
              // Reset the stream.
              reader.reset();
 
-             // Read all the data.
+             // Read all the entity.
              char output2[] = new char[4000];
              reader.read(output2);
              String stringOutput2 = new String(output2);

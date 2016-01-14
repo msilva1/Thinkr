@@ -38,7 +38,7 @@ public class retrieveRS {
          con = DriverManager.getConnection(connectionUrl);
          
          // Create and execute an SQL statement that returns a
-         // set of data and then display it.
+         // set of entity and then display it.
          String SQL = "SELECT * FROM Production.Product;";
          stmt = con.createStatement();
          rs = stmt.executeQuery(SQL);

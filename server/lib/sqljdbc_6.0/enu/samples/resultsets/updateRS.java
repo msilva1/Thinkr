@@ -42,28 +42,28 @@ public class updateRS {
          stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
          rs = stmt.executeQuery(SQL);
          
-         // Insert a row of data.
+         // Insert a row of entity.
          rs.moveToInsertRow();
          rs.updateString("Name", "Accounting");
          rs.updateString("GroupName", "Executive General and Administration");
          rs.updateString("ModifiedDate", "08/01/2006");
          rs.insertRow();
          
-         // Retrieve the inserted row of data and display it.
+         // Retrieve the inserted row of entity and display it.
          SQL = "SELECT * FROM HumanResources.Department WHERE Name = 'Accounting';";
          rs = stmt.executeQuery(SQL);
          displayRow("ADDED ROW", rs);
          
-         // Update the row of data.
+         // Update the row of entity.
          rs.first();
          rs.updateString("GroupName", "Finance");
          rs.updateRow();
          
-         // Retrieve the updated row of data and display it.
+         // Retrieve the updated row of entity and display it.
          rs = stmt.executeQuery(SQL);
          displayRow("UPDATED ROW", rs);
          
-         // Delete the row of data.
+         // Delete the row of entity.
          rs.first();
          rs.deleteRow();
          System.out.println("ROW DELETED");

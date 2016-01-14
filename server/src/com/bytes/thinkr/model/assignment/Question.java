@@ -10,16 +10,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Question {
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public enum Subject {
-
         Undefined,
         Math,
         Science,
@@ -32,6 +23,7 @@ public class Question {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "questionId")
     private Long id;
 
     @OneToOne private Answer answer;
@@ -44,10 +36,11 @@ public class Question {
 
     public Question() {
         setSubject(Subject.Undefined);
+        setQuestion("What is a sample question?");
         setAnswer(new Answer());
-        setQuestion("This is a sample question?");
     }
 
+    //region property
     public Subject getSubject() {
         return subject;
     }
@@ -88,4 +81,13 @@ public class Question {
         isAttempted = attempted;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    //endregion
 }

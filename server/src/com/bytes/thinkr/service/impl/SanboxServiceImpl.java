@@ -31,7 +31,7 @@ public class SanboxServiceImpl {
         Question question = new Question();
         question.setAttempted(true);
         Question.Subject[] subjects = Question.Subject.values();
-        question.setSubject(subjects[(int) Math.random() * (subjects.length-1)]);
+        question.setSubject(subjects[(int) (Math.random() * (subjects.length-1))]);
         question.setAnswer(createAnswer());
         return question;
     }

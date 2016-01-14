@@ -94,7 +94,7 @@ public class AssignmentTest extends RestClientTest {
 	 * This test assignment creation and assignment, 
 	 * bypassing the rs service
 	 * NOTE: Local interface does not respect the singleton annotation 
-	 * (i.e., different instances of data-store)
+	 * (i.e., different instances of entity-store)
 	 */
 	//	@Test
 	public void createAndAssignLocalInterface() {

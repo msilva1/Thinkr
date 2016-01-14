@@ -81,7 +81,7 @@ public class updateLargeData {
                }
                else
                {
-            	   // Do something with the chunk of the data that was                                      
+            	   // Do something with the chunk of the entity that was
                    // read.
                    System.out.println("reading " + rs.getString("Title"));
                    reader.close();

@@ -41,7 +41,7 @@ public class cacheRS {
          con = DriverManager.getConnection(connectionUrl);
          
          // Create and execute an SQL statement that returns a large
-         // set of data and then display it.
+         // set of entity and then display it.
          String SQL = "SELECT * FROM Sales.SalesOrderDetail;";
          stmt = con.createStatement(SQLServerResultSet.TYPE_SS_SERVER_CURSOR_FORWARD_ONLY, +
                SQLServerResultSet.CONCUR_READ_ONLY);
@@ -94,7 +94,7 @@ public class cacheRS {
          long runTime = 0;
          
          // Set the fetch size and then iterate through the result set to
-         // cache the data locally.
+         // cache the entity locally.
          rs.setFetchSize(fetchSize);
          startTime = System.currentTimeMillis();
          while (rs.next()) {

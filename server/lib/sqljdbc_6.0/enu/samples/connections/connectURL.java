@@ -3,7 +3,7 @@
 //  File:    connectURL.java      
 //  Summary: This Microsoft JDBC Driver for SQL Server sample application
 //	     demonstrates how to connect to a SQL Server database by using
-//	     a connection URL. It also demonstrates how to retrieve data 
+//	     a connection URL. It also demonstrates how to retrieve entity
 //	     from a SQL Server database by using an SQL statement.
 //
 //---------------------------------------------------------------------
@@ -42,12 +42,12 @@ public class connectURL {
         		Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             		con = DriverManager.getConnection(connectionUrl);
             
-            		// Create and execute an SQL statement that returns some data.
+            		// Create and execute an SQL statement that returns some entity.
             		String SQL = "SELECT TOP 10 * FROM Person.Contact";
             		stmt = con.createStatement();
             		rs = stmt.executeQuery(SQL);
             
-            		// Iterate through the data in the result set and display it.
+            		// Iterate through the entity in the result set and display it.
             		while (rs.next()) {
             			System.out.println(rs.getString(4) + " " + rs.getString(6));
             		}

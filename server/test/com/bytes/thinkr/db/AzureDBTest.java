@@ -4,8 +4,8 @@ package com.bytes.thinkr.db;
 //  File:    connectDS.java
 //  Summary: This Microsoft JDBC Driver for SQL Server sample application
 //	     demonstrates how to connect to a SQL Server database by
-//	     using a data source object. It also demonstrates how to
-//	     retrieve data from a SQL Server database by using a stored
+//	     using a entity source object. It also demonstrates how to
+//	     retrieve entity from a SQL Server database by using a stored
 //	     procedure.
 //
 //---------------------------------------------------------------------
@@ -19,7 +19,7 @@ package com.bytes.thinkr.db;
 //
 //  THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF
 //  ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO
-//  THE IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR SampleDBTest
+//  THE IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR LocalDBTest
 //  PARTICULAR PURPOSE.
 //
 //=====================================================================
@@ -45,12 +45,12 @@ public class AzureDBTest {
             ds.setDatabaseName("AdventureWorks");
             con = ds.getConnection();
 
-            // Execute a stored procedure that returns some data.
+            // Execute a stored procedure that returns some entity.
             cstmt = con.prepareCall("{call dbo.uspGetEmployeeManagers(?)}");
             cstmt.setInt(1, 50);
             rs = cstmt.executeQuery();
 
-            // Iterate through the data in the result set and display it.
+            // Iterate through the entity in the result set and display it.
             while (rs.next()) {
                 System.out.println("EMPLOYEE: " + rs.getString("LastName") +
                         ", " + rs.getString("FirstName"));
