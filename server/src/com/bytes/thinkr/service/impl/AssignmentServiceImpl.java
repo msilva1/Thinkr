@@ -14,6 +14,7 @@ import com.bytes.thinkr.model.account.Account;
 import com.bytes.thinkr.model.account.User;
 import com.bytes.thinkr.model.assignment.Assignment;
 import com.bytes.thinkr.model.assignment.AssignmentList;
+import com.bytes.thinkr.model.assignment.Task;
 import com.bytes.thinkr.service.IAssignmentService;
 import com.bytes.thinkr.service.validator.AssignmentValidator;
 
@@ -69,15 +70,15 @@ public class AssignmentServiceImpl implements IAssignmentService {
 			answerStatus == ValidationInfo.Common.Valid) {
 
 			// id = {teacher user id} + {assignment name} + {assignment category}
-			String id = getAssignmentId(user, assignment);
+			String id = getAssignmentTaskId(user, assignment);
 
 			// Existing account
 			if (assignments.containsKey(id)) {
 				return Assignment.EXISTING;
 
 			} else {
+
 				// Save assignment to server
-				assignment.setIdentifier(id);
 				assignments.put(id, assignment);
 				assignment.setValidation(validationInfo
                     .add(ValidationInfo.Type.AssignmentId, aidStatus)
@@ -110,10 +111,11 @@ public class AssignmentServiceImpl implements IAssignmentService {
 	 * @return the assignment id
 	 * Note: all lower case
 	 */
-	private String getAssignmentId(User user, Assignment assignment) {
+	private String getAssignmentTaskId(User user, Assignment assignment) {
 		
 		// id = {teacher user id} + {assignment name} + {assignment category}
-		return (user.getUserId() + assignment.getName() + assignment.getCategory()).toLowerCase();
+        Task task = assignment.getTask();
+		return (user.getUserId() + task.getName() + task.getCategory()).toLowerCase();
 	}
 
 	@Override
@@ -132,6 +134,7 @@ public class AssignmentServiceImpl implements IAssignmentService {
 		return assignedList;
 	}
 
+    // TODO Fixme
 	@Override
 	public Assignment assign(String userId, String assignmentId) {
 
@@ -152,13 +155,13 @@ public class AssignmentServiceImpl implements IAssignmentService {
 			Assignment assignment = assignments.get(assignmentId);
 			if(assignedList.add(assignment)) {
 				if (LOGGER.isLoggable(Level.INFO)) {
-					LOGGER.log(Level.FINE, "Assigned " + assignment.getIdentifier() + " to " + userId);
+//					LOGGER.log(Level.FINE, "Assigned " + assignment.getIdentifier() + " to " + userId);
 				}
 				return Assignment.ASSIGNED;
 				
 			} else {
 				if (LOGGER.isLoggable(Level.FINE)) {
-					LOGGER.log(Level.FINE, "Existing assignment found: " + assignment.getIdentifier());
+//					LOGGER.log(Level.FINE, "Existing assignment found: " + assignment.getIdentifier());
 				}
 				return Assignment.AlREADY_ASSIGNED;
 			}

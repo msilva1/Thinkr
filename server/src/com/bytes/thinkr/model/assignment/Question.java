@@ -1,5 +1,7 @@
 package com.bytes.thinkr.model.assignment;
 
+import com.bytes.thinkr.model.entity.IEntity;
+
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -8,7 +10,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Question {
+public class Question implements IEntity {
 
     public enum Subject {
         Undefined,

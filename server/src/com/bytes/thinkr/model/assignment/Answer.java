@@ -1,5 +1,7 @@
 package com.bytes.thinkr.model.assignment;
 
+import com.bytes.thinkr.model.entity.IEntity;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +14,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Answer {
+public class Answer implements IEntity {
 
 
 	public enum Type {
@@ -22,7 +24,7 @@ public class Answer {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "AnswerId")
+    @Column(name = "answerId")
 	private Long id;
 
 	@ElementCollection
@@ -45,6 +47,18 @@ public class Answer {
 	public void addAnswer(String s) {
 		answers.add(s);
 	}
+
+    public String toString() {
+
+        StringBuilder sb = new StringBuilder();
+        for (String ans : answers) {
+            sb.append(ans + System.lineSeparator());
+        }
+
+        return sb.toString();
+    }
+
+    //region properties
 
 	public List<String> getAnswers() {
 		return answers;
@@ -77,4 +91,6 @@ public class Answer {
 	public void setId(Long id) {
 		this.id = id;
 	}
+
+    //endregion
 }

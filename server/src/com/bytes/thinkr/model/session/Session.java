@@ -1,7 +1,8 @@
 package com.bytes.thinkr.model.session;
 
+import com.bytes.thinkr.model.entity.IEntity;
 import com.bytes.thinkr.model.ValidationInfo;
-import org.hibernate.annotations.GeneratorType;
+import com.bytes.thinkr.model.account.Account;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.*;
@@ -11,18 +12,22 @@ import java.util.Date;
 @XmlRootElement
 @XmlType(name = "Session")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Session {
+public class Session implements IEntity {
 
 	public static final Session INVALID_ID_OR_PASSWORD;
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "SessionId")
     private Long id;
 
+    @OneToOne
+    @XmlElement
+    private Account account;
+
     private boolean loggedIn;
-	
+
+    @Temporal(TemporalType.DATE)
 	private Date loggedInTime;
 	
 	private int duration;
@@ -38,10 +43,17 @@ public class Session {
     }
 
     public Session() {
-        setValidation(new ValidationInfo());
+        this(Account.NOT_FOUND);
+	}
+
+
+    public Session(Account account) {
+        setAccount(account);
         setLoggedIn(false);
         setDuration(0);
-	}
+        setLoggedInTime(new Date());
+        setValidation(new ValidationInfo());
+    }
 
     /**
 	 * @return the loggedIn
@@ -99,5 +111,13 @@ public class Session {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
     }
 }

@@ -31,7 +31,7 @@ public abstract class ConnectionTest {
 	protected int sendInterval;   		// The timeout between each message (millis)
 	protected int msgCount;       		// The number of messages to send
 	
-	// Send Task Parameters 
+	// Send Task Parameters
 	protected Runnable sendTask;        // Define the test-specific send task
 	protected int clientCounter = 0;	// Use to track message count [optional]
 

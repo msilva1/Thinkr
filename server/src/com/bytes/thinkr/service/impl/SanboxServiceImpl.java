@@ -1,8 +1,11 @@
 package com.bytes.thinkr.service.impl;
 
-import com.bytes.thinkr.model.assignment.*;
+import com.bytes.thinkr.model.assignment.Answer;
+import com.bytes.thinkr.model.assignment.Assignment;
+import com.bytes.thinkr.model.assignment.Point;
+import com.bytes.thinkr.model.assignment.Question;
+import com.bytes.thinkr.model.entity.AssignmentEntityFactory;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -37,22 +40,8 @@ public class SanboxServiceImpl {
     }
 
     public static Assignment createAssignment() {
-        Assignment assignment = new Assignment();
 
-        List<Question> questions = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            questions.add(createQuestion());
-        }
-        assignment.setQuestions(questions);
-
-        int pointTotal = 0;
-        int pointEarned = 0;
-        for (Question q : questions) {
-            pointTotal += q.getAnswer().getPoint().getMax();
-            pointEarned += q.getAnswer().getPoint().getEarned();
-        }
-
-        assignment.setScore(new Score((double) pointEarned/(double) pointTotal));
-        return assignment;
+        List<Assignment> assignments = AssignmentEntityFactory.getInstance().generate(1);
+        return assignments.get(0);
     }
 }

@@ -1,7 +1,15 @@
 package com.bytes.thinkr.service.rs;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.bytes.thinkr.model.ValidationInfo;
+import com.bytes.thinkr.model.account.User;
+import com.bytes.thinkr.model.assignment.Assignment;
+import com.bytes.thinkr.model.assignment.AssignmentList;
+import com.bytes.thinkr.model.assignment.Task;
+import com.bytes.thinkr.model.entity.AssignmentEntityFactory;
+import org.glassfish.jersey.client.ClientConfig;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -9,26 +17,12 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriBuilder;
 
-import com.bytes.thinkr.model.IValidationEnum;
-import com.bytes.thinkr.model.ValidationInfo;
-import org.glassfish.jersey.client.ClientConfig;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-
-import com.bytes.thinkr.model.account.User;
-import com.bytes.thinkr.model.assignment.Answer;
-import com.bytes.thinkr.model.assignment.Assignment;
-import com.bytes.thinkr.model.assignment.AssignmentList;
-import com.bytes.thinkr.model.assignment.Question;
-import com.bytes.thinkr.service.impl.AssignmentServiceImpl;
-
 public class AssignmentTest extends RestClientTest {
 
 	private String uid = "Kent";
 	private String pass = "1a2b3c4d5e";
 	private String assignmentName = "Sample_Assignment";
-	private Assignment.Category category = Assignment.Category.Homework;
+	private Task.Category category = Task.Category.Homework;
 	private Assignment assignment;
 	
 	@Before 
@@ -38,7 +32,7 @@ public class AssignmentTest extends RestClientTest {
 		
 		Client client = ClientBuilder.newClient(new ClientConfig());
 		target = client.target(UriBuilder.fromUri(baseUrl).build());
-		assignment = createAssignment(assignmentName, category, (int) (Math.random()*90));
+        assignment = AssignmentEntityFactory.getInstance().generate(1).get(0);
 		
 	}
 	
@@ -64,7 +58,7 @@ public class AssignmentTest extends RestClientTest {
 	
 		// Create an 10 assignments
 		for (int i = 1; i < 11; i++) {
-			assignment.setName(assignmentName + i);
+			assignment.getTask().setName(assignmentName + i);
 			Assignment response1 = target.path("create").path(uid).request().accept(MediaType.APPLICATION_JSON)
 					.post(Entity.entity(assignment, MediaType.APPLICATION_JSON), Assignment.class);
 				
@@ -89,30 +83,7 @@ public class AssignmentTest extends RestClientTest {
 		}
 		
 	}
-	
-	/**
-	 * This test assignment creation and assignment, 
-	 * bypassing the rs service
-	 * NOTE: Local interface does not respect the singleton annotation 
-	 * (i.e., different instances of entity-store)
-	 */
-	//	@Test
-	public void createAndAssignLocalInterface() {
-	
-		String aid = getAssignmentId(1);
-		Assignment temp = createAssignment(assignmentName+1, category, (int) (Math.random()*90));
-		
-		Assignment a = AssignmentServiceImpl.getInstance().create(uid, temp);
-		System.out.println(a.getValidation().get(ValidationInfo.Type.Assignment));
-		
-		Assignment b = AssignmentServiceImpl.getInstance().assign(uid, aid);
-		System.out.println(b.getValidation().get(ValidationInfo.Type.Assignment));
-		
-		AssignmentList list = AssignmentServiceImpl.getInstance().getAssignmentList(uid);
-		System.out.println("Local assigned list size: " + list.getAssignments().size());
-	}
-	
-	
+
 	@Test
 	public void getAssignedList() {
 	
@@ -135,22 +106,7 @@ public class AssignmentTest extends RestClientTest {
 		// TODO
 	}
 	
-	private Assignment createAssignment(String name, Assignment.Category category, int duration) {
-		
-		List<Question> questions = new ArrayList<Question>();
-		for (int i = 0; i < 10; i++) {
-			Question q = new Question();
-			q.setQuestion("This is question " + i+1);
-			for (int j = 0; j < 4; j++) {
-				Answer a = new Answer();
-				a.addAnswer("This is answer " + (j+1) + "for question " + i+1);
-			}
-		}
-		
-		questions.add(new Question());		
-		return new Assignment(name, category , questions, duration);
-	}
-	
+
 	private String getAssignmentId(int i) {
 		// id = {teacher user id} + {assignment name} + {assignment category}
 		return (uid + assignmentName + i + category.toString()).toLowerCase();

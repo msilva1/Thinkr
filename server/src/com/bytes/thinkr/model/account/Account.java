@@ -1,5 +1,6 @@
 package com.bytes.thinkr.model.account;
 
+import com.bytes.thinkr.model.entity.IEntity;
 import com.bytes.thinkr.model.ValidationInfo;
 
 import javax.persistence.*;
@@ -9,7 +10,7 @@ import java.util.Date;
 @Entity
 @XmlRootElement(name = "Account")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Account {
+public class Account implements IEntity {
 
 	//region static instances for convenience
 	public static final Account INVALID;

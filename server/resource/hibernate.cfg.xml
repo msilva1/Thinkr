@@ -14,8 +14,8 @@
         <!--<property name="connection.username">kentative</property>-->
         <!--<property name="connection.password">Azure2016</property>-->
 
-        <!-- Kent's Local Connection -->
-        <property name="connection.url">jdbc:sqlserver://BOOK:1433;database=ThinkrDB;integratedSecurity=true;</property>
+        <!-- local connection -->
+        <property name="connection.url">jdbc:sqlserver://localhost:1433;database=ThinkrDB;integratedSecurity=true;</property>
         <property name="connection.driver_class">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>
 
         <property name="hibernate.dialect">org.hibernate.dialect.SQLServer2012Dialect</property>
@@ -24,19 +24,19 @@
         <property name="show_sql">true</property>
         <property name="hbm2ddl.auto">create</property>
 
-        <mapping package="com.bytes.thinkr.model"/>
+        <!--<mapping package="com.bytes.thinkr.model"/>-->
         <mapping package="com.bytes.thinkr.model.account"/>
         <mapping class="com.bytes.thinkr.model.account.Account"/>
         <mapping class="com.bytes.thinkr.model.account.User"/>
 
-        <mapping package="com.bytes.thinkr.model.assignment"/>
+        <!--<mapping package="com.bytes.thinkr.model.assignment"/>-->
         <mapping class="com.bytes.thinkr.model.assignment.Assignment"/>
         <mapping class="com.bytes.thinkr.model.assignment.Question"/>
         <mapping class="com.bytes.thinkr.model.assignment.Answer"/>
         <mapping class="com.bytes.thinkr.model.assignment.Point"/>
         <mapping class="com.bytes.thinkr.model.assignment.Score"/>
 
-        <mapping package="com.bytes.thinkr.model.session"/>
+        <!--<mapping package="com.bytes.thinkr.model.session"/>-->
         <mapping class="com.bytes.thinkr.model.session.Session"/>
 
     </session-factory>

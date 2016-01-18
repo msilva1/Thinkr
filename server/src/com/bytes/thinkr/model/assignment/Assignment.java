@@ -1,10 +1,10 @@
 package com.bytes.thinkr.model.assignment;
 
+import com.bytes.thinkr.model.account.Account;
+import com.bytes.thinkr.model.entity.IEntity;
 import com.bytes.thinkr.model.ValidationInfo;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -13,19 +13,11 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+
 @Entity
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Assignment {
-
-    /**  The list of assignment categories */
-    public enum Category {
-        Unspecified,
-        Homework,
-        Project,
-        Extra,
-        Others
-    }
+public class Assignment implements IEntity {
 
     //region static instances
     public static final Assignment EXISTING;
@@ -52,29 +44,37 @@ public class Assignment {
     //region fields
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "AssignmentId")
+    @Column(name = "assignmentId")
     private Long id;
+
+    @OneToOne
+    @XmlElement
+    private Task task;
+
+    @OneToOne
+    @XmlElement
+    private Account teacher;
+
+    @OneToOne
+    @XmlElement
+    private Account parent;
+
+    @OneToOne
+    @XmlElement
+    private Account student;
 
     @Embedded
     @XmlElement
     private Score score;
 
-    private String name;
-
-    private String identifier;
+    @Temporal(value = TemporalType.DATE)
+    @XmlTransient
+    private Date assignedDate;
 
     @Temporal(value = TemporalType.DATE)
     @XmlTransient
-    private Date createdDate;
+    private Date dueDate;
 
-    @OneToMany
-    @XmlElement
-    private List<Question> questions;
-
-    @Enumerated(value = EnumType.STRING)
-    private Category category;
-
-    private int duration;
 
     @Transient
     @XmlElement
@@ -87,28 +87,27 @@ public class Assignment {
     }
 
     public Assignment(ValidationInfo validation) {
-
-        setName("Unspecified");
-        setCategory(Category.Others);
-
-        ArrayList<Question> questions = new ArrayList<Question>();
-        questions.add(new Question());
-        setQuestions(questions);
-
-        setValidation(validation);
-        setDuration(0);
-        setCreatedDate(new Date());
+        this(new Task(), null, null, null, null, validation);
     }
 
-    public Assignment(String name, Category category, List<Question> question, int duration) {
+    public Assignment(
+            Task task, Date dueDate,
+            Account teacher, Account parent, Account student,
+            ValidationInfo validation) {
 
-        setName(name);
-        setCategory(category);
-        setQuestions(question);
+        setTask(task);
+        setDueDate(dueDate);
+        setTeacher(teacher);
+        setParent(parent);
+        setStudent(student);
+        setValidation(validation);
+        setAssignedDate(new Date());
+    }
 
-        setValidation(getValidation());
-        setDuration(0);
-        setCreatedDate(new Date());
+    public String toString() {
+
+        return String.format("%1$s assigns %2$s to %3$s. Due on %4$s ",
+                getTeacher(), getTask().getName(), getStudent(), getDueDate().toString());
     }
 
     //region properties
@@ -118,54 +117,6 @@ public class Assignment {
 
     public void setScore(Score score) {
         this.score = score;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getIdentifier() {
-        return identifier;
-    }
-
-    public void setIdentifier(String identifier) {
-        this.identifier = identifier;
-    }
-
-    public Date getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public List<Question> getQuestions() {
-        return questions;
-    }
-
-    public void setQuestions(List<Question> questions) {
-        this.questions = questions;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
-    public int getDuration() {
-        return duration;
-    }
-
-    public void setDuration(int duration) {
-        this.duration = duration;
     }
 
     public ValidationInfo getValidation() {
@@ -182,6 +133,54 @@ public class Assignment {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Task getTask() {
+        return task;
+    }
+
+    public void setTask(Task task) {
+        this.task = task;
+    }
+
+    public Account getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(Account teacher) {
+        this.teacher = teacher;
+    }
+
+    public Account getParent() {
+        return parent;
+    }
+
+    public void setParent(Account parent) {
+        this.parent = parent;
+    }
+
+    public Account getStudent() {
+        return student;
+    }
+
+    public void setStudent(Account student) {
+        this.student = student;
+    }
+
+    public Date getAssignedDate() {
+        return assignedDate;
+    }
+
+    public void setAssignedDate(Date assignedDate) {
+        this.assignedDate = assignedDate;
+    }
+
+    public Date getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(Date dueDate) {
+        this.dueDate = dueDate;
     }
 
     //endregion

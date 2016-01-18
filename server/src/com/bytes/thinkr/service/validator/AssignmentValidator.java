@@ -23,26 +23,19 @@ public class AssignmentValidator {
 	public static IValidationEnum isAssignmentIdValid(User user, Assignment assignment) {
 
 		// User is (administrator or teacher)
-		
-		String userId = user.getUserId();
-		String name = assignment.getName().toString();
-		String category = assignment.getCategory().toString();
-		
+        // TODO
 		return ValidationInfo.Common.Valid;
 	}
 
 	
 	public static IValidationEnum isAssignmentValid() {
-		
+		// TODO
 		return ValidationInfo.Common.Valid;
 	}
 	
 	public static IValidationEnum isIdValid(User user, Assignment assignment) {
 
-		String userId = user.getUserId();
-		String name = assignment.getName().toString();
-		String category = assignment.getCategory().toString();
-		
+        // TODO
 		return ValidationInfo.Common.Valid;
 	}
 	
@@ -53,6 +46,7 @@ public class AssignmentValidator {
 	 */
 	public static IValidationEnum isAnswerValid(Assignment assignment) {
 
+        // TODO
 		return ValidationInfo.Common.Valid;
 	}	
 		
@@ -63,6 +57,7 @@ public class AssignmentValidator {
 	 */
 	public static IValidationEnum isQuestionValid(Assignment assignment) {
 
+        // TODO
 		return ValidationInfo.Common.Valid;
 	}
 
