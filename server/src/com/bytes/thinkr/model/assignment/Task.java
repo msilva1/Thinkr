@@ -37,12 +37,8 @@ public class Task implements IEntity {
     //region fields
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "assignmentTaskId")
+    @Column(name = "taskId")
     private Long id;
-
-    @Embedded
-    @XmlElement
-    private Score score;
 
     private String name;
 
@@ -98,14 +94,6 @@ public class Task implements IEntity {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Score getScore() {
-        return score;
-    }
-
-    public void setScore(Score score) {
-        this.score = score;
     }
 
     public String getName() {

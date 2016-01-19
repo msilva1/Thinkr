@@ -43,9 +43,9 @@ public class Account implements IEntity {
     @Column(name = "accountId")
 	private Long id;
 
-    @Embedded
+    @OneToOne
 	@XmlElement 
-	private User user;
+	private Client client;
 
     @Transient
 	@XmlElement 
@@ -56,24 +56,24 @@ public class Account implements IEntity {
 
     /** Default constructor for code generation. */
 	public Account() {
-        this(new User(), new ValidationInfo());
+        this(new Client(), new ValidationInfo());
 	}
 
     /**
      * Creates an <tt>Account</tt> with no validation information.
-     * @param user the user information
+     * @param client the client information
      */
-    public Account(User user) {
-        this(user, new ValidationInfo());
+    public Account(Client client) {
+        this(client, new ValidationInfo());
     }
 
     /**
      * Creates an <tt>Account</tt> with validation information.
-     * @param user the user information
+     * @param client the client information
      * @param validationInfo the validation information
      */
-     public Account(User user, ValidationInfo validationInfo) {
-        setUser(user);
+     public Account(Client client, ValidationInfo validationInfo) {
+        setClient(client);
         setValidation(validationInfo);
         setDateCreated(new Date());
     }
@@ -85,7 +85,7 @@ public class Account implements IEntity {
 				"%1$s " + System.lineSeparator() + 
 				"Date Created: %2$s " + System.lineSeparator() +
 				"Account Validation: %3$s " + System.lineSeparator(),
-				getUser(), getDateCreated().toInstant(), getValidation());
+				getClient(), getDateCreated().toInstant(), getValidation());
 	}
 
 	//region properties
@@ -98,12 +98,12 @@ public class Account implements IEntity {
         this.id = id;
     }
 
-    public User getUser() {
-		return user;
+    public Client getClient() {
+		return client;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setClient(Client client) {
+		this.client = client;
 	}
 
 	public ValidationInfo getValidation() {

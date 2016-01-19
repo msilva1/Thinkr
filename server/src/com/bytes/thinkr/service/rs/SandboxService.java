@@ -2,7 +2,7 @@ package com.bytes.thinkr.service.rs;
 
 import com.bytes.thinkr.model.account.Account;
 import com.bytes.thinkr.model.account.AccountList;
-import com.bytes.thinkr.model.account.User;
+import com.bytes.thinkr.model.account.Client;
 import com.bytes.thinkr.model.assignment.Answer;
 import com.bytes.thinkr.model.assignment.Assignment;
 import com.bytes.thinkr.model.assignment.AssignmentList;
@@ -22,7 +22,7 @@ import javax.ws.rs.core.MediaType;
  * 
  * <ol>Usage:
  * <li>http://localhost:8080/WebServices/rest/todo - create a <tt>Todo</tt> object and return as XML or JSON
- * <li>http://localhost:8080/WebServices/rest/user - create a <tt>User</tt> object and return as XML or JSON
+ * <li>http://localhost:8080/WebServices/rest/user - create a <tt>Client</tt> object and return as XML or JSON
  * <li>http://localhost:8080/WebServices/rest/account - create an <tt>Account</tt> object and return as XML or JSON
  * </ol> 
  * Use header to set MIME type (i.e., <tt>Accept=application/json</tt> )
@@ -48,10 +48,10 @@ public class SandboxService {
 	@GET
 	@Path("user")
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	public User getUserXml() {
+	public Client getUserXml() {
 
-		User user = new User("Kent", "Kentative@live.com", "ChangeMe", User.Type.Teacher);
-		return user;
+		Client client = new Client("Kent", "Kentative@live.com", "ChangeMe", Client.Type.Teacher);
+		return client;
 	}
 
 	
@@ -60,8 +60,8 @@ public class SandboxService {
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	public Account getAccountXml() {
 
-		User user = new User("Kent", "Kentative@live.com", "ChangeMe", User.Type.Admin);
-        return AccountServiceImpl.getInstance().createAccount(user);
+		Client client = new Client("Kent", "Kentative@live.com", "ChangeMe", Client.Type.Admin);
+        return AccountServiceImpl.getInstance().createAccount(client);
 	}
 
 

@@ -5,6 +5,7 @@
 package com.bytes.thinkr.model.entity;
 
 import com.bytes.thinkr.model.ValidationInfo;
+import com.bytes.thinkr.model.account.Account;
 import com.bytes.thinkr.model.assignment.Assignment;
 import com.bytes.thinkr.model.assignment.Task;
 import com.bytes.thinkr.model.assignment.Question;
@@ -29,13 +30,19 @@ public class AssignmentEntityFactory extends EntityFactory<Assignment> {
     @Override
     protected Assignment create(int i) {
 
-        Task task = new Task();
-        task.setName("Auto generated assignment " + i);
-        task.setDuration((int) (Math.random()*90));
+        List<Account> accounts = new ArrayList<>();
+        accounts.add(AccountEntityFactory.getInstance().createTeacher(i));
+        accounts.add(AccountEntityFactory.getInstance().createParent(i));
+        accounts.add(AccountEntityFactory.getInstance().createStudent(i));
 
-        List<Question> questions = new ArrayList<>();
-        questions.add(QuestionEntityFactory.getInstance().create(i));
-        task.setQuestions(questions);
+        Assignment assignment = new Assignment(
+                TaskEntityFactory.getInstance().create(i),
+                calcFutureDate(),
+                accounts,
+                new ValidationInfo());
+
+        Task task = assignment.getTask();
+        List<Question> questions = task.getQuestions();
 
         int pointTotal = 0;
         int pointEarned = 0;
@@ -43,13 +50,6 @@ public class AssignmentEntityFactory extends EntityFactory<Assignment> {
             pointTotal += q.getAnswer().getPoint().getMax();
             pointEarned += q.getAnswer().getPoint().getEarned();
         }
-
-        Assignment assignment = new Assignment(
-                task, calcFutureDate(),
-                AccountEntityFactory.getInstance().createTeacher(i),
-                AccountEntityFactory.getInstance().createParent(i),
-                AccountEntityFactory.getInstance().createStudent(i),
-                new ValidationInfo());
 
         assignment.setScore(new Score((double) pointEarned / (double) pointTotal));
         return assignment;

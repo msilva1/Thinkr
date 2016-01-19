@@ -5,6 +5,7 @@
 package com.bytes.thinkr.db;
 
 import com.bytes.thinkr.model.account.Account;
+import com.bytes.thinkr.model.account.Client;
 import com.bytes.thinkr.model.entity.AccountEntityFactory;
 import org.junit.Assert;
 import org.junit.Test;
@@ -31,5 +32,22 @@ public class AccountEntityTest extends EntityTest<Account>{
         List<Account> retrievedEntities = entityTest.retrieve(entityName, factory);
         Assert.assertThat(retrievedEntities.size(), is(entityCount));
     }
+
+    /**
+     * Hydration:
+     * Account
+     *  - Client
+     * Commit order: Client > Account
+     *
+     * @param entity The Account to commit
+     */
+    @Override
+    protected void beforeEntitySave(Account entity) {
+
+        Client client = entity.getClient();
+        HibernateUtil.commit(client);
+
+    }
+
 
 }

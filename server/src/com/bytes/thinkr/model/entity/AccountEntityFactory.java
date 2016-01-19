@@ -6,10 +6,8 @@ package com.bytes.thinkr.model.entity;
 
 import com.bytes.thinkr.model.ValidationInfo;
 import com.bytes.thinkr.model.account.Account;
+import com.bytes.thinkr.model.account.Client;
 import com.bytes.thinkr.model.account.Name;
-import com.bytes.thinkr.model.account.User;
-
-import java.util.Date;
 
 /**
  * Created by Kent on 1/13/2016.
@@ -32,7 +30,7 @@ public class AccountEntityFactory extends EntityFactory<Account> {
 
     @Override
     public String getDisplayInfo(Account entity) {
-        return entity.getUser().getUserId();
+        return entity.getClient().getDisplayName();
     }
 
     /**
@@ -40,17 +38,17 @@ public class AccountEntityFactory extends EntityFactory<Account> {
      * @param sequence the sequence
      * @return a random user
      */
-    private User createUser(int sequence) {
+    private Client createUser(int sequence) {
 
-        User.Type[] userTypes = User.Type.values();
-        User user = new User(
+        Client.Type[] userTypes = Client.Type.values();
+        Client client = new Client(
             "userId" + sequence,
             "address" + System.currentTimeMillis() + "_" +sequence + "@email.com",
             "Password00" + sequence,
             userTypes[(int) (Math.random() * (userTypes.length-1))]);
         Name name = new Name("first" + sequence, "last" + sequence, "M"+sequence);
-        user.setName(name);
-        return user;
+        client.setName(name);
+        return client;
 
     }
 
@@ -63,19 +61,25 @@ public class AccountEntityFactory extends EntityFactory<Account> {
 
     public Account createParent(int i) {
         Account account = create(i);
-        account.getUser().setUserType(User.Type.Parent);
+        String email = account.getClient().getEmail();
+        account.getClient().setEmail("Parent_" + email);
+        account.getClient().setUserType(Client.Type.Parent);
         return account;
     }
 
     public Account createTeacher(int i) {
         Account account = create(i);
-        account.getUser().setUserType(User.Type.Teacher);
+        String email = account.getClient().getEmail();
+        account.getClient().setEmail("Teacher_" + email);
+        account.getClient().setUserType(Client.Type.Teacher);
         return account;
     }
 
     public Account createStudent(int i) {
         Account account = create(i);
-        account.getUser().setUserType(User.Type.Student);
+        String email = account.getClient().getEmail();
+        account.getClient().setEmail("Student_" + email);
+        account.getClient().setUserType(Client.Type.Student);
         return account;
     }
 }

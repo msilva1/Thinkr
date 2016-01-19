@@ -1,18 +1,14 @@
 package com.bytes.thinkr.model.assignment;
 
+import com.bytes.thinkr.model.ValidationInfo;
 import com.bytes.thinkr.model.account.Account;
 import com.bytes.thinkr.model.entity.IEntity;
-import com.bytes.thinkr.model.ValidationInfo;
-
-import java.util.Date;
 
 import javax.persistence.*;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
-
+import javax.xml.bind.annotation.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Entity
 @XmlRootElement
@@ -51,17 +47,9 @@ public class Assignment implements IEntity {
     @XmlElement
     private Task task;
 
-    @OneToOne
+    @OneToMany
     @XmlElement
-    private Account teacher;
-
-    @OneToOne
-    @XmlElement
-    private Account parent;
-
-    @OneToOne
-    @XmlElement
-    private Account student;
+    private List<Account> accounts;
 
     @Embedded
     @XmlElement
@@ -75,7 +63,6 @@ public class Assignment implements IEntity {
     @XmlTransient
     private Date dueDate;
 
-
     @Transient
     @XmlElement
     private ValidationInfo validation;
@@ -87,27 +74,25 @@ public class Assignment implements IEntity {
     }
 
     public Assignment(ValidationInfo validation) {
-        this(new Task(), null, null, null, null, validation);
+        this(new Task(), new Date(), new ArrayList<Account>(), validation);
     }
 
     public Assignment(
             Task task, Date dueDate,
-            Account teacher, Account parent, Account student,
+            List<Account> accounts,
             ValidationInfo validation) {
 
         setTask(task);
         setDueDate(dueDate);
-        setTeacher(teacher);
-        setParent(parent);
-        setStudent(student);
+        setAccounts(accounts);
         setValidation(validation);
         setAssignedDate(new Date());
     }
 
     public String toString() {
 
-        return String.format("%1$s assigns %2$s to %3$s. Due on %4$s ",
-                getTeacher(), getTask().getName(), getStudent(), getDueDate().toString());
+        return String.format("Task %1$s is assigned to %2$s accounts %3$s. Due on %4$s ",
+            getTask().getName(), accounts.size(), getDueDate().toString());
     }
 
     //region properties
@@ -143,30 +128,6 @@ public class Assignment implements IEntity {
         this.task = task;
     }
 
-    public Account getTeacher() {
-        return teacher;
-    }
-
-    public void setTeacher(Account teacher) {
-        this.teacher = teacher;
-    }
-
-    public Account getParent() {
-        return parent;
-    }
-
-    public void setParent(Account parent) {
-        this.parent = parent;
-    }
-
-    public Account getStudent() {
-        return student;
-    }
-
-    public void setStudent(Account student) {
-        this.student = student;
-    }
-
     public Date getAssignedDate() {
         return assignedDate;
     }
@@ -183,6 +144,13 @@ public class Assignment implements IEntity {
         this.dueDate = dueDate;
     }
 
+    public List<Account> getAccounts() {
+        return accounts;
+    }
+
+    public void setAccounts(List<Account> accounts) {
+        this.accounts = accounts;
+    }
     //endregion
 
 }

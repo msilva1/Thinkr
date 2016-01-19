@@ -11,7 +11,7 @@ import javax.inject.Singleton;
 import com.bytes.thinkr.model.IValidationEnum;
 import com.bytes.thinkr.model.ValidationInfo;
 import com.bytes.thinkr.model.account.Account;
-import com.bytes.thinkr.model.account.User;
+import com.bytes.thinkr.model.account.Client;
 import com.bytes.thinkr.model.assignment.Assignment;
 import com.bytes.thinkr.model.assignment.AssignmentList;
 import com.bytes.thinkr.model.assignment.Task;
@@ -59,9 +59,9 @@ public class AssignmentServiceImpl implements IAssignmentService {
 	@Override
 	public Assignment create(String userId, Assignment assignment) {
 	
-		User user = AccountServiceImpl.getInstance().find(userId).getUser();
+		Client client = AccountServiceImpl.getInstance().find(userId).getClient();
 		ValidationInfo validationInfo = new ValidationInfo();
-		IValidationEnum aidStatus = AssignmentValidator.isAssignmentIdValid(user, assignment);
+		IValidationEnum aidStatus = AssignmentValidator.isAssignmentIdValid(client, assignment);
 		IValidationEnum questionStatus = AssignmentValidator.isQuestionValid(assignment);
 		IValidationEnum answerStatus =  AssignmentValidator.isAnswerValid(assignment);
 		
@@ -69,8 +69,8 @@ public class AssignmentServiceImpl implements IAssignmentService {
 			questionStatus == ValidationInfo.Common.Valid &&
 			answerStatus == ValidationInfo.Common.Valid) {
 
-			// id = {teacher user id} + {assignment name} + {assignment category}
-			String id = getAssignmentTaskId(user, assignment);
+			// id = {teacher client id} + {assignment name} + {assignment category}
+			String id = getAssignmentTaskId(client, assignment);
 
 			// Existing account
 			if (assignments.containsKey(id)) {
@@ -106,16 +106,16 @@ public class AssignmentServiceImpl implements IAssignmentService {
 
 	/**
 	 * Construct the assignment id
-	 * @param user the user creating the assignment
+	 * @param client the client creating the assignment
 	 * @param assignment the assignment to be created
 	 * @return the assignment id
 	 * Note: all lower case
 	 */
-	private String getAssignmentTaskId(User user, Assignment assignment) {
+	private String getAssignmentTaskId(Client client, Assignment assignment) {
 		
-		// id = {teacher user id} + {assignment name} + {assignment category}
+		// id = {teacher client id} + {assignment name} + {assignment category}
         Task task = assignment.getTask();
-		return (user.getUserId() + task.getName() + task.getCategory()).toLowerCase();
+		return (client.getDisplayName() + task.getName() + task.getCategory()).toLowerCase();
 	}
 
 	@Override

@@ -9,7 +9,7 @@
 
 -- #2. Permissions to the distributed transaction support procedures for the Microsoft JDBC Driver 6.0 
 --     for SQL Server are granted through the SQL Server role [SqlJDBCXAUser].  To maintain a secure default 
---     configuration, no user is granted access to this role by default.
+--     configuration, no client is granted access to this role by default.
 
 -- Drop and re-create the extended stored procedure definitions in master.
 
@@ -76,10 +76,10 @@ go
 
 -- Add users to the [SqlJDBCXAUser] role as needed.
 
--- Example for adding a SQL authentication user to the SqlJDBCXAUser role.
+-- Example for adding a SQL authentication client to the SqlJDBCXAUser role.
 -- exec sp_addrolemember [SqlJDBCXAUser], 'MySQLUser'
 
--- Example for adding a windows domain user to the SqlJDBCXAUser role.
+-- Example for adding a windows domain client to the SqlJDBCXAUser role.
 -- exec sp_addrolemember [SqlJDBCXAUser], 'MyDomain\MyWindowsUser'
 
 print ''

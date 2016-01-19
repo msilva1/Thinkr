@@ -4,7 +4,7 @@ import com.bytes.thinkr.model.IValidationEnum;
 import com.bytes.thinkr.model.ValidationInfo;
 import com.bytes.thinkr.model.account.Account;
 import com.bytes.thinkr.model.account.AccountList;
-import com.bytes.thinkr.model.account.User;
+import com.bytes.thinkr.model.account.Client;
 import com.bytes.thinkr.service.IAccountService;
 import com.bytes.thinkr.model.IAccountServiceLocal;
 import com.bytes.thinkr.service.util.PasswordUtil;
@@ -36,7 +36,7 @@ public class AccountServiceImpl implements IAccountService, IAccountServiceLocal
 			instance = new AccountServiceImpl();
 			
 			// For debugging 
-			instance.createAccount("Kent", "kentative@live.com", "1a2b3c4d5e", User.Type.Admin);
+			instance.createAccount("Kent", "kentative@live.com", "1a2b3c4d5e", Client.Type.Admin);
 		}
 		return instance;
 	}
@@ -48,52 +48,52 @@ public class AccountServiceImpl implements IAccountService, IAccountServiceLocal
 
 
 	/**
-	 * User is valid base on these criteria
+	 * Client is valid base on these criteria
 	 * <ul>
-	 * <li> user exists
-	 * <li> user specified password matches server's account password
+	 * <li> client exists
+	 * <li> client specified password matches server's account password
 	 * </ul>
-	 * @param user the user information. 
+	 * @param client the client information.
 	 * 
-	 * Note: This is used for existing user
+	 * Note: This is used for existing client
 	 */
 	@Override
-	public boolean isExistingUserValid(User user) {
+	public boolean isExistingUserValid(Client client) {
 
-		if (user == null ) {
+		if (client == null ) {
 			return false;
 		}
 		
-		// Check for existing user
-		String userId = user.getUserId();
+		// Check for existing client
+		String userId = client.getDisplayName();
 		if (LOGGER.isLoggable(Level.FINE)) {
-			LOGGER.log(Level.FINE, "Request to validate user: " + userId);
+			LOGGER.log(Level.FINE, "Request to validate client: " + userId);
 		}
 		
 		// Non-existing account
 		if (!accounts.containsKey(userId.toLowerCase())) {
 			
 			if (LOGGER.isLoggable(Level.FINE)) {
-				LOGGER.log(Level.FINE, "User not found: " + userId);
+				LOGGER.log(Level.FINE, "Client not found: " + userId);
 			}
 			
 			return false;
 		}
 		
-		// Check user password
-		String userPassword = user.getPassword();
+		// Check client password
+		String userPassword = client.getPassword();
 		Account account = accounts.get(userId.toLowerCase());
 
 		// hex value comparison, case doesn't matter
-		if (!PasswordUtil.encryptPassword(userPassword).equals(account.getUser().getPassword())) {
+		if (!PasswordUtil.encryptPassword(userPassword).equals(account.getClient().getPassword())) {
 			if (LOGGER.isLoggable(Level.FINE)) {
-				LOGGER.log(Level.FINE, "User password does not match: " + userId);
+				LOGGER.log(Level.FINE, "Client password does not match: " + userId);
 			}
 			return false;
 		}
 		
 		if (LOGGER.isLoggable(Level.FINE)) {
-			LOGGER.log(Level.FINE, "Successfully authenticate user: " + userId);
+			LOGGER.log(Level.FINE, "Successfully authenticate client: " + userId);
 		}
 		return true;
 	}
@@ -111,14 +111,14 @@ public class AccountServiceImpl implements IAccountService, IAccountServiceLocal
 	}
 
 	@Override
-	public Account createAccount(User user) {
+	public Account createAccount(Client client) {
 		
-		if (user != null) {
-			return createAccount(user.getUserId(), user.getEmail(), user.getPassword(), user.getUserType());
+		if (client != null) {
+			return createAccount(client.getDisplayName(), client.getEmail(), client.getPassword(), client.getUserType());
 		}
 
 		if (LOGGER.isLoggable(Level.WARNING)) {
-			LOGGER.log(Level.WARNING, "User is null. Unable to create account.");
+			LOGGER.log(Level.WARNING, "Client is null. Unable to create account.");
 		}
 		
 		return Account.INVALID;
@@ -143,7 +143,7 @@ public class AccountServiceImpl implements IAccountService, IAccountServiceLocal
 	 * @return A new account if all specified information is valid. 
 	 * If user id exists, returns an invalid account.
 	 */
-	private Account createAccount(String userId, String userEmail, String password, User.Type userType) {
+	private Account createAccount(String userId, String userEmail, String password, Client.Type userType) {
 
 		// Existing account
 		if (accounts.containsKey(userId.toLowerCase())) {
@@ -160,7 +160,7 @@ public class AccountServiceImpl implements IAccountService, IAccountServiceLocal
 			pwdStatus == ValidationInfo.Common.Valid &&
 			emailStatus == ValidationInfo.Common.Valid) {
 			
-			account.setUser(new User(
+			account.setClient(new Client(
                 userId,
                 userEmail,
                 PasswordUtil.encryptPassword(password),

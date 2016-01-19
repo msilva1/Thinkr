@@ -41,7 +41,7 @@ public class AlwaysEncrypted
 	private static String keyStoreProviderName = "MSSQL_JVM_KEYSTORE";
 
 	/** Specified details of the certificate to be used by Always Encrypted
-	 * User can choose from the following two options
+	 * Client can choose from the following two options
 	 * 1. "Thumbprint:<Thumbprint of the certificate>"
 	 * 2. "Alias :<Alias of the certificate>"
 	 */

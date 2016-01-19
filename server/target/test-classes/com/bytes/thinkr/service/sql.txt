@@ -2,7 +2,7 @@ Sandbox DB
 --------------------
 jdbc:sqlserver://irxoiq1zu0.database.windows.net:1433;
 database=SandBoxDB;
-user=kentative@irxoiq1zu0;
+client=kentative@irxoiq1zu0;
 password={your_password_here};
 encrypt=true;
 hostNameInCertificate=*.database.windows.net;
@@ -11,7 +11,7 @@ loginTimeout=30;
 Sample DB
 jdbc:sqlserver://irxoiq1zu0.database.windows.net:1433;
 database=SampleDB;
-user=kentative@irxoiq1zu0;
+client=kentative@irxoiq1zu0;
 password={your_password_here};
 encrypt=true;
 trustServerCertificate=false;

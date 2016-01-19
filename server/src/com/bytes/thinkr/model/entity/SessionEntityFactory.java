@@ -4,8 +4,6 @@
 
 package com.bytes.thinkr.model.entity;
 
-import com.bytes.thinkr.model.account.Account;
-import com.bytes.thinkr.model.account.User;
 import com.bytes.thinkr.model.session.Session;
 
 /**
@@ -33,7 +31,7 @@ public class SessionEntityFactory extends EntityFactory<Session> {
     @Override
     public String getDisplayInfo(Session entity) {
         return
-            entity.getAccount().getUser().getUserId() + " logged in: " +
+            entity.getAccount().getClient().getDisplayName() + " logged in: " +
             entity.isLoggedIn();
     }
 }

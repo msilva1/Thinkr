@@ -52,7 +52,7 @@ public class LocalDBTest {
             List accounts = session.createQuery("from Account").list();
             for (Iterator iterator = accounts.iterator(); iterator.hasNext(); ) {
                 Account account = (Account) iterator.next();
-                System.out.println(account.getUser().getUserId());
+                System.out.println(account.getClient().getDisplayName());
             }
             transaction.commit();
         } catch (HibernateException e) {

@@ -2,16 +2,16 @@ package com.bytes.thinkr.service;
 
 import com.bytes.thinkr.model.account.Account;
 import com.bytes.thinkr.model.account.AccountList;
-import com.bytes.thinkr.model.account.User;
+import com.bytes.thinkr.model.account.Client;
 
 public interface IAccountService {
 
 
     /**
-     * @param user the user account with administrator privilege and valid credentials
+     * @param client the client account with administrator privilege and valid credentials
      * @return the created account
      */
-    Account createAccount(User user);
+    Account createAccount(Client client);
 
     /**
      * @param user    the user account matching the account to be updated or
@@ -40,7 +40,7 @@ public interface IAccountService {
      * @param user
      * @return true if valid
      */
-    boolean isExistingUserValid(User userId);
+    boolean isExistingUserValid(Client clientId);
 
     /**
      * Return the account corresponding to the specified user id.

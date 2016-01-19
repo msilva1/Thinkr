@@ -2,7 +2,7 @@ package com.bytes.thinkr.service.validator;
 
 import com.bytes.thinkr.model.IValidationEnum;
 import com.bytes.thinkr.model.ValidationInfo;
-import com.bytes.thinkr.model.account.User;
+import com.bytes.thinkr.model.account.Client;
 import com.bytes.thinkr.model.assignment.Assignment;
 
 public class AssignmentValidator {
@@ -11,18 +11,18 @@ public class AssignmentValidator {
 	 * Indicate if the input parameters are valid for assignment creation. 
 	 * 
 	 * <ul><b>Check the following criteria:</b>
-	 * <li>user is administrator or teacher
+	 * <li>client is administrator or teacher
 	 * <li>assignment name is valid (i.e., no symbols)
 	 * <li>category is valid (i.e., defined in enum list)
 	 * <li>assignment id is unique
 	 * </ul>
-	 * @param user
+	 * @param client
 	 * @param assignment
 	 * @return
 	 */
-	public static IValidationEnum isAssignmentIdValid(User user, Assignment assignment) {
+	public static IValidationEnum isAssignmentIdValid(Client client, Assignment assignment) {
 
-		// User is (administrator or teacher)
+		// Client is (administrator or teacher)
         // TODO
 		return ValidationInfo.Common.Valid;
 	}
@@ -33,7 +33,7 @@ public class AssignmentValidator {
 		return ValidationInfo.Common.Valid;
 	}
 	
-	public static IValidationEnum isIdValid(User user, Assignment assignment) {
+	public static IValidationEnum isIdValid(Client client, Assignment assignment) {
 
         // TODO
 		return ValidationInfo.Common.Valid;

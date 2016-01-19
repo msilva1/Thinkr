@@ -1,6 +1,6 @@
 package com.bytes.thinkr.service.impl;
 
-import com.bytes.thinkr.model.account.User;
+import com.bytes.thinkr.model.account.Client;
 import com.bytes.thinkr.model.session.Session;
 import com.bytes.thinkr.model.session.SessionList;
 import com.bytes.thinkr.service.ISessionService;
@@ -63,7 +63,7 @@ public class SessionServiceImpl implements ISessionService {
             if (s.isLoggedIn() == isLoggedIn) {
 
                 if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.log(Level.FINE, "User found: " + k);
+                    LOGGER.log(Level.FINE, "Client found: " + k);
                 }
                 sessionList.getSessions().put(k, s);
             }
@@ -81,7 +81,7 @@ public class SessionServiceImpl implements ISessionService {
      */
     private Session logUser(String userId, String password, boolean state) {
 
-        if (!AccountServiceImpl.getInstance().isExistingUserValid(new User(userId, password)))
+        if (!AccountServiceImpl.getInstance().isExistingUserValid(new Client(userId, password)))
         {
             return Session.INVALID_ID_OR_PASSWORD;
         }

@@ -42,7 +42,9 @@ public class SessionEntityTest extends EntityTest<Session>{
      */
     @Override
     protected void beforeEntitySave(Session session) {
+
         Account account = session.getAccount();
+        HibernateUtil.commit(account.getClient());
         HibernateUtil.commit(account);
     }
 

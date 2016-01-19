@@ -4,10 +4,12 @@
 
 package com.bytes.thinkr.db;
 
+import com.bytes.thinkr.model.account.Account;
+import com.bytes.thinkr.model.account.Client;
 import com.bytes.thinkr.model.assignment.Answer;
 import com.bytes.thinkr.model.assignment.Assignment;
-import com.bytes.thinkr.model.assignment.Task;
 import com.bytes.thinkr.model.assignment.Question;
+import com.bytes.thinkr.model.assignment.Task;
 import com.bytes.thinkr.model.entity.AssignmentEntityFactory;
 import org.junit.Assert;
 import org.junit.Test;
@@ -39,10 +41,12 @@ public class AssignmentEntityTest extends EntityTest<Assignment>{
     /**
      * Hydration:
      * Assignment
+     *  - Accounts(teacher, parent, student)
+     *    - User
      *  - Task
      *    - Questions
      *      - Answer
-     * Commit order: Answers > Question > Task > Assignment
+     * Commit order: Answers > Question > {Task, User > Accounts} > Assignment
      *
      * @param entity The Assignment to commit
      */
@@ -56,8 +60,17 @@ public class AssignmentEntityTest extends EntityTest<Assignment>{
             answers.add(q.getAnswer());
         }
 
-        HibernateUtil.commit(task);
+        List<Client> clients = new ArrayList<>();
+        List<Account> accounts = entity.getAccounts();
+        for (Account a : accounts) {
+            clients.add(a.getClient());
+        }
+
         HibernateUtil.commit(answers);
         HibernateUtil.commit(questions);
+        HibernateUtil.commit(clients);
+        HibernateUtil.commit(accounts);
+        HibernateUtil.commit(task);
+
     }
 }

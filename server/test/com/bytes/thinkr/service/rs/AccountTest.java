@@ -1,14 +1,13 @@
 package com.bytes.thinkr.service.rs;
 
 import com.bytes.thinkr.model.account.AccountList;
-import com.bytes.thinkr.model.account.User;
+import com.bytes.thinkr.model.account.Client;
 import com.bytes.thinkr.model.session.Session;
 import org.glassfish.jersey.client.ClientConfig;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
@@ -25,7 +24,7 @@ public class AccountTest extends RestClientTest {
 	
 		baseUrl = "http://localhost:8080/WebServices";
 		
-		Client client = ClientBuilder.newClient(new ClientConfig());
+		javax.ws.rs.client.Client client = ClientBuilder.newClient(new ClientConfig());
 		target = client.target(UriBuilder.fromUri(baseUrl).build());
 		
 	}
@@ -51,16 +50,16 @@ public class AccountTest extends RestClientTest {
 	
 		int count = 10;
 		for (int i = 0; i < count; i ++) {
-			createAccount(userIds[0] +i, userEmails[0], userPass[0] +i, User.Type.Admin);
-			createAccount(userIds[1] +i, userEmails[1], userPass[1] +i, User.Type.Teacher);
-			createAccount(userIds[2] +i, userEmails[2], userPass[2] +i, User.Type.Student);
-			createAccount(userIds[3] +i, userEmails[3], userPass[3] +i, User.Type.Student);
+			createAccount(userIds[0] +i, userEmails[0], userPass[0] +i, Client.Type.Admin);
+			createAccount(userIds[1] +i, userEmails[1], userPass[1] +i, Client.Type.Teacher);
+			createAccount(userIds[2] +i, userEmails[2], userPass[2] +i, Client.Type.Student);
+			createAccount(userIds[3] +i, userEmails[3], userPass[3] +i, Client.Type.Student);
 		}
 		
 		AccountList accounts = target.path("account/find").request()
 			.accept(MediaType.APPLICATION_JSON).get(AccountList.class);
 
-		System.out.println("User created: " + accounts.getAccounts().size());
+		System.out.println("Client created: " + accounts.getAccounts().size());
 		Assert.assertTrue(accounts.getAccounts().size() == (count*4)+1);
 	}
 	
@@ -130,15 +129,15 @@ public class AccountTest extends RestClientTest {
 	 * @param type
 	 * @return
 	 */
-	private void createAccount(String userId, String email, String password, User.Type type) {
+	private void createAccount(String userId, String email, String password, Client.Type type) {
 		
 		System.out.print("Creating account: " + userId);
 
-		User user = new User(userId, email, password, User.Type.Teacher);
+		Client client = new Client(userId, email, password, Client.Type.Teacher);
 
 		String account = target.path("account").path("create")
 				.request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
-				.post(Entity.entity(user, MediaType.APPLICATION_JSON), String.class);
+				.post(Entity.entity(client, MediaType.APPLICATION_JSON), String.class);
 
 		System.out.println(" Response: " + account);
 //		System.out.println(" Response: " + account.getValidation().get(ValidationInfo.Type.Account));

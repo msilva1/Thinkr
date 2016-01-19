@@ -1,7 +1,7 @@
 package com.bytes.thinkr.service.rs;
 
 import com.bytes.thinkr.model.ValidationInfo;
-import com.bytes.thinkr.model.account.User;
+import com.bytes.thinkr.model.account.Client;
 import com.bytes.thinkr.model.assignment.Assignment;
 import com.bytes.thinkr.model.assignment.AssignmentList;
 import com.bytes.thinkr.model.assignment.Task;
@@ -11,7 +11,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
@@ -30,7 +29,7 @@ public class AssignmentTest extends RestClientTest {
 	
 		baseUrl = "http://localhost:8080/WebServices/assignment";
 		
-		Client client = ClientBuilder.newClient(new ClientConfig());
+		javax.ws.rs.client.Client client = ClientBuilder.newClient(new ClientConfig());
 		target = client.target(UriBuilder.fromUri(baseUrl).build());
         assignment = AssignmentEntityFactory.getInstance().generate(1).get(0);
 		
@@ -71,10 +70,10 @@ public class AssignmentTest extends RestClientTest {
 		for (int i = 1; i < 11; i++) {
 			if (i%2==1) {
 				String aid = getAssignmentId(i);
-				User user = new User(uid, pass);
+				Client client = new Client(uid, pass);
 				Assignment response2  = target.path(String.format("assign/%1$s/%2$s", uid, aid))
 					.request().accept(MediaType.APPLICATION_JSON)
-					.post(Entity.entity(user, MediaType.APPLICATION_JSON), Assignment.class);
+					.post(Entity.entity(client, MediaType.APPLICATION_JSON), Assignment.class);
 
 				String status = response2.getValidation().get(ValidationInfo.Type.Assignment);
 				Assert.assertTrue((status == ValidationInfo.Assignment.Assigned.toString()) ||

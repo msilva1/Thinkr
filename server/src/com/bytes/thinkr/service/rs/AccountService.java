@@ -2,7 +2,7 @@ package com.bytes.thinkr.service.rs;
 
 import com.bytes.thinkr.model.account.Account;
 import com.bytes.thinkr.model.account.AccountList;
-import com.bytes.thinkr.model.account.User;
+import com.bytes.thinkr.model.account.Client;
 import com.bytes.thinkr.service.IAccountService;
 import com.bytes.thinkr.service.impl.AccountServiceImpl;
 
@@ -41,9 +41,9 @@ public class AccountService implements IAccountService {
 	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@Path("create")
 	@Override
-	public Account createAccount(User user) {
+	public Account createAccount(Client client) {
 
-		return AccountServiceImpl.getInstance().createAccount(user);
+		return AccountServiceImpl.getInstance().createAccount(client);
 	}
 	
 
@@ -71,8 +71,8 @@ public class AccountService implements IAccountService {
 	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@Path("isExistingUser")
 	@Override
-	public boolean isExistingUserValid(User user) {
-		return AccountServiceImpl.getInstance().isExistingUserValid(user);
+	public boolean isExistingUserValid(Client client) {
+		return AccountServiceImpl.getInstance().isExistingUserValid(client);
 	}
 
 

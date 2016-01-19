@@ -7,9 +7,9 @@
     <session-factory>
 
         <!-- Azure SQL Connection String -->
-        <!-- jdbc:sqlserver://bytes.database.windows.net:1433;database=ThinkrDB;user=kentative@bytes;password=Azure2016;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30; -->
+        <!-- jdbc:sqlserver://bytes.database.windows.net:1433;database=ThinkrDB;client=kentative@bytes;password=Azure2016;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30; -->
         <!-- Azure Connection -->
-        <!--<property name="connection.url">jdbc:sqlserver://bytes.database.windows.net:1433;database=ThinkrDB;user=kentative@bytes;password=Azure2016;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;</property>-->
+        <!--<property name="connection.url">jdbc:sqlserver://bytes.database.windows.net:1433;database=ThinkrDB;client=kentative@bytes;password=Azure2016;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;</property>-->
         <!--<property name="connection.driver_class">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>-->
         <!--<property name="connection.username">kentative</property>-->
         <!--<property name="connection.password">Azure2016</property>-->
@@ -27,10 +27,11 @@
         <!--<mapping package="com.bytes.thinkr.model"/>-->
         <mapping package="com.bytes.thinkr.model.account"/>
         <mapping class="com.bytes.thinkr.model.account.Account"/>
-        <mapping class="com.bytes.thinkr.model.account.User"/>
+        <mapping class="com.bytes.thinkr.model.account.Client"/>
 
         <!--<mapping package="com.bytes.thinkr.model.assignment"/>-->
         <mapping class="com.bytes.thinkr.model.assignment.Assignment"/>
+        <mapping class="com.bytes.thinkr.model.assignment.Task"/>
         <mapping class="com.bytes.thinkr.model.assignment.Question"/>
         <mapping class="com.bytes.thinkr.model.assignment.Answer"/>
         <mapping class="com.bytes.thinkr.model.assignment.Point"/>

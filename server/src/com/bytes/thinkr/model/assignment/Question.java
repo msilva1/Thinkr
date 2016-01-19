@@ -28,7 +28,8 @@ public class Question implements IEntity {
     @Column(name = "questionId")
     private Long id;
 
-    @OneToOne private Answer answer;
+    @OneToOne
+    private Answer answer;
     private Subject subject;
     private String question;
     private boolean isCompleted;
