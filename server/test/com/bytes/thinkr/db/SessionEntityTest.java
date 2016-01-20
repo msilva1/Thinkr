@@ -5,7 +5,6 @@
 package com.bytes.thinkr.db;
 
 import com.bytes.thinkr.model.account.Account;
-import com.bytes.thinkr.model.entity.AccountEntityFactory;
 import com.bytes.thinkr.model.entity.SessionEntityFactory;
 import com.bytes.thinkr.model.session.Session;
 import org.junit.Assert;

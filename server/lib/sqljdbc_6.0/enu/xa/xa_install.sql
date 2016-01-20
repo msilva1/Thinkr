@@ -47,7 +47,7 @@ exec sp_addextendedproc 'xp_sqljdbc_xa_init_ex', 'SQLJDBC_XA.dll'
 go
 
 -- Create the [SqlJDBCXAUser] role in master database.
--- The SQL administrator can later add users to this role to allow users to participate 
+-- The SQL administrator can later add clients to this role to allow clients to participate
 -- in Microsoft JDBC Driver 6.0 for SQL Server distributed transactions.
 if exists (select * from sys.schemas where name = 'SqlJDBCXAUser' ) 
 drop schema [SqlJDBCXAUser];
@@ -74,7 +74,7 @@ grant execute on xp_sqljdbc_xa_prepare_ex to [SqlJDBCXAUser]
 grant execute on xp_sqljdbc_xa_init_ex to [SqlJDBCXAUser]
 go
 
--- Add users to the [SqlJDBCXAUser] role as needed.
+-- Add clients to the [SqlJDBCXAUser] role as needed.
 
 -- Example for adding a SQL authentication client to the SqlJDBCXAUser role.
 -- exec sp_addrolemember [SqlJDBCXAUser], 'MySQLUser'

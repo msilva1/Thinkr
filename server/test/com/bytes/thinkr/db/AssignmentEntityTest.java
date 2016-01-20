@@ -42,11 +42,11 @@ public class AssignmentEntityTest extends EntityTest<Assignment>{
      * Hydration:
      * Assignment
      *  - Accounts(teacher, parent, student)
-     *    - User
+     *    - Client
      *  - Task
      *    - Questions
      *      - Answer
-     * Commit order: Answers > Question > {Task, User > Accounts} > Assignment
+     * Commit order: Answers > Question > {Task, Client > Accounts} > Assignment
      *
      * @param entity The Assignment to commit
      */
