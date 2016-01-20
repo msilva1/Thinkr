@@ -1,8 +1,8 @@
 package com.bytes.thinkr.service.rs;
 
-import com.bytes.thinkr.model.account.AccountList;
-import com.bytes.thinkr.model.account.Client;
-import com.bytes.thinkr.model.session.Session;
+import com.bytes.thinkr.model.entity.account.AccountList;
+import com.bytes.thinkr.model.entity.account.Client;
+import com.bytes.thinkr.model.entity.session.Session;
 import org.glassfish.jersey.client.ClientConfig;
 import org.junit.Assert;
 import org.junit.Before;

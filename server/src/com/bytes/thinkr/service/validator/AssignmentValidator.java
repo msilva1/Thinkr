@@ -2,8 +2,8 @@ package com.bytes.thinkr.service.validator;
 
 import com.bytes.thinkr.model.IValidationEnum;
 import com.bytes.thinkr.model.ValidationInfo;
-import com.bytes.thinkr.model.account.Client;
-import com.bytes.thinkr.model.assignment.Assignment;
+import com.bytes.thinkr.model.entity.account.Client;
+import com.bytes.thinkr.model.entity.assignment.Assignment;
 
 public class AssignmentValidator {
 

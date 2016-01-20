@@ -24,23 +24,19 @@
         <property name="hibernate.jdbc.batch_size">100</property>
         <property name="default_schema">thinkr</property>
         <property name="show_sql">true</property>
-        <property name="hbm2ddl.auto">create</property>
+        <!--<property name="hbm2ddl.auto">create</property>-->
 
-        <!--<mapping package="com.bytes.thinkr.model"/>-->
-        <mapping package="com.bytes.thinkr.model.account"/>
-        <mapping class="com.bytes.thinkr.model.account.Account"/>
-        <mapping class="com.bytes.thinkr.model.account.Client"/>
+        <mapping class="com.bytes.thinkr.model.entity.account.Account"/>
+        <mapping class="com.bytes.thinkr.model.entity.account.Client"/>
 
-        <!--<mapping package="com.bytes.thinkr.model.assignment"/>-->
-        <mapping class="com.bytes.thinkr.model.assignment.Assignment"/>
-        <mapping class="com.bytes.thinkr.model.assignment.Task"/>
-        <mapping class="com.bytes.thinkr.model.assignment.Question"/>
-        <mapping class="com.bytes.thinkr.model.assignment.Answer"/>
-        <mapping class="com.bytes.thinkr.model.assignment.Point"/>
-        <mapping class="com.bytes.thinkr.model.assignment.Score"/>
+        <mapping class="com.bytes.thinkr.model.entity.assignment.Assignment"/>
+        <mapping class="com.bytes.thinkr.model.entity.assignment.Task"/>
+        <mapping class="com.bytes.thinkr.model.entity.assignment.Question"/>
+        <mapping class="com.bytes.thinkr.model.entity.assignment.Answer"/>
+        <mapping class="com.bytes.thinkr.model.entity.assignment.Point"/>
+        <mapping class="com.bytes.thinkr.model.entity.assignment.Score"/>
 
-        <!--<mapping package="com.bytes.thinkr.model.session"/>-->
-        <mapping class="com.bytes.thinkr.model.session.Session"/>
+        <mapping class="com.bytes.thinkr.model.entity.session.Session"/>
 
     </session-factory>
 </hibernate-configuration>

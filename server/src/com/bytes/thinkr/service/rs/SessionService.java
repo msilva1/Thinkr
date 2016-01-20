@@ -1,10 +1,8 @@
 package com.bytes.thinkr.service.rs;
 
-import com.bytes.thinkr.model.account.Account;
-import com.bytes.thinkr.model.session.Session;
-import com.bytes.thinkr.model.session.SessionList;
+import com.bytes.thinkr.model.entity.session.Session;
+import com.bytes.thinkr.model.entity.session.SessionList;
 import com.bytes.thinkr.service.ISessionService;
-import com.bytes.thinkr.service.impl.AccountServiceImpl;
 import com.bytes.thinkr.service.impl.SessionServiceImpl;
 
 import javax.inject.Singleton;

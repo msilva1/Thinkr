@@ -1,12 +1,12 @@
 package com.bytes.thinkr.service.rs;
 
-import com.bytes.thinkr.model.account.Account;
-import com.bytes.thinkr.model.account.AccountList;
-import com.bytes.thinkr.model.account.Client;
-import com.bytes.thinkr.model.assignment.Answer;
-import com.bytes.thinkr.model.assignment.Assignment;
-import com.bytes.thinkr.model.assignment.AssignmentList;
-import com.bytes.thinkr.model.assignment.Question;
+import com.bytes.thinkr.model.entity.account.Account;
+import com.bytes.thinkr.model.entity.account.AccountList;
+import com.bytes.thinkr.model.entity.account.Client;
+import com.bytes.thinkr.model.entity.assignment.Answer;
+import com.bytes.thinkr.model.entity.assignment.Assignment;
+import com.bytes.thinkr.model.entity.assignment.AssignmentList;
+import com.bytes.thinkr.model.entity.assignment.Question;
 import com.bytes.thinkr.service.impl.AccountServiceImpl;
 import com.bytes.thinkr.service.impl.AssignmentServiceImpl;
 import com.bytes.thinkr.service.impl.SanboxServiceImpl;

@@ -11,8 +11,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import com.bytes.thinkr.model.assignment.Assignment;
-import com.bytes.thinkr.model.assignment.AssignmentList;
+import com.bytes.thinkr.model.entity.assignment.Assignment;
+import com.bytes.thinkr.model.entity.assignment.AssignmentList;
 import com.bytes.thinkr.service.IAssignmentService;
 import com.bytes.thinkr.service.impl.AssignmentServiceImpl;
 

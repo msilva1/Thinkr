@@ -10,4 +10,7 @@ package com.bytes.thinkr.model.entity;
 public interface IEntity {
 
     void setId(Long identifier);
+
+    Long getId();
+
 }

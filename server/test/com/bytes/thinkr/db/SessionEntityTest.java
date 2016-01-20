@@ -4,9 +4,10 @@
 
 package com.bytes.thinkr.db;
 
-import com.bytes.thinkr.model.account.Account;
-import com.bytes.thinkr.model.entity.SessionEntityFactory;
-import com.bytes.thinkr.model.session.Session;
+import com.bytes.thinkr.model.entity.account.Account;
+import com.bytes.thinkr.model.factory.SessionEntityFactory;
+import com.bytes.thinkr.model.util.HibernateUtil;
+import com.bytes.thinkr.model.entity.session.Session;
 import org.junit.Assert;
 import org.junit.Test;
 

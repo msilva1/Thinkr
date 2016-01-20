@@ -1,7 +1,7 @@
 package com.bytes.thinkr.service;
 
-import com.bytes.thinkr.model.assignment.Assignment;
-import com.bytes.thinkr.model.assignment.AssignmentList;
+import com.bytes.thinkr.model.entity.assignment.Assignment;
+import com.bytes.thinkr.model.entity.assignment.AssignmentList;
 
 public interface IAssignmentService {
 

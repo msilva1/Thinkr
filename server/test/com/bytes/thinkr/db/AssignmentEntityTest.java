@@ -4,13 +4,14 @@
 
 package com.bytes.thinkr.db;
 
-import com.bytes.thinkr.model.account.Account;
-import com.bytes.thinkr.model.account.Client;
-import com.bytes.thinkr.model.assignment.Answer;
-import com.bytes.thinkr.model.assignment.Assignment;
-import com.bytes.thinkr.model.assignment.Question;
-import com.bytes.thinkr.model.assignment.Task;
-import com.bytes.thinkr.model.entity.AssignmentEntityFactory;
+import com.bytes.thinkr.model.entity.account.Account;
+import com.bytes.thinkr.model.entity.account.Client;
+import com.bytes.thinkr.model.entity.assignment.Answer;
+import com.bytes.thinkr.model.entity.assignment.Assignment;
+import com.bytes.thinkr.model.entity.assignment.Question;
+import com.bytes.thinkr.model.entity.assignment.Task;
+import com.bytes.thinkr.model.factory.AssignmentEntityFactory;
+import com.bytes.thinkr.model.util.HibernateUtil;
 import org.junit.Assert;
 import org.junit.Test;
 

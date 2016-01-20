@@ -1,8 +1,8 @@
 package com.bytes.thinkr.service.impl;
 
-import com.bytes.thinkr.model.account.Client;
-import com.bytes.thinkr.model.session.Session;
-import com.bytes.thinkr.model.session.SessionList;
+import com.bytes.thinkr.model.entity.account.Client;
+import com.bytes.thinkr.model.entity.session.Session;
+import com.bytes.thinkr.model.entity.session.SessionList;
 import com.bytes.thinkr.service.ISessionService;
 
 import java.util.Date;

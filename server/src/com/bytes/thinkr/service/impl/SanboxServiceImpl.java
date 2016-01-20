@@ -1,10 +1,10 @@
 package com.bytes.thinkr.service.impl;
 
-import com.bytes.thinkr.model.assignment.Answer;
-import com.bytes.thinkr.model.assignment.Assignment;
-import com.bytes.thinkr.model.assignment.Point;
-import com.bytes.thinkr.model.assignment.Question;
-import com.bytes.thinkr.model.entity.AssignmentEntityFactory;
+import com.bytes.thinkr.model.entity.assignment.Answer;
+import com.bytes.thinkr.model.entity.assignment.Assignment;
+import com.bytes.thinkr.model.entity.assignment.Point;
+import com.bytes.thinkr.model.entity.assignment.Question;
+import com.bytes.thinkr.model.factory.AssignmentEntityFactory;
 
 import java.util.List;
 import java.util.logging.Logger;

@@ -10,11 +10,11 @@ import javax.inject.Singleton;
 
 import com.bytes.thinkr.model.IValidationEnum;
 import com.bytes.thinkr.model.ValidationInfo;
-import com.bytes.thinkr.model.account.Account;
-import com.bytes.thinkr.model.account.Client;
-import com.bytes.thinkr.model.assignment.Assignment;
-import com.bytes.thinkr.model.assignment.AssignmentList;
-import com.bytes.thinkr.model.assignment.Task;
+import com.bytes.thinkr.model.entity.account.Account;
+import com.bytes.thinkr.model.entity.account.Client;
+import com.bytes.thinkr.model.entity.assignment.Assignment;
+import com.bytes.thinkr.model.entity.assignment.AssignmentList;
+import com.bytes.thinkr.model.entity.assignment.Task;
 import com.bytes.thinkr.service.IAssignmentService;
 import com.bytes.thinkr.service.validator.AssignmentValidator;
 

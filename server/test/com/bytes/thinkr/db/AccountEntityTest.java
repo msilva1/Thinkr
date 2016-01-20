@@ -4,9 +4,10 @@
 
 package com.bytes.thinkr.db;
 
-import com.bytes.thinkr.model.account.Account;
-import com.bytes.thinkr.model.account.Client;
-import com.bytes.thinkr.model.entity.AccountEntityFactory;
+import com.bytes.thinkr.model.entity.account.Account;
+import com.bytes.thinkr.model.entity.account.Client;
+import com.bytes.thinkr.model.factory.AccountEntityFactory;
+import com.bytes.thinkr.model.util.HibernateUtil;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -48,6 +49,4 @@ public class AccountEntityTest extends EntityTest<Account>{
         HibernateUtil.commit(client);
 
     }
-
-
 }

@@ -2,11 +2,10 @@ package com.bytes.thinkr.service.impl;
 
 import com.bytes.thinkr.model.IValidationEnum;
 import com.bytes.thinkr.model.ValidationInfo;
-import com.bytes.thinkr.model.account.Account;
-import com.bytes.thinkr.model.account.AccountList;
-import com.bytes.thinkr.model.account.Client;
+import com.bytes.thinkr.model.entity.account.Account;
+import com.bytes.thinkr.model.entity.account.AccountList;
+import com.bytes.thinkr.model.entity.account.Client;
 import com.bytes.thinkr.service.IAccountService;
-import com.bytes.thinkr.model.IAccountServiceLocal;
 import com.bytes.thinkr.service.util.PasswordUtil;
 import com.bytes.thinkr.service.validator.AccountValidator;
 
@@ -17,7 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Singleton
-public class AccountServiceImpl implements IAccountService, IAccountServiceLocal {
+public class AccountServiceImpl implements IAccountService {
 
 	private static final Logger LOGGER = Logger.getLogger(AccountServiceImpl.class.getName());
 	
@@ -149,6 +148,8 @@ public class AccountServiceImpl implements IAccountService, IAccountServiceLocal
 		if (accounts.containsKey(userId.toLowerCase())) {
 			return Account.EXISTING;
 		}
+
+
 
         IValidationEnum idStatus = AccountValidator.isUserIdValid(userId);
         IValidationEnum pwdStatus = AccountValidator.isPasswordValid(password);

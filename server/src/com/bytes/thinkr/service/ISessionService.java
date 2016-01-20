@@ -1,7 +1,7 @@
 package com.bytes.thinkr.service;
 
-import com.bytes.thinkr.model.session.Session;
-import com.bytes.thinkr.model.session.SessionList;
+import com.bytes.thinkr.model.entity.session.Session;
+import com.bytes.thinkr.model.entity.session.SessionList;
 
 /**
  * Created by Kent on 1/8/2016.

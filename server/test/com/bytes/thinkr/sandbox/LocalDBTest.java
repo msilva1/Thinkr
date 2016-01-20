@@ -7,9 +7,9 @@ package com.bytes.thinkr.sandbox;
 import java.util.List;
 import java.util.Iterator;
 
-import com.bytes.thinkr.db.HibernateUtil;
-import com.bytes.thinkr.model.account.Account;
-import com.bytes.thinkr.model.entity.AccountEntityFactory;
+import com.bytes.thinkr.model.util.HibernateUtil;
+import com.bytes.thinkr.model.entity.account.Account;
+import com.bytes.thinkr.model.factory.AccountEntityFactory;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
