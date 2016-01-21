@@ -5,7 +5,7 @@ import com.bytes.thinkr.model.entity.account.Client;
 import com.bytes.thinkr.model.entity.assignment.Assignment;
 import com.bytes.thinkr.model.entity.assignment.AssignmentList;
 import com.bytes.thinkr.model.entity.assignment.Task;
-import com.bytes.thinkr.model.factory.AssignmentEntityFactory;
+import com.bytes.thinkr.model.factory.data.AssignmentDataFactory;
 import org.glassfish.jersey.client.ClientConfig;
 import org.junit.Assert;
 import org.junit.Before;
@@ -31,7 +31,7 @@ public class AssignmentTest extends RestClientTest {
 		
 		javax.ws.rs.client.Client client = ClientBuilder.newClient(new ClientConfig());
 		target = client.target(UriBuilder.fromUri(baseUrl).build());
-        assignment = AssignmentEntityFactory.getInstance().generate(1).get(0);
+        assignment = AssignmentDataFactory.getInstance().generate(1).get(0);
 		
 	}
 	

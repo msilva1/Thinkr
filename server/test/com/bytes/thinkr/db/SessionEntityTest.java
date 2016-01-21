@@ -5,7 +5,7 @@
 package com.bytes.thinkr.db;
 
 import com.bytes.thinkr.model.entity.account.Account;
-import com.bytes.thinkr.model.factory.SessionEntityFactory;
+import com.bytes.thinkr.model.factory.data.SessionDataFactory;
 import com.bytes.thinkr.model.util.HibernateUtil;
 import com.bytes.thinkr.model.entity.session.Session;
 import org.junit.Assert;
@@ -25,7 +25,7 @@ public class SessionEntityTest extends EntityTest<Session>{
 
         int entityCount = 100;
         String entityName = "Session";
-        SessionEntityFactory factory = SessionEntityFactory.getInstance();
+        SessionDataFactory factory = SessionDataFactory.getInstance();
         SessionEntityTest entityTest = new SessionEntityTest();
         entityTest.create(factory, entityCount);
 

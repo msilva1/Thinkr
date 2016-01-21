@@ -9,6 +9,7 @@ import com.bytes.thinkr.model.ValidationInfo;
 import com.bytes.thinkr.model.entity.account.Account;
 
 import javax.persistence.*;
+import javax.print.DocFlavor;
 import javax.xml.bind.annotation.*;
 import java.util.Date;
 
@@ -57,6 +58,11 @@ public class Session implements IEntity {
         setDuration(0);
         setLoggedInTime(new Date());
         setValidation(new ValidationInfo());
+    }
+
+    @Override
+    public String toString(){
+        return getAccount().getClient().getDisplayName() + " logged in: " + isLoggedIn();
     }
 
     /**

@@ -47,6 +47,11 @@ public class Question implements IEntity {
         setAnswer(new Answer());
     }
 
+    @Override
+    public String toString() {
+        return getQuestion();
+    }
+
     //region property
     public Subject getSubject() {
         return subject;

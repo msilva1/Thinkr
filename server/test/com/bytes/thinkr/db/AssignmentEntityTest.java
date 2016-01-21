@@ -10,7 +10,7 @@ import com.bytes.thinkr.model.entity.assignment.Answer;
 import com.bytes.thinkr.model.entity.assignment.Assignment;
 import com.bytes.thinkr.model.entity.assignment.Question;
 import com.bytes.thinkr.model.entity.assignment.Task;
-import com.bytes.thinkr.model.factory.AssignmentEntityFactory;
+import com.bytes.thinkr.model.factory.data.AssignmentDataFactory;
 import com.bytes.thinkr.model.util.HibernateUtil;
 import org.junit.Assert;
 import org.junit.Test;
@@ -30,7 +30,7 @@ public class AssignmentEntityTest extends EntityTest<Assignment>{
 
         int entityCount = 100;
         String entityName = "Assignment";
-        AssignmentEntityFactory factory = AssignmentEntityFactory.getInstance();
+        AssignmentDataFactory factory = AssignmentDataFactory.getInstance();
 
         AssignmentEntityTest entityTest = new AssignmentEntityTest();
         entityTest.create(factory, entityCount);

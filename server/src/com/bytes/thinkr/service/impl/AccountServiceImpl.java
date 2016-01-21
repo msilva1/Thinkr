@@ -150,7 +150,6 @@ public class AccountServiceImpl implements IAccountService {
 		}
 
 
-
         IValidationEnum idStatus = AccountValidator.isUserIdValid(userId);
         IValidationEnum pwdStatus = AccountValidator.isPasswordValid(password);
         IValidationEnum emailStatus = AccountValidator.isEmailValid(userEmail);

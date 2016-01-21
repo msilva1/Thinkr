@@ -6,6 +6,7 @@ package com.bytes.thinkr.db;
 
 import com.bytes.thinkr.model.entity.IEntity;
 import com.bytes.thinkr.model.factory.EntityFactory;
+import com.bytes.thinkr.model.factory.data.DataFactory;
 import com.bytes.thinkr.model.util.HibernateUtil;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -24,7 +25,7 @@ public abstract class EntityTest<T extends IEntity> {
      *
      * @param entityFactory
      */
-    protected void create(EntityFactory<T> entityFactory, int entityCount) {
+    protected void create(DataFactory<T> entityFactory, int entityCount) {
 
         List<T> entities = entityFactory.generate(entityCount);
         Session session = HibernateUtil.getSessionFactory().openSession();
@@ -55,7 +56,7 @@ public abstract class EntityTest<T extends IEntity> {
      * @param entityName
      * @param factory
      */
-    protected List<T> retrieve(String entityName, EntityFactory factory) {
+    protected List<T> retrieve(String entityName, DataFactory factory) {
 
         List<T> entities = null;
         Session session = HibernateUtil.getSessionFactory().openSession();
@@ -65,7 +66,7 @@ public abstract class EntityTest<T extends IEntity> {
             transaction = session.beginTransaction();
             entities = session.createQuery(query).list();
             for (T entity : entities) {
-                System.out.println(factory.getDisplayInfo(entity));
+                System.out.println(entity.toString());
             }
         } catch (HibernateException e) {
             transaction.rollback();

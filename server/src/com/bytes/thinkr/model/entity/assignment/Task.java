@@ -88,6 +88,11 @@ public class Task implements IEntity {
         setCreatedDate(new Date());
     }
 
+    @Override
+    public String toString() {
+        return getName();
+    }
+
     public Long getId() {
         return id;
     }

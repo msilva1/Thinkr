@@ -4,7 +4,7 @@ import com.bytes.thinkr.model.entity.assignment.Answer;
 import com.bytes.thinkr.model.entity.assignment.Assignment;
 import com.bytes.thinkr.model.entity.assignment.Point;
 import com.bytes.thinkr.model.entity.assignment.Question;
-import com.bytes.thinkr.model.factory.AssignmentEntityFactory;
+import com.bytes.thinkr.model.factory.data.AssignmentDataFactory;
 
 import java.util.List;
 import java.util.logging.Logger;
@@ -41,7 +41,7 @@ public class SanboxServiceImpl {
 
     public static Assignment createAssignment() {
 
-        List<Assignment> assignments = AssignmentEntityFactory.getInstance().generate(1);
+        List<Assignment> assignments = AssignmentDataFactory.getInstance().generate(1);
         return assignments.get(0);
     }
 }

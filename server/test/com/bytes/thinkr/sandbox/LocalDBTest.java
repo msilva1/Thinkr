@@ -4,23 +4,23 @@
 
 package com.bytes.thinkr.sandbox;
 
-import java.util.List;
-import java.util.Iterator;
-
-import com.bytes.thinkr.model.util.HibernateUtil;
 import com.bytes.thinkr.model.entity.account.Account;
-import com.bytes.thinkr.model.factory.AccountEntityFactory;
+import com.bytes.thinkr.model.factory.data.AccountDataFactory;
+import com.bytes.thinkr.model.util.HibernateUtil;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.junit.Test;
+
+import java.util.Iterator;
+import java.util.List;
 
 public class LocalDBTest {
 
     @Test
     public void createAccounts() {
 
-        List<Account> accounts = AccountEntityFactory.getInstance().generate(1000);
+        List<Account> accounts = AccountDataFactory.getInstance().generate(1000);
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
         try {

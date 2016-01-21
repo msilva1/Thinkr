@@ -9,6 +9,13 @@ import java.util.HashMap;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ValidationInfo {
 
+    public static final ValidationInfo VALID;
+    public static final ValidationInfo INVALID;
+
+    static {
+        VALID = new ValidationInfo().add(Type.Account, Common.Valid);
+        INVALID = new ValidationInfo().add(Type.Account, Common.Invalid);
+    }
 
     public enum Type {
 

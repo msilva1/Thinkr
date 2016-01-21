@@ -10,6 +10,8 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import java.io.Serializable;
+import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -23,42 +25,20 @@ public abstract class EntityFactory<T extends IEntity> {
     private static final int JDBC_PATCH_SIZE = 10;
     private static final Logger LOGGER = Logger.getLogger(EntityFactory.class.getName());
 
-    /**
-     * Generate a list of default persistable data
-     * @param count the number of entities to be generated
-     * @return the list of entities ready for persistence
-     */
-    public List<T> generate(int count) {
+    private Class entityType;
 
-        List<T> dataList = new ArrayList<>();
-        for (int i = 0; i < count; i++) {
-            dataList.add(create(i));
-        }
-        return dataList;
+    /**
+     * Dynamically determine the type of the generic.
+     */
+    public EntityFactory() {
+
+        // Obtain the class of T at runtime
+        this.entityType = (Class) ((ParameterizedType)
+            getClass().getGenericSuperclass()).getActualTypeArguments()[0]; // T
     }
 
     /**
-     * Create an entity with sufficient data for persistence
-     * @param i the entity tag or counter
-     * @return a persistable entity
-     */
-    protected abstract T create(int i);
-
-    /**
-     * Get the display information pertaining to the specified entity.
-     * Use toString?
-     * @param entity the entity
-     * @return a string describing the details of the entity
-     */
-    public abstract String getDisplayInfo(T entity);
-
-    /**
-     * Get the name of the entity
-     * @return the name of the entity
-     */
-    public abstract String getEntityName();
-
-    /**
+     * TODO consider changing Long to Serializable
      * Request to retrieve the entity matching the specified id
      * @param id the entity id
      * @return the entity
@@ -84,7 +64,7 @@ public abstract class EntityFactory<T extends IEntity> {
         // Construct this query from the id list
         //  "from Entity e where et.id in('1','2','3')"
         StringBuilder query = new StringBuilder();
-        query.append("from " + getEntityName() + " e where e.id in(");
+        query.append("from " + entityType.getSimpleName() + " e where e.id in(");
         for (Long id : ids) { query.append("'"+id+"',"); }
         query.setCharAt(query.length()-1, ')');
 
@@ -108,6 +88,11 @@ public abstract class EntityFactory<T extends IEntity> {
         }
 
         return entities;
+    }
+
+    public List<T> findAll() {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        return (List<T>) session.createCriteria(entityType).list();
     }
 
     /**

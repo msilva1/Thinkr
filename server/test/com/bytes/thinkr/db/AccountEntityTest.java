@@ -6,7 +6,7 @@ package com.bytes.thinkr.db;
 
 import com.bytes.thinkr.model.entity.account.Account;
 import com.bytes.thinkr.model.entity.account.Client;
-import com.bytes.thinkr.model.factory.AccountEntityFactory;
+import com.bytes.thinkr.model.factory.data.AccountDataFactory;
 import com.bytes.thinkr.model.util.HibernateUtil;
 import org.junit.Assert;
 import org.junit.Test;
@@ -25,7 +25,7 @@ public class AccountEntityTest extends EntityTest<Account>{
 
         int entityCount = 100;
         String entityName = "Account";
-        AccountEntityFactory factory = AccountEntityFactory.getInstance();
+        AccountDataFactory factory = AccountDataFactory.getInstance();
 
         AccountEntityTest entityTest = new AccountEntityTest();
         entityTest.create(factory, entityCount);
