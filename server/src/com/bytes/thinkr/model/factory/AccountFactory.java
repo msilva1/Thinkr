@@ -24,14 +24,19 @@ public class AccountFactory extends EntityFactory<Account> {
         return instance;
     }
 
+    /**
+     * Using @OneToOne(cascade = CascadeType.ALL)
+     * @param entities
+     * @return
+     */
     @Override
     protected boolean saveSubEntities(List<Account> entities) {
-
-        List<Client> clients = new ArrayList<>();
-        for (Account entity : entities) {
-            clients.add(entity.getClient());
-        }
-        return HibernateUtil.commit(clients);
+        return true;
+//        List<Client> clients = new ArrayList<>();
+//        for (Account entity : entities) {
+//            clients.add(entity.getClient());
+//        }
+//        return HibernateUtil.commit(clients);
     }
 
 }

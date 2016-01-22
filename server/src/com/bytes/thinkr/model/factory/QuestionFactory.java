@@ -23,6 +23,7 @@ public class QuestionFactory extends EntityFactory<Question> {
 
     @Override
     protected boolean saveSubEntities(List<Question> entity) {
-        return false;
+        // Using cascade
+        return true;
     }
 }

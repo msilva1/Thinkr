@@ -6,7 +6,6 @@ package com.bytes.thinkr.model.factory;
 
 import com.bytes.thinkr.model.entity.assignment.Assignment;
 
-import java.util.Date;
 import java.util.List;
 
 public class AssignmentFactory extends EntityFactory<Assignment> {
@@ -21,6 +20,7 @@ public class AssignmentFactory extends EntityFactory<Assignment> {
 
     @Override
     protected boolean saveSubEntities(List<Assignment> entity) {
-        return false;
+        // Using cascade
+        return true;
     }
 }

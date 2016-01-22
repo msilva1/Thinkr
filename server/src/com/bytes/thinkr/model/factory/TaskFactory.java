@@ -21,6 +21,7 @@ public class TaskFactory extends EntityFactory<Task> {
 
     @Override
     protected boolean saveSubEntities(List<Task> entity) {
-        return false;
+        // Using cascade
+        return true;
     }
 }

@@ -13,7 +13,6 @@ import com.bytes.thinkr.model.factory.data.DataFactory;
  */
 public class ClientFactoryTest extends EntityFactoryTest<Client> {
 
-
     @Override
     protected DataFactory<Client> getDataFactory() {
         return ClientDataFactory.getInstance();

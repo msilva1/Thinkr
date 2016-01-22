@@ -21,20 +21,31 @@ import static org.junit.Assert.*;
 /**
  * Created by Kent on 1/19/2016.
  */
-//@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public abstract class EntityFactoryTest<T extends IEntity> {
 
     private List<T> entities;
-    private int count;
-
 
     @Before
     public void init() {
-        if (count == 0) {count = 100;}
-        entities = getDataFactory().generate(count);
+        entities = getDataFactory().generate(getCount());
     }
 
+    /**
+     * Get the number of entities for list related queries
+     * @return the number of entities
+     */
+    protected int getCount() {return 100;}
+
+    /**
+     * Get the <tt>DataFactory</tt> for the corresponding entity
+     * @return the DataFactory
+     */
     protected abstract DataFactory<T> getDataFactory();
+
+    /**
+     * Get the data access factory for the corresponding entity
+     * @return the data access factory
+     */
     protected abstract EntityFactory<T> getEntityFactory();
 
     @Test
@@ -63,20 +74,14 @@ public abstract class EntityFactoryTest<T extends IEntity> {
 
     @Test
     public void testDelete() throws Exception {
+        // Need to perform commit before deleting
         assertTrue(getEntityFactory().delete(entities.get(0)));
     }
 
     @Test
     public void testDeleteAll() throws Exception {
+        // Need to perform commit before deleting
         assertTrue(getEntityFactory().deleteAll(entities));
     }
 
-
-    public int getCount() {
-        return count;
-    }
-
-    public void setCount(int count) {
-        this.count = count;
-    }
 }

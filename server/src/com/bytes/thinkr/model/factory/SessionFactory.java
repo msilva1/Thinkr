@@ -24,6 +24,7 @@ public class SessionFactory extends EntityFactory<Session> {
 
     @Override
     protected boolean saveSubEntities(List<Session> entity) {
-        return false;
+        // Using cascade
+        return true;
     }
 }

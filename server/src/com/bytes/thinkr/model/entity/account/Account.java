@@ -47,8 +47,8 @@ public class Account implements IEntity {
     @Column(name = "accountId")
 	private Long id;
 
-    @OneToOne
-	@XmlElement 
+    @OneToOne(cascade = CascadeType.ALL)
+    @XmlElement
 	private Client client;
 
     @Transient

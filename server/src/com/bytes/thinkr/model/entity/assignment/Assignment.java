@@ -47,11 +47,11 @@ public class Assignment implements IEntity {
     @Column(name = "assignmentId")
     private Long id;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @XmlElement
     private Task task;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @XmlElement
     private List<Account> accounts;
 

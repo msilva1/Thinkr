@@ -48,7 +48,7 @@ public class Task implements IEntity {
     @XmlTransient
     private Date createdDate;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @XmlElement
     private List<Question> questions;
 
