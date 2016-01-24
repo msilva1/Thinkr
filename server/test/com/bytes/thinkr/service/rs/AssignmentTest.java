@@ -1,5 +1,6 @@
 package com.bytes.thinkr.service.rs;
 
+import com.bytes.thinkr.model.IValidationEnum;
 import com.bytes.thinkr.model.ValidationInfo;
 import com.bytes.thinkr.model.entity.account.Client;
 import com.bytes.thinkr.model.entity.assignment.Assignment;
@@ -60,8 +61,8 @@ public class AssignmentTest extends RestClientTest {
 			assignment.getTask().setName(assignmentName + i);
 			Assignment response1 = target.path("create").path(uid).request().accept(MediaType.APPLICATION_JSON)
 					.post(Entity.entity(assignment, MediaType.APPLICATION_JSON), Assignment.class);
-				
-			String status = response1.getValidation().get(ValidationInfo.Type.Assignment);
+
+            String status = response1.getValidation().get(ValidationInfo.Type.Assignment);
 			Assert.assertTrue((status == ValidationInfo.Common.Valid.toString()) ||
 				(status == ValidationInfo.Assignment.Existing.toString()) );
 		}
@@ -75,8 +76,8 @@ public class AssignmentTest extends RestClientTest {
 					.request().accept(MediaType.APPLICATION_JSON)
 					.post(Entity.entity(client, MediaType.APPLICATION_JSON), Assignment.class);
 
-				String status = response2.getValidation().get(ValidationInfo.Type.Assignment);
-				Assert.assertTrue((status == ValidationInfo.Assignment.Assigned.toString()) ||
+                String status = response2.getValidation().get(ValidationInfo.Type.Assignment);
+                Assert.assertTrue((status == ValidationInfo.Assignment.Assigned.toString()) ||
 					(status == ValidationInfo.Assignment.AlreadyAssigned.toString()) );
 			}
 		}

@@ -3,6 +3,7 @@ package com.bytes.thinkr.model;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.Collection;
 import java.util.HashMap;
 
 @XmlRootElement
@@ -33,10 +34,10 @@ public class ValidationInfo {
 
     public enum Common implements IValidationEnum {
 
+        NotFound,
         Unspecified,
         Invalid,
         Valid
-
     }
 
     public enum Account implements IValidationEnum {
@@ -88,6 +89,8 @@ public class ValidationInfo {
         NeverLoggedOn
     }
 
+
+
     public ValidationInfo () {
         validations = new HashMap<>();
     }
@@ -97,6 +100,16 @@ public class ValidationInfo {
             type,
             validation.toString());
         return this;
+    }
+
+    @Override
+    public String toString() {
+
+        StringBuilder sb = new StringBuilder();
+        for(Type t : validations.keySet()) {
+            sb.append(t.toString() + " " + validations.get(t) + System.lineSeparator());
+        }
+        return sb.toString();
     }
 
     /**
@@ -112,4 +125,20 @@ public class ValidationInfo {
             return Common.Unspecified.toString();
         }
     }
+
+    /**
+     * Indicates if there are err
+     * @return
+     */
+    public boolean hasError() {
+
+        if (validations.size() > 0) {
+            // If the validation list doesn't have "valid", then it's an error
+            return !validations.values().contains(Common.Valid.toString());
+        }
+
+        return true;
+    }
+
+
 }

@@ -4,11 +4,15 @@
 
 package com.bytes.thinkr.model.entity.account;
 
-import com.bytes.thinkr.model.entity.IEntity;
+import com.bytes.thinkr.model.IValidationEnum;
 import com.bytes.thinkr.model.ValidationInfo;
+import com.bytes.thinkr.model.entity.IEntity;
 
 import javax.persistence.*;
-import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
 
 @Entity
@@ -32,8 +36,8 @@ public class Account implements IEntity {
 		EXISTING.getValidation().add(ValidationInfo.Type.UserId, ValidationInfo.UserId.Existing);
 	
 		NOT_FOUND = new Account();
-		NOT_FOUND.getValidation().add(ValidationInfo.Type.Account, ValidationInfo.Common.Unspecified);
-		
+		NOT_FOUND.getValidation().add(ValidationInfo.Type.Account, ValidationInfo.Common.NotFound);
+
 		INVALID_PASSWORD = new Account();
 		INVALID_PASSWORD.getValidation().add(ValidationInfo.Type.Account, ValidationInfo.Account.InvalidPassword);
 
@@ -47,7 +51,8 @@ public class Account implements IEntity {
     @Column(name = "accountId")
 	private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade=CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "client_clientId")
     @XmlElement
 	private Client client;
 
@@ -89,7 +94,7 @@ public class Account implements IEntity {
 				"%1$s " + System.lineSeparator() + 
 				"Date Created: %2$s " + System.lineSeparator() +
 				"Account Validation: %3$s " + System.lineSeparator(),
-				getClient(), getDateCreated().toInstant(), getValidation());
+				getClient(), getDateCreated().toString(), getValidation());
 	}
 
 	//region properties
@@ -125,5 +130,6 @@ public class Account implements IEntity {
 	public void setDateCreated(Date dateCreated) {
 		this.dateCreated = dateCreated;
 	}
-	//endregion
+
+    //endregion
 }

@@ -57,7 +57,7 @@ public class sqlxmlExample {
          // by using the SAX, ContentHandler, and ResultSet.
          showSetters(con);   
          
-         // The showTransformer method demonstrates how to get an XML entity
+         // The showTransformer method demonstrates how to find an XML entity
          // from one table and insert that XML entity to another table
          // by using the SAX and the Transformer. 
          showTransformer(con);        
@@ -183,7 +183,7 @@ public class sqlxmlExample {
          psmt.setSQLXML(4, xmlDest);
          psmt.execute();
 	        
-         // Execute the query and display the entity.
+         // Execute the retrieveByQuery and display the entity.
          SQL = "SELECT * FROM TestTable2";
          stmt = con.createStatement();
          rs = stmt.executeQuery(SQL);

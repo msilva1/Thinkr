@@ -130,7 +130,7 @@ public class AlwaysEncrypted
 	}
 
 	// To avoid storing the sourceConnection String in your code,
-	// you can retrieve it from a configuration file.
+	// you can retrieveAllByName it from a configuration file.
 	private static String GetConnectionString()
 	{
 

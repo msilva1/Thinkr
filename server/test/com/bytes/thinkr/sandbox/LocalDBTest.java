@@ -68,7 +68,7 @@ public class LocalDBTest {
 //        Transaction transaction = null;
 //        try {
 //            transaction = session.beginTransaction();
-//            Course course = (Course) session.get(Course.class, courseId);
+//            Course course = (Course) session.find(Course.class, courseId);
 //            course.setCourseName(courseName);
 //            transaction.commit();
 //        } catch (HibernateException e) {
@@ -84,7 +84,7 @@ public class LocalDBTest {
 //        Transaction transaction = null;
 //        try {
 //            transaction = session.beginTransaction();
-//            Course course = (Course) session.get(Course.class, courseId);
+//            Course course = (Course) session.find(Course.class, courseId);
 //            session.delete(course);
 //            transaction.commit();
 //        } catch (HibernateException e) {

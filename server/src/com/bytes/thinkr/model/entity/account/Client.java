@@ -17,9 +17,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Client implements IEntity {
 
-    private static final String DEFAULT_USER_ID = "Anonymous";
-    private static final String DEFAULT_EMAIL = "address@email.com";
-    private static final String DEFAULT_PASSWORD = "ChangeMe";
+    public static final String DEFAULT_USER_ID = "Anonymous";
+    public static final String DEFAULT_EMAIL = "address@email.com";
+    public static final String DEFAULT_PASSWORD = "ChangeMe";
 
     public enum Type {
 		Unspecified,
@@ -78,12 +78,13 @@ public class Client implements IEntity {
 
 	public String toString() {
 		
-		return String.format(
-				"Client Type: %1$s " + System.lineSeparator() +
-				"Client Id: %2$s " + System.lineSeparator() +
-				"Client Email: %3$s " + System.lineSeparator() +
-				"Client Password1: %4$s " + System.lineSeparator(),
-				getUserType(), getDisplayName(), getEmail(), getPassword());
+		return String.format(System.lineSeparator() +
+                "DisplayName: %1$s " + System.lineSeparator() +
+				"Client Type: %2$s " + System.lineSeparator() +
+				"Client Id: %3$s " + System.lineSeparator() +
+				"Client Email: %4$s " + System.lineSeparator() +
+				"Client Password1: %5$s " + System.lineSeparator(),
+				getDisplayName(), getUserType(), getDisplayName(), getEmail(), getPassword());
 	}
 
     //region properties

@@ -4,13 +4,12 @@
 
 package com.bytes.thinkr.model.factory;
 
+import com.bytes.thinkr.model.FactoryResponse;
+import com.bytes.thinkr.model.FactoryResponseList;
+import com.bytes.thinkr.model.ValidationInfo;
 import com.bytes.thinkr.model.entity.IEntity;
 import com.bytes.thinkr.model.util.HibernateUtil;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 
-import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,10 +21,10 @@ import java.util.logging.Logger;
  */
 public abstract class EntityFactory<T extends IEntity> {
 
-    private static final int JDBC_PATCH_SIZE = 10;
+    // This class can use FINE or lower logging level
     private static final Logger LOGGER = Logger.getLogger(EntityFactory.class.getName());
 
-    private Class entityType;
+    private Class<T> entityType;
 
     /**
      * Dynamically determine the type of the generic.
@@ -33,66 +32,84 @@ public abstract class EntityFactory<T extends IEntity> {
     public EntityFactory() {
 
         // Obtain the class of T at runtime
-        this.entityType = (Class) ((ParameterizedType)
+        this.entityType = (Class<T>) ((ParameterizedType)
             getClass().getGenericSuperclass()).getActualTypeArguments()[0]; // T
     }
 
     /**
      * TODO consider changing Long to Serializable
-     * Request to retrieve the entity matching the specified id
+     * Request to retrieveAllByName the entity matching the specified id
      * @param id the entity id
      * @return the entity
      */
-    public T findById(Long id) {
-        return findByIdList(new Long[] {id}).get(0);
+    public FactoryResponse<T> findById(Long id) {
+
+        FactoryResponse<T> response = new FactoryResponse<>();
+        T entity = HibernateUtil.getEntity(entityType, id);
+
+        if (entity == null) {
+            response.addValidation(
+                ValidationInfo.Type.Account,
+                ValidationInfo.Common.NotFound);
+        } else {
+            response.setEntity(entity);
+        }
+
+        return response;
     }
 
     /**
-     * Reuqest to retrieve the list of entities matching the specified ids.
+     * Request to retrieveAllByName the list of entities matching the specified ids.
      * @param ids the list of entity ids
      * @return the list of entities
      */
-    public List<T> findByIdList(Long[] ids) {
+    public FactoryResponseList<T> findByIdList(Long[] ids) {
 
         if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.log(Level.FINE, "Preparing to retrieve " + ids.length + " entities");
+            LOGGER.log(Level.FINE, "Preparing to retrieveAllByName " + ids.length + " entities");
         }
 
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction transaction = null;
-
-        // Construct this query from the id list
+        // Construct the retrieve by query from the id list
         //  "from Entity e where et.id in('1','2','3')"
         StringBuilder query = new StringBuilder();
         query.append("from " + entityType.getSimpleName() + " e where e.id in(");
-        for (Long id : ids) { query.append("'"+id+"',"); }
+        for (Long id : ids) {
+            query.append("'"+id+"',");
+        }
         query.setCharAt(query.length()-1, ')');
 
-        if (LOGGER.isLoggable(Level.FINER)) {
-            LOGGER.log(Level.FINER, query.toString());
-        }
-
-        List<T> entities = null;
-        try {
-            transaction = session.beginTransaction();
-            entities = session.createQuery(query.toString()).list();
-        } catch (HibernateException e) {
-            transaction.rollback();
-            LOGGER.log(Level.SEVERE, "Unable to retrieve data.", e);
-        } finally {
-            session.close();
-        }
+        List<T> entities = HibernateUtil.retrieveByQuery(query.toString());
 
         if (LOGGER.isLoggable(Level.FINE)) {
             LOGGER.log(Level.FINE, "Successfully retrieved " + entities.size()+ " entities");
         }
 
-        return entities;
+        FactoryResponseList<T> response = new FactoryResponseList<>();
+        response.setEntities(entities);
+        return response;
     }
 
-    public List<T> findAll() {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        return (List<T>) session.createCriteria(entityType).list();
+    /**
+     * Request to retrieve all rows of the specified entity
+     * @return the list of data for the specified entity
+     */
+    public FactoryResponseList<T> findAll() {
+
+        if (LOGGER.isLoggable(Level.FINE)) {
+            LOGGER.log(Level.FINE,
+                "Request to retrieve all  " + entityType.getSimpleName() + " entities");
+        }
+
+        FactoryResponseList<T> response = new FactoryResponseList<T>();
+        List<T> entities = HibernateUtil.retrieveAll(entityType);
+        response.setEntities(entities);
+
+        if (LOGGER.isLoggable(Level.FINE)) {
+            LOGGER.log(Level.FINE, "Successfully retrieved " + entities.size()+ " entities");
+        }
+
+        return response;
+
     }
 
     /**
@@ -108,6 +125,8 @@ public abstract class EntityFactory<T extends IEntity> {
     }
 
     /**
+     * TODO move hibernate calls to HibernateUtil
+     *
      * Request to save the specified entities
      * @param entities the entities to be persisted
      * @return true if the entities were successfully persisted
@@ -118,40 +137,7 @@ public abstract class EntityFactory<T extends IEntity> {
             LOGGER.log(Level.FINE, "Preparing to commit " + entities.size() + " entities");
         }
 
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction tx = null;
-        try {
-            tx = session.beginTransaction();
-            int i = 0;
-
-            saveSubEntities(entities);
-            for (T entity : entities) {
-
-                entity.setId((Long) session.save(entity));
-
-                if (LOGGER.isLoggable(Level.FINEST)) {
-                    LOGGER.log(Level.FINEST, "saving entity: " + entities.toString() + ". Id: " + entity.getId());
-                }
-
-                if (i++ % JDBC_PATCH_SIZE == 0) {
-                    session.flush();
-                    session.clear();
-                }
-            }
-            tx.commit();
-        } catch (HibernateException e) {
-
-            tx.rollback();
-            LOGGER.log(Level.SEVERE, "Unable to save entity", e);
-            return false;
-        } finally {
-            session.close();
-        }
-
-        if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.log(Level.FINE, "Successfully committed " + entities.size() + " entities");
-        }
-        return true;
+        return HibernateUtil.commit(entities);
     }
 
     protected abstract boolean saveSubEntities(List<T> entity);
@@ -178,36 +164,19 @@ public abstract class EntityFactory<T extends IEntity> {
             LOGGER.log(Level.FINE, "Preparing to delete " + entities.size() + " entities");
         }
 
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction tx = null;
-        try {
-            tx = session.beginTransaction();
-            int i = 0;
-            for (T entity : entities) {
-                if (LOGGER.isLoggable(Level.FINEST)) {
-                    LOGGER.log(Level.FINEST, "deleting entity: " + entities.toString() + ". Id: " + entity.getId());
-                }
+        return HibernateUtil.delete(entities);
+    }
 
-                session.delete(entity);
+    /**
+     *
+     * @param entityId
+     */
+    public boolean deleteById(String entityId) {
 
-                if (i++ % JDBC_PATCH_SIZE == 0) {
-                    session.flush();
-                    session.clear();
-                }
-            }
-            tx.commit();
-        } catch (HibernateException e) {
+        // delete from Account a where a.id = '10929'
+        String query = String.format("delete from %1$s a where a.id = '%2$s'",
+            entityType.getSimpleName(), entityId);
 
-            tx.rollback();
-            LOGGER.log(Level.SEVERE, "Unable to delete entity", e);
-            return false;
-        } finally {
-            session.close();
-        }
-
-        if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.log(Level.FINE, "Successfully deleted " + entities.size() + " entities");
-        }
-        return true;
+        return HibernateUtil.deleteByQuery(query);
     }
 }

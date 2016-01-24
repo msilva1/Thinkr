@@ -23,6 +23,10 @@ public class AccountList {
         setAccounts(new HashSet<Account>());
     }
 
+    public AccountList(Collection<Account> accounts) {
+        setAccounts(accounts);
+    }
+
     public Collection<Account> getAccounts() {
         return accounts;
     }

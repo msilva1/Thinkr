@@ -140,7 +140,7 @@ public class AccountTest extends RestClientTest {
 				.post(Entity.entity(client, MediaType.APPLICATION_JSON), String.class);
 
 		System.out.println(" Response: " + account);
-//		System.out.println(" Response: " + account.getValidation().get(ValidationInfo.Type.Account));
+//		System.out.println(" Response: " + account.getValidation().find(ValidationInfo.Type.Account));
 	}
 
 }

@@ -29,7 +29,14 @@ public interface IAccountService {
      * @return the deleted account
      * TODO - fix me
      */
-    Account deleteAccount(String accountId);
+    boolean deleteAccount(String accountId);
+
+    /**
+     *
+     * @param accountId
+     * @return
+     */
+    boolean deleteByEmail(String accountId);
 
 
     /**
@@ -40,7 +47,7 @@ public interface IAccountService {
      * @param user
      * @return true if valid
      */
-    boolean isExistingUserValid(Client clientId);
+    boolean authenticate(Client clientId);
 
     /**
      * Return the account corresponding to the specified user id.
@@ -56,4 +63,11 @@ public interface IAccountService {
      * @return the all accounts on the server     *
      */
     AccountList findAll();
+
+    /**
+     *
+     * @param email
+     * @return
+     */
+    Account findByEmail(String email);
 }

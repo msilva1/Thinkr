@@ -4,10 +4,13 @@
 
 package com.bytes.thinkr.model.factory;
 
+import com.bytes.thinkr.model.FactoryResponse;
+import com.bytes.thinkr.model.FactoryResponseList;
 import com.bytes.thinkr.model.entity.IEntity;
 import com.bytes.thinkr.model.entity.account.Account;
 import com.bytes.thinkr.model.factory.data.AccountDataFactory;
 import com.bytes.thinkr.model.factory.data.DataFactory;
+import org.eclipse.jdt.internal.compiler.ast.AssertStatement;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -51,14 +54,19 @@ public abstract class EntityFactoryTest<T extends IEntity> {
     @Test
     public void testFindById() throws Exception {
         Long id = 1l;
-        T entity = getEntityFactory().findById(id);
-        assertTrue(entity.getId() == id);
+        FactoryResponse<T> response = getEntityFactory().findById(id);
+        if (response.getEntity() != null) {
+            assertTrue(response.getEntity().getId() == id);
+        } else {
+            System.out.print("Unable to find " + id);
+        }
     }
 
     @Test
     public void testFindByIdList() throws Exception {
         Long[] idList = {1l, 2l, 3l, 4l, 5l};
-        List<T> entities = getEntityFactory().findByIdList(idList);
+        FactoryResponseList<T> response = getEntityFactory().findByIdList(idList);
+        List<T> entities = response.getEntities();
         assertThat(entities.size(), is(idList.length));
     }
 
@@ -74,14 +82,28 @@ public abstract class EntityFactoryTest<T extends IEntity> {
 
     @Test
     public void testDelete() throws Exception {
+
         // Need to perform commit before deleting
-        assertTrue(getEntityFactory().delete(entities.get(0)));
+        FactoryResponse<T> response = getEntityFactory().findById(201L);
+        if (response.getEntity() != null) {
+            assertTrue(getEntityFactory().delete(response.getEntity()));
+        } else {
+            System.out.print("No data to be deleted.");
+        }
     }
 
     @Test
     public void testDeleteAll() throws Exception {
+
         // Need to perform commit before deleting
-        assertTrue(getEntityFactory().deleteAll(entities));
+        FactoryResponseList<T> response = getEntityFactory().findAll();
+        entities = response.getEntities();
+        if (entities.size() != 0) {
+            System.out.print("Deleting " + entities.size() + " rows");
+            assertTrue(getEntityFactory().deleteAll(entities));
+        } else {
+            System.out.print("No data to be deleted.");
+        }
     }
 
 }
