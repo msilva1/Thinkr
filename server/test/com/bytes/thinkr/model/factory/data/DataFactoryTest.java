@@ -5,8 +5,7 @@
 package com.bytes.thinkr.model.factory.data;
 
 import com.bytes.thinkr.model.entity.IEntity;
-import com.bytes.thinkr.model.factory.EntityFactory;
-import com.bytes.thinkr.model.factory.data.DataFactory;
+import com.bytes.thinkr.factory.data.DataFactory;
 import com.bytes.thinkr.model.util.HibernateUtil;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;

@@ -4,7 +4,7 @@
 
 -- Notes for SQL Administrators:
 
--- #1. Prior to running this script you must copy the extended stored procedure dll SQLJDBC_XA.dll 
+-- #1. Prior to running this script you must merge the extended stored procedure dll SQLJDBC_XA.dll
 --     to the target SQL Server's Binn folder.
 
 -- #2. Permissions to the distributed transaction support procedures for the Microsoft JDBC Driver 6.0 

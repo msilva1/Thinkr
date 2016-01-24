@@ -7,6 +7,7 @@ import com.bytes.thinkr.model.entity.assignment.Answer;
 import com.bytes.thinkr.model.entity.assignment.Assignment;
 import com.bytes.thinkr.model.entity.assignment.AssignmentList;
 import com.bytes.thinkr.model.entity.assignment.Question;
+import com.bytes.thinkr.factory.data.AccountDataFactory;
 import com.bytes.thinkr.service.impl.AccountServiceImpl;
 import com.bytes.thinkr.service.impl.AssignmentServiceImpl;
 import com.bytes.thinkr.service.impl.SanboxServiceImpl;
@@ -58,10 +59,9 @@ public class SandboxService {
 	@GET
 	@Path("account")
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	public Account getAccountXml() {
+	public Account getAccount() {
 
-		Client client = new Client("Kent", "Kentative@live.com", "ChangeMe", Client.Type.Admin);
-        return AccountServiceImpl.getInstance().createAccount(client);
+        return AccountDataFactory.getInstance().generate(1).get(0);
 	}
 
 

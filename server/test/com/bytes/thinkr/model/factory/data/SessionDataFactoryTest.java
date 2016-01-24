@@ -4,6 +4,7 @@
 
 package com.bytes.thinkr.model.factory.data;
 
+import com.bytes.thinkr.factory.data.SessionDataFactory;
 import com.bytes.thinkr.model.entity.account.Account;
 import com.bytes.thinkr.model.util.HibernateUtil;
 import com.bytes.thinkr.model.entity.session.Session;

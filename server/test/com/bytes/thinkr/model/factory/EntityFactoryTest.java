@@ -4,17 +4,13 @@
 
 package com.bytes.thinkr.model.factory;
 
+import com.bytes.thinkr.factory.EntityFactory;
 import com.bytes.thinkr.model.FactoryResponse;
 import com.bytes.thinkr.model.FactoryResponseList;
 import com.bytes.thinkr.model.entity.IEntity;
-import com.bytes.thinkr.model.entity.account.Account;
-import com.bytes.thinkr.model.factory.data.AccountDataFactory;
-import com.bytes.thinkr.model.factory.data.DataFactory;
-import org.eclipse.jdt.internal.compiler.ast.AssertStatement;
+import com.bytes.thinkr.factory.data.DataFactory;
 import org.junit.Before;
-import org.junit.FixMethodOrder;
 import org.junit.Test;
-import org.junit.runners.MethodSorters;
 
 import java.util.List;
 

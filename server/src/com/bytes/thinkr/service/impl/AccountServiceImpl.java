@@ -1,5 +1,7 @@
 package com.bytes.thinkr.service.impl;
 
+import com.bytes.thinkr.factory.AccountFactory;
+import com.bytes.thinkr.factory.ClientFactory;
 import com.bytes.thinkr.model.FactoryResponse;
 import com.bytes.thinkr.model.FactoryResponseList;
 import com.bytes.thinkr.model.IValidationEnum;
@@ -7,8 +9,6 @@ import com.bytes.thinkr.model.ValidationInfo;
 import com.bytes.thinkr.model.entity.account.Account;
 import com.bytes.thinkr.model.entity.account.AccountList;
 import com.bytes.thinkr.model.entity.account.Client;
-import com.bytes.thinkr.model.factory.AccountFactory;
-import com.bytes.thinkr.model.factory.ClientFactory;
 import com.bytes.thinkr.service.IAccountService;
 import com.bytes.thinkr.service.util.PasswordUtil;
 import com.bytes.thinkr.service.validator.AccountValidator;
@@ -47,23 +47,19 @@ public class AccountServiceImpl implements IAccountService {
 	 * <li> client exists
 	 * <li> client specified password matches server's account password
 	 * </ul>
-	 * @param client the client information.
+	 * @param email the client email.
+     * @param password the client password.
 	 * 
 	 * Note: This is used for existing client
 	 */
 	@Override
-	public boolean authenticate(Client client) {
+	public boolean login(String email, String password) {
 
-		if (client == null ) { return false; }
-
-        // Check for existing client
-        String userId = client.getDisplayName();
         if (LOGGER.isLoggable(Level.INFO)) {
-            LOGGER.log(Level.INFO, "Request to authenticate user: " + userId);
+            LOGGER.log(Level.INFO, "Request to authenticate user: " + email);
         }
 
         // Check existing client using email
-        String email = client.getEmail();
         if (email == null || email.equals(Client.DEFAULT_EMAIL)) {return false; }
         Client existing = ClientFactory.getInstance().findByEmail(email);
 
@@ -76,19 +72,18 @@ public class AccountServiceImpl implements IAccountService {
         }
 
 		// Check client password
-		String pwd = client.getPassword();
         String pwdEncrypted = existing.getPassword();
 
         // hex value comparison, case doesn't matter
-		if (!PasswordUtil.encryptPassword(pwd).equals(pwdEncrypted)) {
+		if (!PasswordUtil.encryptPassword(password).equals(pwdEncrypted)) {
 			if (LOGGER.isLoggable(Level.FINE)) {
-				LOGGER.log(Level.FINE, "Client password does not match: " + userId);
+				LOGGER.log(Level.FINE, "Client password does not match: " + email);
 			}
 			return false;
 		}
 		
 		if (LOGGER.isLoggable(Level.INFO)) {
-			LOGGER.log(Level.INFO, "Successfully authenticate client: " + userId);
+			LOGGER.log(Level.INFO, "Successfully authenticate client: " + email);
 		}
 		return true;
 	}
@@ -133,10 +128,11 @@ public class AccountServiceImpl implements IAccountService {
     }
 
 	@Override
-	public Account createAccount(Client client) {
+	public Account create(Account account) {
 
-		if (client != null) {
-			return createAccount(
+		if (account != null && account.getClient() != null) {
+            Client client = account.getClient();
+            return createAccount(
                     client.getDisplayName(),
                     client.getEmail(),
                     client.getPassword(),
@@ -149,7 +145,6 @@ public class AccountServiceImpl implements IAccountService {
 
 		return Account.INVALID;
 	}
-
 
 	/**
 	 * Request to create an <tt>Account</tt>.
@@ -203,14 +198,39 @@ public class AccountServiceImpl implements IAccountService {
 
 
 	@Override
-	public Account updateAccount(Account account) {
-		// TODO Auto-generated method stub
-		return null;
+	public Account update(String id, Account account) {
+
+        Long accountId;
+        try {
+            accountId = Long.parseLong(id);
+        } catch (NumberFormatException e) {
+            if (LOGGER.isLoggable(Level.WARNING)) {
+                LOGGER.log(Level.WARNING, "Invalid account Id" + id, e);
+            }
+            return Account.INVALID;
+        }
+
+        // Retrieve the existing account
+        FactoryResponse<Account> response = AccountFactory.getInstance().findById(accountId);
+        if (response.getEntity() != null) {
+            FactoryResponse<Account> mergeResponse = AccountFactory.getInstance().merge(account, response.getEntity());
+            Account updatedAccount = (mergeResponse.getEntity() != null)
+                ? mergeResponse.getEntity()
+                : Account.INVALID;
+
+            return updatedAccount;
+        }
+
+        if (LOGGER.isLoggable(Level.INFO)) {
+            LOGGER.log(Level.INFO, "Account not found. Unable to update account " + id);
+        }
+
+		return Account.NOT_FOUND;
 	}
 
 
 	@Override
-	public boolean deleteAccount(String accountId) {
+	public boolean delete(String accountId) {
 
         Long id = Long.parseLong(accountId);
         FactoryResponse<Account> response = AccountFactory.getInstance().findById(id);

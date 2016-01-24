@@ -4,7 +4,7 @@ import com.bytes.thinkr.model.entity.assignment.Answer;
 import com.bytes.thinkr.model.entity.assignment.Assignment;
 import com.bytes.thinkr.model.entity.assignment.Point;
 import com.bytes.thinkr.model.entity.assignment.Question;
-import com.bytes.thinkr.model.factory.data.AssignmentDataFactory;
+import com.bytes.thinkr.factory.data.AssignmentDataFactory;
 
 import java.util.List;
 import java.util.logging.Logger;

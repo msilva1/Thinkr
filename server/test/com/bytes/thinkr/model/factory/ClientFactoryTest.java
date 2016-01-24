@@ -4,9 +4,11 @@
 
 package com.bytes.thinkr.model.factory;
 
+import com.bytes.thinkr.factory.ClientFactory;
+import com.bytes.thinkr.factory.EntityFactory;
 import com.bytes.thinkr.model.entity.account.Client;
-import com.bytes.thinkr.model.factory.data.ClientDataFactory;
-import com.bytes.thinkr.model.factory.data.DataFactory;
+import com.bytes.thinkr.factory.data.ClientDataFactory;
+import com.bytes.thinkr.factory.data.DataFactory;
 
 /**
  * Created by Kent on 1/21/2016.

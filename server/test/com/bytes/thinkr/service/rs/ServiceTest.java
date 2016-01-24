@@ -37,6 +37,23 @@ public class ServiceTest {
     /**
      *
      * @param path
+     * @param responseType
+     * @param <T>
+     * @return
+     */
+    protected <T extends IEntity> T get(String path, Class<T> responseType) {
+
+        T result = target.path(path)
+                .request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
+                .get(responseType);
+
+        return result;
+    }
+
+
+    /**
+     *
+     * @param path
      * @param entity
      * @param responseType
      * @param <T>
@@ -48,23 +65,33 @@ public class ServiceTest {
                 .request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
                 .post(Entity.entity(entity, MediaType.APPLICATION_JSON), responseType);
 
-        System.out.println(" Response: " + result);
-
         return result;
+    }
+
+    protected  <T extends IEntity> T put(String path, IEntity entity, Class<T> responseType) {
+
+        return target.path(path)
+                .request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
+                .put(Entity.entity(entity, MediaType.APPLICATION_JSON), responseType);
     }
 
     /**
      *
      * @param path
+     * @param entity
      * @return
      */
-    protected String delete(String path) {
+    protected Response post(String path, IEntity entity) {
 
-        Response result = target.path(path).request(MediaType.APPLICATION_JSON)
-                .delete();
+        return target.path(path)
+                .request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
+                .post(Entity.entity(entity, MediaType.APPLICATION_JSON), Response.class);
+    }
 
-        System.out.println(" Response: " + result);
+    protected Response put(String path, IEntity entity) {
 
-        return result.toString();
+        return target.path(path)
+                .request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
+                .put(Entity.entity(entity, MediaType.APPLICATION_JSON), Response.class);
     }
 }

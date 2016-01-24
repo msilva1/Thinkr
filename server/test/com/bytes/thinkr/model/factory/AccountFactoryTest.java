@@ -4,13 +4,11 @@
 
 package com.bytes.thinkr.model.factory;
 
+import com.bytes.thinkr.factory.AccountFactory;
+import com.bytes.thinkr.factory.EntityFactory;
 import com.bytes.thinkr.model.entity.account.Account;
-import com.bytes.thinkr.model.factory.data.AccountDataFactory;
-import com.bytes.thinkr.model.factory.data.DataFactory;
-import org.junit.Before;
-import org.junit.Test;
-
-import java.util.List;
+import com.bytes.thinkr.factory.data.AccountDataFactory;
+import com.bytes.thinkr.factory.data.DataFactory;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertNotNull;

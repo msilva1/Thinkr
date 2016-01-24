@@ -81,7 +81,7 @@ public class SessionServiceImpl implements ISessionService {
      */
     private Session logUser(String userId, String password, boolean state) {
 
-        if (!AccountServiceImpl.getInstance().authenticate(new Client(userId, password)))
+        if (!AccountServiceImpl.getInstance().login(userId, password))
         {
             return Session.INVALID_ID_OR_PASSWORD;
         }

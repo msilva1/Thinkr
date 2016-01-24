@@ -8,10 +8,10 @@ public interface IAccountService {
 
 
     /**
-     * @param client the client account with administrator privilege and valid credentials
+     * @param account the client account with administrator privilege and valid credentials
      * @return the created account
      */
-    Account createAccount(Client client);
+    Account create(Account account);
 
     /**
      * @param user    the user account matching the account to be updated or
@@ -20,7 +20,7 @@ public interface IAccountService {
      * @return the updated account
      * TODO - fix me
      */
-    Account updateAccount(Account account);
+    Account update(String id, Account account);
 
     /**
      * @param user      the user account matching the account to be deleted or
@@ -29,7 +29,7 @@ public interface IAccountService {
      * @return the deleted account
      * TODO - fix me
      */
-    boolean deleteAccount(String accountId);
+    boolean delete(String accountId);
 
     /**
      *
@@ -47,7 +47,7 @@ public interface IAccountService {
      * @param user
      * @return true if valid
      */
-    boolean authenticate(Client clientId);
+    boolean login(String email, String password);
 
     /**
      * Return the account corresponding to the specified user id.

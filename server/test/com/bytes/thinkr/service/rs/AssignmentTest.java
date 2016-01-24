@@ -1,12 +1,11 @@
 package com.bytes.thinkr.service.rs;
 
-import com.bytes.thinkr.model.IValidationEnum;
 import com.bytes.thinkr.model.ValidationInfo;
 import com.bytes.thinkr.model.entity.account.Client;
 import com.bytes.thinkr.model.entity.assignment.Assignment;
 import com.bytes.thinkr.model.entity.assignment.AssignmentList;
 import com.bytes.thinkr.model.entity.assignment.Task;
-import com.bytes.thinkr.model.factory.data.AssignmentDataFactory;
+import com.bytes.thinkr.factory.data.AssignmentDataFactory;
 import org.glassfish.jersey.client.ClientConfig;
 import org.junit.Assert;
 import org.junit.Before;

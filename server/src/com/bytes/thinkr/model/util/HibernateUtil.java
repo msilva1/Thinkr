@@ -337,4 +337,40 @@ public class HibernateUtil {
 
         return entity;
     }
+
+    /**
+     *
+     * @param entity
+     * @param <T>
+     * @return
+     */
+    public static <T extends IEntity> boolean merge(T entity) {
+
+        if (LOGGER.isLoggable(Level.FINER)) {
+            LOGGER.log(Level.FINER, "Request to merge entity: " + entity);
+        }
+
+        boolean result = false;
+        Transaction tx = null;
+        try (Session session = getSessionFactory().openSession()) {
+
+            tx = session.beginTransaction();
+            session.saveOrUpdate(entity);
+            tx.commit();
+            result = true;
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            result = false;
+            LOGGER.log(Level.SEVERE, "Unable to merge data for : " + entity, e);
+        }
+
+        if (LOGGER.isLoggable(Level.FINER)) {
+            LOGGER.log(Level.FINER, "Entity updated: " + result);
+        }
+
+        return result;
+
+    }
 }

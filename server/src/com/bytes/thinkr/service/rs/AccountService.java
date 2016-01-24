@@ -43,52 +43,53 @@ public class AccountService implements IAccountService {
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@Override
-	public Account createAccount(Client client) {
+	public Account create(Account account) {
 
         if (LOGGER.isLoggable(Level.INFO)) {
-            LOGGER.log(Level.INFO, "Request to create an account: " + client);
+            LOGGER.log(Level.INFO, "Request to create an account: " + account);
         }
 
-		return AccountServiceImpl.getInstance().createAccount(client);
+		return AccountServiceImpl.getInstance().create(account);
 	}
 	
 
-	@PUT
+	@POST
 	@Produces({MediaType.TEXT_PLAIN, MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("{id}")
 	@Override
-	public Account updateAccount(Account account) {
+	public Account update(@PathParam("id") String id, Account account) {
 
         if (LOGGER.isLoggable(Level.INFO)) {
-            LOGGER.log(Level.INFO, "Request to update account: " + account);
+            LOGGER.log(Level.INFO, "Request to update account: " + id);
         }
 
-		return AccountServiceImpl.getInstance().updateAccount(account);
+		return AccountServiceImpl.getInstance().update(id, account);
 	}
 
 	
 	@DELETE
 	@Path("{id}")
 	@Override
-	public boolean deleteAccount(@PathParam("id") String accountId) {
+	public boolean delete(@PathParam("id") String accountId) {
 
         if (LOGGER.isLoggable(Level.INFO)) {
-            LOGGER.log(Level.INFO, "Request to delete account: " + accountId);
+            LOGGER.log(Level.INFO, "Request to delete account by id: " + accountId);
         }
 
-		return AccountServiceImpl.getInstance().deleteAccount(accountId);
+		return AccountServiceImpl.getInstance().delete(accountId);
 	}
 
     @DELETE
-    @Path("email/{id}")
+    @Path("email/{email}")
     @Override
-    public boolean deleteByEmail(@PathParam("id") String accountId) {
+    public boolean deleteByEmail(@PathParam("email") String email) {
 
         if (LOGGER.isLoggable(Level.INFO)) {
-            LOGGER.log(Level.INFO, "Request to delete account: " + accountId);
+            LOGGER.log(Level.INFO, "Request to delete account by email: " + email);
         }
 
-        return AccountServiceImpl.getInstance().deleteAccount(accountId);
+        return AccountServiceImpl.getInstance().deleteByEmail(email);
     }
 
 
@@ -106,19 +107,31 @@ public class AccountService implements IAccountService {
         return AccountServiceImpl.getInstance().find(accountId);
     }
 
+    @GET
+    @Produces({MediaType.TEXT_PLAIN, MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("email/{email}")
+    @Override
+    public Account findByEmail(@PathParam("email") String email) {
+        return AccountServiceImpl.getInstance().findByEmail(email);
+    }
+
 	@GET
 	@Produces({MediaType.TEXT_PLAIN, MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-	@Path("login")
+	@Path("login/{email}/{password}")
 	@Override
-	public boolean authenticate(Client client) {
+	public boolean login(
+            @PathParam("email") String email,
+            @PathParam("password") String password) {
 
         if (LOGGER.isLoggable(Level.INFO)) {
-            LOGGER.log(Level.INFO, "Request to authenticate client: " + client);
+            LOGGER.log(Level.INFO, "Request to log in client: " + email);
         }
 
-		return AccountServiceImpl.getInstance().authenticate(client);
+		return AccountServiceImpl.getInstance().login(email, password);
 	}
+
 
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -133,12 +146,4 @@ public class AccountService implements IAccountService {
         return AccountServiceImpl.getInstance().findAll();
     }
 
-    @GET
-    @Produces({MediaType.TEXT_PLAIN, MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    @Path("email/{email}")
-    @Override
-    public Account findByEmail(@PathParam("email") String email) {
-        return AccountServiceImpl.getInstance().findByEmail(email);
-    }
 }

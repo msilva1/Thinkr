@@ -3,7 +3,6 @@ package com.bytes.thinkr.model;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.Collection;
 import java.util.HashMap;
 
 @XmlRootElement
@@ -127,8 +126,8 @@ public class ValidationInfo {
     }
 
     /**
-     * Indicates if there are err
-     * @return
+     * Indicates if there are errors
+     * @return true if there are validation errors
      */
     public boolean hasError() {
 
