@@ -28,7 +28,7 @@ public class AccountServiceTest extends ServiceTest {
     Set<Long> accountIds;
 
     @Before
-    public void initialize(){
+    public void startup(){
 
         // Create entities
         accounts = AccountDataFactory.getInstance().generate(5);

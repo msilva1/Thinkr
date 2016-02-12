@@ -20,23 +20,49 @@ import com.bytes.thinkr.service.impl.AssignmentServiceImpl;
 @Path("/assignment")
 public class AssignmentService implements IAssignmentService {
 
-	/**
-	 * Landing page for HTML request
-	 * @return landing page
-	 */
-	@GET
-	@Produces(MediaType.TEXT_HTML)
-	public String getHtml() {
+    @Path("/version")
+    @GET
+    @Produces(MediaType.TEXT_HTML)
+    public String version() {
 
-		String title = "Thinkr: Assignment Service";
-		String message = "Welcome to Assignment REST Service Landing Page";
+        String title = "Thinkr: Assignment Service";
+        String message = "Welcome to Assignment Resource";
 
-		return String.format(
-			"<html>" + "<title>%1$s</title>" + "<body><h1>%2$s</h1></body>" + "</html>",
-			title, message);
-	}
+        return String.format(
+                "<html>" + "<title>%1$s</title>" +
+                        "<body><h1>%2$s</h1>" +
+                        "<p>Version: " + Application.apiVersion + "</p>" +
+                        "</body>" + "</html>",
+                title, message);
+    }
 
-	
+    @POST
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Override
+    public Assignment create(Assignment resource) {
+        return AssignmentServiceImpl.getInstance().create(resource);
+    }
+
+    @Override
+    public Assignment find(String id) {
+        return null;
+    }
+
+    @Override
+    public Assignment update(String id, Assignment resource) {
+        return null;
+    }
+
+    @DELETE
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("delete")
+    @Override
+    public boolean delete(String assignmentId) {
+        return AssignmentServiceImpl.getInstance().delete(assignmentId);
+    }
+
 	@POST
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -47,18 +73,8 @@ public class AssignmentService implements IAssignmentService {
 		return AssignmentServiceImpl.getInstance().create(userId, assignment);
 	}
 
-	
-	@DELETE
-	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-	@Path("delete")
-	@Override
-	public Assignment delete(String assignmentId) {
-		return AssignmentServiceImpl.getInstance().delete(assignmentId);
-	}
 
-	
-	@PUT
+    @PUT
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@Path("update")

@@ -5,10 +5,14 @@
 package com.bytes.thinkr.factory;
 
 import com.bytes.thinkr.factory.merge.MergeFactory;
+import com.bytes.thinkr.model.FactoryResponse;
+import com.bytes.thinkr.model.ValidationInfo;
 import com.bytes.thinkr.model.entity.account.Client;
 import com.bytes.thinkr.model.util.HibernateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 /**
  * Created by Kent on 1/13/2016.
@@ -16,7 +20,7 @@ import org.slf4j.LoggerFactory;
 public class ClientFactory extends EntityFactory<Client> {
 
     // This class can use FINE or lower logging levels
-    private static final Logger LOGGER = LoggerFactory.getLogger(ClientFactory.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(ClientFactory.class.getName());
 
     private static ClientFactory instance;
     public static ClientFactory getInstance() {
@@ -36,18 +40,27 @@ public class ClientFactory extends EntityFactory<Client> {
      * @param email
      * @return
      */
-    public Client findByEmail(String email) {
+    public FactoryResponse<Client> findByEmail(String email) {
 
-        LOGGER.debug("Request to retrieveAllByName client with email: {}", email);
+        LOG.debug("Request to retrieveAllByName client with email: {}", email);
 
         // Construct this retrieveByQuery from the id list
         //  "from Client e where e.email = {email}
         String query = "from Client e where e.email = '" + email +"'";
+        List<Client> clients = HibernateUtil.retrieveByQuery(query);
 
-        Client client = HibernateUtil.<Client>retrieveByQuery(query).get(0);
+        FactoryResponse<Client> response = new FactoryResponse<>();
+        if (clients != null) {
 
-        LOGGER.debug("Successfully retrieved client: {}", client.toString());
+            response.setEntity(clients.get(0));
+            LOG.debug("Successfully retrieved client: {}", response.getEntity());
 
-        return client;
+        } else {
+            response.getValidationInfo().add(
+                ValidationInfo.Type.Client, ValidationInfo.Common.NotFound);
+        }
+
+        return response;
     }
 }
+

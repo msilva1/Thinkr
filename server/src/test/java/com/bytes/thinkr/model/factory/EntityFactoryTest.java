@@ -80,7 +80,7 @@ public abstract class EntityFactoryTest<T extends IEntity> {
     public void testDelete() throws Exception {
 
         // Need to perform commit before deleting
-        FactoryResponse<T> response = getEntityFactory().findById(201L);
+        FactoryResponse<T> response = getEntityFactory().findById(1L);
         if (response.getEntity() != null) {
             assertTrue(getEntityFactory().delete(response.getEntity()));
         } else {

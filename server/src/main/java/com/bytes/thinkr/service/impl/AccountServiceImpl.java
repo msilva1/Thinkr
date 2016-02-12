@@ -32,9 +32,6 @@ public class AccountServiceImpl implements IAccountService {
 	public static AccountServiceImpl getInstance() {
 		if (instance == null) {
 			instance = new AccountServiceImpl();
-			
-			// For debugging 
-			instance.createAccount("Kent", "kentative@live.com", "1a2b3c4d5e", Client.Type.Admin);
 		}
 		return instance;
 	}
@@ -68,7 +65,8 @@ public class AccountServiceImpl implements IAccountService {
 
         // Check existing client using email
         if (email == null || email.equals(Client.DEFAULT_EMAIL)) {return false; }
-        Client existing = ClientFactory.getInstance().findByEmail(email);
+        FactoryResponse<Client> clientR = ClientFactory.getInstance().findByEmail(email);
+        Client existing = clientR.getEntity();
 
         // Non-existing account
         if (existing == null) {

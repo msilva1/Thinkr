@@ -22,7 +22,7 @@ import java.util.List;
 public class HibernateUtil {
 
     // This class should use FINER or lower logging level
-    private static final Logger LOGGER = LoggerFactory.getLogger(HibernateUtil.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(HibernateUtil.class.getName());
 
     private static final SessionFactory sessionFactory;
     public static final int JDBC_PATCH_SIZE = 100;
@@ -53,7 +53,7 @@ public class HibernateUtil {
      */
     public static <T extends IEntity> List<T> retrieveByQuery(String query) {
 
-        LOGGER.debug("Request to retrieve by query: {}", query);
+        LOG.debug("Request to retrieve by query: {}", query);
 
         Transaction transaction = null;
         List<T> entities = null;
@@ -61,7 +61,7 @@ public class HibernateUtil {
 
             transaction = session.beginTransaction();
 
-            LOGGER.debug("Executing retrieve query: {}", query);
+            LOG.debug("Executing retrieve query: {}", query);
 
             entities = session.createQuery(query.toString()).list();
 
@@ -69,10 +69,10 @@ public class HibernateUtil {
             if (transaction != null) {
                 transaction.rollback();
             }
-            LOGGER.error("Unable to retrieve by query.", e);
+            LOG.error("Unable to retrieve by query.", e);
         }
 
-        LOGGER.debug("Successfully retrieved : {} rows by query.", entities.size());
+        LOG.debug("Successfully retrieved : {} rows by query.", entities.size());
         return entities;
     }
 
@@ -83,13 +83,13 @@ public class HibernateUtil {
      */
     public static boolean deleteByQuery(String query) {
 
-        LOGGER.debug("Request to delete by query: {}", query);
+        LOG.debug("Request to delete by query: {}", query);
 
         int affectedRows = 0;
         Transaction tx = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 
-            LOGGER.debug("Executing delete by query: {}", query);
+            LOG.debug("Executing delete by query: {}", query);
 
             tx = session.beginTransaction();
             affectedRows = session.createQuery(query).executeUpdate();
@@ -97,10 +97,10 @@ public class HibernateUtil {
 
         } catch (HibernateException e) {
             tx.rollback();
-            LOGGER.error("Unable to delete by query.", e);
+            LOG.error("Unable to delete by query.", e);
         }
 
-        LOGGER.debug("Successfully delete by query.");
+        LOG.debug("Successfully delete by query.");
         return affectedRows > 0;
     }
 
@@ -139,7 +139,7 @@ public class HibernateUtil {
      */
     public static <T extends IEntity> List<T> retrieveAll(Class entityType) {
 
-        LOGGER.debug("Request to retrieve all data for: {}", entityType.getSimpleName());
+        LOG.debug("Request to retrieve all data for: {}", entityType.getSimpleName());
 
         List<T> list = null;
         Transaction transaction = null;
@@ -149,7 +149,7 @@ public class HibernateUtil {
             list = session.createCriteria(entityType).list();
 
         } catch (HibernateException e) {
-            LOGGER.error("Unable to perform retrieveAll for: {}", entityType.getSimpleName(), e);
+            LOG.error("Unable to perform retrieveAll for: {}", entityType.getSimpleName(), e);
             if (transaction != null) {
                 transaction.rollback();
             }
@@ -157,9 +157,9 @@ public class HibernateUtil {
 
         if (list == null) {
             list = new ArrayList<>();
-            LOGGER.debug("No data found for: {}", entityType.getSimpleName());
+            LOG.debug("No data found for: {}", entityType.getSimpleName());
         } else {
-            LOGGER.debug("Successfully retrieved {} rows for {} ",
+            LOG.debug("Successfully retrieved {} rows for {} ",
                 list.size(), entityType.getSimpleName());
         }
 
@@ -173,7 +173,7 @@ public class HibernateUtil {
      */
     public static boolean commit(IEntity entity) {
 
-        LOGGER.debug("Request to commit data for: {}", entity);
+        LOG.debug("Request to commit data for: {}", entity);
 
         boolean result = false;
         Transaction tx = null;
@@ -188,10 +188,10 @@ public class HibernateUtil {
                 tx.rollback();
             }
             result = false;
-            LOGGER.error("Unable to commit data for: {}", entity, e);
+            LOG.error("Unable to commit data for: {}", entity, e);
         }
 
-        LOGGER.debug("Data committed: {}", result);
+        LOG.debug("Data committed: {}", result);
         return result;
     }
 
@@ -203,7 +203,7 @@ public class HibernateUtil {
      */
     public static <T extends IEntity> boolean commit(List<T> entities) {
 
-        LOGGER.debug("Preparing to commit {} entities", entities.size());
+        LOG.debug("Preparing to commit {} entities", entities.size());
 
         boolean result;
         Transaction tx = null;
@@ -211,10 +211,14 @@ public class HibernateUtil {
             tx = session.beginTransaction();
             int i = 1;
             for (IEntity entity : entities) {
-
-                entity.setId((Long) session.save(entity));
-                LOGGER.debug(
-                    "saving entity: {}. Id: {}", entities.getClass().getSimpleName(), entity.getId());
+                if (session.contains(entity))
+                {
+                    entity.setId((Long) session.save(entity));
+                    LOG.debug("saving entity: {}. Id: {}", entity.getClass().getSimpleName(), entity.getId());
+                } else {
+                    session.saveOrUpdate(entity);
+                    LOG.debug("updated entity: {}. Id: {}", entity.getClass().getSimpleName(), entity.getId());
+                }
 
                 if (i++ % JDBC_PATCH_SIZE == 0) {
                     session.flush();
@@ -228,10 +232,10 @@ public class HibernateUtil {
                 tx.rollback();
             }
             result = false;
-            LOGGER.error("Unable to commit", e);
+            LOG.error("Unable to commit", e);
         }
 
-        LOGGER.debug("Successfully committed {} entities.", entities.size());
+        LOG.debug("Successfully committed {} entities.", entities.size());
         return result;
     }
 
@@ -243,14 +247,13 @@ public class HibernateUtil {
      */
     public static <T extends IEntity> boolean delete(List<T> entities) {
 
-        LOGGER.debug("Preparing to delete " + entities.size() + " entities");
+        LOG.debug("Preparing to delete " + entities.size() + " entities");
         Transaction tx = null;
         try (Session session = getSessionFactory().openSession()) {
             tx = session.beginTransaction();
             int i = 1;
             for (T entity : entities) {
-                LOGGER.debug("deleting entity: {} Id: {}",
-                    entities.getClass().getSimpleName(), entity.getId());
+                LOG.debug("deleting entity: {} Id: {}", entity.getClass().getSimpleName(), entity.getId());
 
                 session.delete(entity);
 
@@ -265,11 +268,11 @@ public class HibernateUtil {
             if (tx != null) {
                 tx.rollback();
             }
-            LOGGER.error("Unable to delete entity", e);
+            LOG.error("Unable to delete entity",  e);
             return false;
         }
 
-            LOGGER.debug("Successfully deleted " + entities.size() + " entities");
+        LOG.debug("Successfully deleted {} entities", entities.size());
         return true;
     }
 
@@ -291,7 +294,7 @@ public class HibernateUtil {
             if (tx != null) {
                 tx.rollback();
             }
-            LOGGER.error("Unable to find entity", e);
+            LOG.error("Unable to find entity", e);
         }
 
         return entity;
@@ -305,7 +308,7 @@ public class HibernateUtil {
      */
     public static <T extends IEntity> boolean merge(T entity) {
 
-        LOGGER.debug("Request to merge entity: " + entity);
+        LOG.debug("Request to merge entity: " + entity);
 
         boolean result = false;
         Transaction tx = null;
@@ -320,10 +323,10 @@ public class HibernateUtil {
                 tx.rollback();
             }
             result = false;
-            LOGGER.error("Unable to merge data for: {}", entity, e);
+            LOG.error("Unable to merge data for: {}", entity, e);
         }
 
-        LOGGER.debug("Entity updated: {}", result);
+        LOG.debug("Entity updated: {}", result);
         return result;
 
     }

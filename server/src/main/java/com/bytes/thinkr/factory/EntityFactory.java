@@ -24,7 +24,7 @@ import java.util.List;
 public abstract class EntityFactory<T extends IEntity> {
 
     // This class can use FINE or lower logging level
-    private static final Logger LOGGER = LoggerFactory.getLogger(EntityFactory.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(EntityFactory.class.getName());
 
     private Class<T> entityType;
 
@@ -51,7 +51,7 @@ public abstract class EntityFactory<T extends IEntity> {
 
         if (entity == null) {
             response.addValidation(
-                ValidationInfo.Type.Account,
+                ValidationInfo.Type.Entity,
                 ValidationInfo.Common.NotFound);
         } else {
             response.setEntity(entity);
@@ -67,7 +67,7 @@ public abstract class EntityFactory<T extends IEntity> {
      */
     public FactoryResponseList<T> findByIdList(Long[] ids) {
 
-        LOGGER.debug("Preparing to retrieve {} entities by id list", ids.length);
+        LOG.debug("Preparing to retrieve {} entities by id list", ids.length);
 
         // Construct the retrieve by query from the id list
         //  "from Entity e where et.id in('1','2','3')"
@@ -80,7 +80,7 @@ public abstract class EntityFactory<T extends IEntity> {
 
         List<T> entities = HibernateUtil.retrieveByQuery(query.toString());
 
-        LOGGER.debug( "Successfully retrieved {} entities", entities.size());
+        LOG.debug( "Successfully retrieved {} entities", entities.size());
 
         FactoryResponseList<T> response = new FactoryResponseList<>();
         response.setEntities(entities);
@@ -93,13 +93,13 @@ public abstract class EntityFactory<T extends IEntity> {
      */
     public FactoryResponseList<T> findAll() {
 
-        LOGGER.debug("Request to retrieve all {} entities", entityType.getSimpleName());
+        LOG.debug("Request to retrieve all {} entities", entityType.getSimpleName());
 
         FactoryResponseList<T> response = new FactoryResponseList<T>();
         List<T> entities = HibernateUtil.retrieveAll(entityType);
         response.setEntities(entities);
 
-        LOGGER.debug("Successfully retrieved {} entities", entities.size());
+        LOG.debug("Successfully retrieved {} entities", entities.size());
 
         return response;
 
@@ -126,7 +126,7 @@ public abstract class EntityFactory<T extends IEntity> {
      */
     public boolean saveAll(List<T> entities) {
 
-        LOGGER.debug("Preparing to commit {} entities", entities.size());
+        LOG.debug("Preparing to commit {} entities", entities.size());
         return HibernateUtil.commit(entities);
     }
 
@@ -148,8 +148,20 @@ public abstract class EntityFactory<T extends IEntity> {
      */
     public boolean deleteAll(List<T> entities) {
 
-        LOGGER.debug( "Preparing to delete {} entities", entities.size());
+        LOG.debug( "Preparing to delete {} entities", entities.size());
         return HibernateUtil.delete(entities);
+    }
+
+
+    /**
+     * Request to delete all entities
+     * @return true if the entities were successfully deleted
+     */
+    public boolean deleteAll() {
+
+        LOG.debug( "Deleted all {} entities", entityType.getSimpleName());
+        return HibernateUtil.deleteByQuery("delete " + entityType.getSimpleName());
+
     }
 
     /**

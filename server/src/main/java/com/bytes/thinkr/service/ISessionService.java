@@ -6,7 +6,7 @@ import com.bytes.thinkr.model.entity.session.SessionList;
 /**
  * Created by Kent on 1/8/2016.
  */
-public interface ISessionService {
+public interface ISessionService extends IResource<Session> {
 
     /**
      * Logs in the specified account if the following criteria are met:
@@ -18,11 +18,11 @@ public interface ISessionService {
      *
      * TODO encrypt password in transit
      *
-     * @param userId the id of the user to be logged in
+     * @param email the id of the user to be logged in
      * @param password the password of the user to be logged in
      * @return
      */
-    Session login(String userId, String password);
+    Session login(String email, String password);
 
 
     /**
@@ -35,11 +35,11 @@ public interface ISessionService {
      *
      * TODO encrypt password in transit
      *
-     * @param userId the id of the user to be logged out
+     * @param email the id of the user to be logged out
      * @param password the password of the user to be logged out
      * @return
      */
-    Session logout(String userId, String password);
+    Session logout(String email, String password);
 
 
     /**
@@ -49,4 +49,5 @@ public interface ISessionService {
      * @return the list of sessions matching the specified logged in state
      */
     SessionList getSessions(boolean isLoggedIn);
+
 }

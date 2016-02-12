@@ -1,28 +1,27 @@
 package com.bytes.thinkr.service.impl;
 
+import com.bytes.thinkr.factory.AccountFactory;
+import com.bytes.thinkr.factory.SessionFactory;
+import com.bytes.thinkr.model.FactoryResponse;
+import com.bytes.thinkr.model.FactoryResponseList;
+import com.bytes.thinkr.model.entity.account.Account;
 import com.bytes.thinkr.model.entity.session.Session;
 import com.bytes.thinkr.model.entity.session.SessionList;
 import com.bytes.thinkr.service.ISessionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.ws.rs.core.Response;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by Kent on 1/8/2016.
  */
 public class SessionServiceImpl implements ISessionService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SessionServiceImpl.class);
-
-    /**
-     * In-memory storage for created accounts
-     * TODO persist
-     * key - user id
-     * value - <tt>Session</tt>
-     */
-    private HashMap<String, Session> sessions;
+    private static final Logger LOG = LoggerFactory.getLogger(SessionServiceImpl.class);
 
     private static ISessionService instance;
     public static ISessionService getInstance() {
@@ -33,18 +32,16 @@ public class SessionServiceImpl implements ISessionService {
         return instance;
     }
 
-    private SessionServiceImpl() {
-        sessions = new HashMap<>();
+    private SessionServiceImpl() {}
+
+    @Override
+    public Session login(String email, String password) {
+        return logUser(email, password, true);
     }
 
     @Override
-    public Session login(String userId, String password) {
-        return logUser(userId, password, true);
-    }
-
-    @Override
-    public Session logout(String userId, String password) {
-        return logUser(userId, password, false);
+    public Session logout(String email, String password) {
+        return logUser(email, password, false);
     }
 
     /**
@@ -55,48 +52,93 @@ public class SessionServiceImpl implements ISessionService {
      */
     @Override
     public SessionList getSessions(boolean isLoggedIn) {
+
         SessionList sessionList = new SessionList();
-
-        for (String k : sessions.keySet()) {
-            Session s = sessions.get(k);
-            if (s.isLoggedIn() == isLoggedIn) {
-
-                LOGGER.debug("Client found: {}", k);
-                sessionList.getSessions().put(k, s);
-            }
+        FactoryResponseList<Session> responseList = SessionFactory.getInstance().findByLoginStatus(isLoggedIn);
+        List<Session> entities = responseList.getEntities();
+        if (entities != null && entities.size() > 0) {
+            LOG.debug("Found {} sessions. Login status: {}", entities.size(), isLoggedIn);
+            sessionList.setSessions(entities);
         }
-
         return sessionList;
+    }
+
+    @Override
+    public Session create(Session resource) {
+        return null;
+    }
+
+    @Override
+    public Session update(String id, Session resource) {
+        return null;
+    }
+
+    @Override
+    public boolean delete(String sessionId) {
+
+        Long id = Long.parseLong(sessionId);
+        FactoryResponse<Session> response = SessionFactory.getInstance().findById(id);
+        Session entity = response.getEntity();
+        if (entity != null) {
+            return SessionFactory.getInstance().delete(entity);
+        }
+        return false;
+    }
+
+    @Override
+    public Session find(String id) {
+        return null;
     }
 
     /**
      *
-     * @param userId
+     * @param email
      * @param password
      * @param state
      * @return
      */
-    private Session logUser(String userId, String password, boolean state) {
+    private Session logUser(String email, String password, boolean state) {
 
-        if (!AccountServiceImpl.getInstance().login(userId, password))
+        if (!AccountServiceImpl.getInstance().authenticate(email, password))
         {
             return Session.INVALID_ID_OR_PASSWORD;
         }
 
-        Session session;
-        if (sessions.containsKey(userId)) {
-            session = sessions.get(userId);
+        FactoryResponse<Account> accountR = AccountFactory.getInstance().findByEmail(email);
+        Account account = accountR.getEntity();
+
+        FactoryResponse<Session> sessionR = SessionFactory.getInstance().findByAccountId(account.getId());
+        Session session = sessionR.getEntity();
+
+        // No existing session for the specified account
+        if (session == null) {
+            session = new Session(account);
+        }
+
+        if (session.isLoggedIn() != state) {
+
+            // Update logged in timestamp
+            session.setLoggedIn(state);
+            if (state) {
+                session.setLoggedInTime(new Date());
+            } else {
+                session.setLoggedOutTime(new Date());
+            }
+
         } else {
-            session = new Session();
-            sessions.put(userId, session);
+            // Log user/account in
+            session.setLoggedIn(true);
+            session.setLoggedInTime(new Date());
         }
 
         // starts a new session
         session.setLoggedIn(state);
-        session.setDuration(0);
         session.setLoggedInTime(new Date());
 
-        LOGGER.debug("Logged state: {}", state);
-        return session;
+        if (SessionFactory.getInstance().save(session)) {
+            return session;
+        }
+
+        return Session.INVALID_ID_OR_PASSWORD;
     }
 }

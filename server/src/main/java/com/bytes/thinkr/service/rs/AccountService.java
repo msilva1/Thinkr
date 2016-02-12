@@ -22,6 +22,13 @@ public class AccountService implements IAccountService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AccountService.class);
 
+    @Path("/version")
+    @GET
+    @Produces(MediaType.TEXT_HTML)
+    public String version() {
+        return "<p>Version: " + Application.apiVersion + "</p>";
+    }
+
     /**
 	 * Landing page for HTML request
 	 * @return landing page

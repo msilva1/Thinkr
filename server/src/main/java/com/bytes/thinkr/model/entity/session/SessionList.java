@@ -4,35 +4,31 @@
 
 package com.bytes.thinkr.model.entity.session;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.ArrayList;
+import java.util.List;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class SessionList {
-	
-	private Map<String, Session> sessions;
+
+    private List<Session> sessions;
 
 	public SessionList() {
-		sessions = new HashMap<String, Session>();
-	}
-	
-	/**
-	 * @return the sessions
-	 */
-	public Map<String, Session> getSessions() {
-		return sessions;
-	}
+	    this(new ArrayList<Session>());
+    }
 
-	/**
-	 * @param sessions the sessions to set
-	 */
-	public void setSessions(Map<String, Session> sessions) {
-		this.sessions = sessions;
-	}
-	
+    public SessionList(List<Session> sessions) {
+        setSessions(sessions);
+    }
+
+    public List<Session> getSessions() {
+        return sessions;
+    }
+
+    public void setSessions(List<Session> sessions) {
+        this.sessions = sessions;
+    }
 }

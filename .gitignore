@@ -39,3 +39,4 @@ build/
 app/build
 
 *.orig
+client/web/bower_components/

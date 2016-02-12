@@ -19,8 +19,11 @@ public class ValidationInfo {
 
     public enum Type {
 
+        // Generic
+        Entity,
+
         // Account Services
-        Account, Email, UserId, Password,
+        Account, Email, Client, UserId, Password,
 
         // Assignment Services
         Assignment, AssignmentId, Question, Answer,
@@ -35,6 +38,7 @@ public class ValidationInfo {
 
         NotFound,
         Unspecified,
+        InvalidQuery,
         Invalid,
         Valid
     }

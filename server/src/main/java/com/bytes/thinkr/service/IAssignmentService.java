@@ -3,7 +3,7 @@ package com.bytes.thinkr.service;
 import com.bytes.thinkr.model.entity.assignment.Assignment;
 import com.bytes.thinkr.model.entity.assignment.AssignmentList;
 
-public interface IAssignmentService {
+public interface IAssignmentService extends IResource<Assignment>{
 
 	/**
 	 * Create the specified assignment
@@ -27,7 +27,7 @@ public interface IAssignmentService {
 	 * @param assignment the assignment id to be deleted
 	 * @return the created assignment
 	 */
-	Assignment delete(String assignmentId);
+	boolean delete(String assignmentId);
 	
 	/**
 	 * Assign an assignment to a user

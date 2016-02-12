@@ -33,9 +33,10 @@ public class Session implements IEntity {
 
     @Temporal(TemporalType.DATE)
 	private Date loggedInTime;
-	
-	private int duration;
 
+    @Temporal(TemporalType.DATE)
+    private Date loggedOutTime;
+	
     @Transient
     @XmlElement
     private ValidationInfo validation;
@@ -54,7 +55,6 @@ public class Session implements IEntity {
     public Session(Account account) {
         setAccount(account);
         setLoggedIn(false);
-        setDuration(0);
         setLoggedInTime(new Date());
         setValidation(new ValidationInfo());
     }
@@ -92,20 +92,6 @@ public class Session implements IEntity {
 		this.loggedInTime = loggedInTime;
 	}
 
-	/**
-	 * @return the duration
-	 */
-	public int getDuration() {
-		return duration;
-	}
-
-	/**
-	 * @param duration the duration to set
-	 */
-	public void setDuration(int duration) {
-		this.duration = duration;
-	}
-
     public ValidationInfo getValidation() {
         return validation;
     }
@@ -128,5 +114,13 @@ public class Session implements IEntity {
 
     public void setAccount(Account account) {
         this.account = account;
+    }
+
+    public Date getLoggedOutTime() {
+        return loggedOutTime;
+    }
+
+    public void setLoggedOutTime(Date loggedOutTime) {
+        this.loggedOutTime = loggedOutTime;
     }
 }
