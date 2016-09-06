@@ -6,8 +6,9 @@ public class StringTest extends ConnectionTest {
 	
 	
 	@Before public void initialize() {
-		
-		location = "ws://localhost:8080/WebServices/ws";
+        location = "wss://localhost:7001/WebSocketApplication/ws";
+        http://127.0.0.1:7001/WebSocketApplication
+//		location = "ws://localhost:8080/WebServices/ws";
 		handshakeWait = 3000;
 		sendInterval = 100;
 		msgCount = 10;

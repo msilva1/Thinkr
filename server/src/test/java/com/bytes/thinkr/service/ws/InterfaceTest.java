@@ -6,8 +6,28 @@ public class InterfaceTest extends ConnectionTest {
 	
 	
 	@Before public void initialize() {
-		
-		location = "ws://thinkr.azurewebsites.net/WebServices/ws";
+
+        String sslRoot = "C:/Workspace/ksl/Keys/ssl/";
+        String keystore = sslRoot + "weblogic.jks";
+        String truststore = sslRoot + "truststore.jks";
+        String password = "Password!1";
+
+        System.out.println("Will now connect to server.");
+        System.setProperty("javax.net.ssl.keyStore", keystore);
+        System.setProperty("javax.net.ssl.keyStorePassword", password);
+        System.setProperty("javax.net.ssl.trustStore", truststore);
+        System.setProperty("javax.net.ssl.trustStorePassword", "Password!1");
+
+        String trustStore = System.getProperty("javax.net.ssl.trustStore");
+        if (trustStore == null) {
+            System.out.println("javax.net.ssl.trustStore is not defined");
+        } else {
+            System.out.println("javax.net.ssl.trustStore = " + trustStore);
+        }
+
+
+        location = "wss://localhost:7002/WebServices/ws";
+
 		handshakeWait = 3000;
 		sendInterval = 100;
 		msgCount = 10;

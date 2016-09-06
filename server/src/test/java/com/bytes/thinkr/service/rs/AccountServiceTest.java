@@ -100,21 +100,21 @@ public class AccountServiceTest extends ServiceTest {
         for (Account account : accounts) {
             Account response = post("account", account, Account.class);
             ValidationInfo validation = response.getValidation();
-            Assert.assertTrue("Account creation status", !validation.hasError());
+            Assert.assertTrue("Account creation failed", !validation.hasError());
         }
 
         // Delete using email
         for (Account account : accounts) {
             String path = "account/email/" + account.getClient().getEmail();
             Response result = target.path(path).request().delete();
-            Assert.assertEquals("Account deletion by email status: " + path, 200, result.getStatus());
+            Assert.assertEquals("Account deletion by email failed: " + path, 200, result.getStatus());
         }
 
         ArrayList<Long> accountIds = new ArrayList<>(accounts.size());
         for (Account account : accounts) {
             Account response = post("account", account, Account.class);
             ValidationInfo validation = response.getValidation();
-            Assert.assertTrue("Account creation status", !validation.hasError());
+            Assert.assertTrue("Account creation failed", !validation.hasError());
             accountIds.add(response.getId());
         }
 
@@ -122,7 +122,7 @@ public class AccountServiceTest extends ServiceTest {
         for (Long id : accountIds) {
             String path = "account/" + id;
             Response result = target.path(path).request().delete();
-            Assert.assertEquals("Account deletion by id status: " + path, 200, result.getStatus());
+            Assert.assertEquals("Account deletion by id failed" + path, 200, result.getStatus());
         }
     }
 

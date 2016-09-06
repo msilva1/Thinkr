@@ -1,24 +1,21 @@
 package com.bytes.thinkr.service.rs;
 
-import javax.inject.Singleton;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-
 import com.bytes.thinkr.model.entity.assignment.Assignment;
 import com.bytes.thinkr.model.entity.assignment.AssignmentList;
 import com.bytes.thinkr.service.IAssignmentService;
 import com.bytes.thinkr.service.impl.AssignmentServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.inject.Singleton;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 
 @Singleton
 @Path("/assignment")
 public class AssignmentService implements IAssignmentService {
+
+    private static final Logger LOG = LoggerFactory.getLogger(AssignmentService.class);
 
     @Path("/version")
     @GET
@@ -36,23 +33,17 @@ public class AssignmentService implements IAssignmentService {
                 title, message);
     }
 
-    @POST
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+
+    @GET
+    @Produces({MediaType.TEXT_PLAIN, MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("{id}")
     @Override
-    public Assignment create(Assignment resource) {
-        return AssignmentServiceImpl.getInstance().create(resource);
+    public Assignment find(@PathParam("id") String accountId) {
+
+        LOG.info("Request to find assignment: {}", accountId);
+        return AssignmentServiceImpl.getInstance().find(accountId);
     }
 
-    @Override
-    public Assignment find(String id) {
-        return null;
-    }
-
-    @Override
-    public Assignment update(String id, Assignment resource) {
-        return null;
-    }
 
     @DELETE
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -66,23 +57,21 @@ public class AssignmentService implements IAssignmentService {
 	@POST
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-	@Path("create/{id}")
+	@Path("create")
 	@Override
-	public Assignment create(@PathParam("id") String userId, Assignment assignment) {
+	public Assignment create(Assignment assignment) {
 		
-		return AssignmentServiceImpl.getInstance().create(userId, assignment);
+		return AssignmentServiceImpl.getInstance().create(assignment);
 	}
-
 
     @PUT
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-	@Path("update")
+	@Path("update/{id}")
 	@Override
-	public Assignment update(Assignment assignment) {
-		return AssignmentServiceImpl.getInstance().update(assignment);
+	public Assignment update(@PathParam("id") String id, Assignment assignment) {
+        return AssignmentServiceImpl.getInstance().update(id, assignment);
 	}
-
 
 	@GET
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -92,7 +81,6 @@ public class AssignmentService implements IAssignmentService {
 	public AssignmentList getAssignmentList(@PathParam("id") String userId) {
 		return AssignmentServiceImpl.getInstance().getAssignmentList(userId);
 	}
-
 
 	@POST
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})

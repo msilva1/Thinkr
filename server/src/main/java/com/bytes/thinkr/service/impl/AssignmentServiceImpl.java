@@ -1,5 +1,7 @@
 package com.bytes.thinkr.service.impl;
 
+import com.bytes.thinkr.factory.AssignmentFactory;
+import com.bytes.thinkr.factory.EntityFactory;
 import com.bytes.thinkr.model.IValidationEnum;
 import com.bytes.thinkr.model.ValidationInfo;
 import com.bytes.thinkr.model.entity.account.Account;
@@ -18,7 +20,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Singleton
-public class AssignmentServiceImpl implements IAssignmentService {
+public class AssignmentServiceImpl
+        extends DefaultResourceImpl<Assignment>
+        implements IAssignmentService {
 
 	/** 
 	 * In-memory storage for created assignments
@@ -55,8 +59,7 @@ public class AssignmentServiceImpl implements IAssignmentService {
 		assignmentMap = new HashMap<>();
 	}
 
-	@Override
-	public Assignment create(String userId, Assignment assignment) {
+ 	public Assignment create(String userId, Assignment assignment) {
 	
 		Client client = AccountServiceImpl.getInstance().find(userId).getClient();
 		ValidationInfo validationInfo = new ValidationInfo();
@@ -91,19 +94,7 @@ public class AssignmentServiceImpl implements IAssignmentService {
 
 	}
 
-	@Override
-	public Assignment update(Assignment assignment) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Assignment delete(String assignmentId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/**
+    /**
 	 * Construct the assignment id
 	 * @param client the client creating the assignment
 	 * @param assignment the assignment to be created
@@ -169,4 +160,9 @@ public class AssignmentServiceImpl implements IAssignmentService {
 		
 		return assignments.containsKey(assignmentId);
 	}
+
+    @Override
+    protected EntityFactory<Assignment> getEntityFactory() {
+        return AssignmentFactory.getInstance();
+    }
 }

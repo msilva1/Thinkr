@@ -84,8 +84,7 @@ public abstract class ConnectionTest {
 		};		
 		
 		client.connect();
-		
-		
+
 		// Allow time to connect
 		Thread.sleep(handshakeWait);
 		if (client.getConnection().isOpen()) {

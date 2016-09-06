@@ -16,7 +16,7 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriBuilder;
 
-public class AssignmentTest extends RestClientTest {
+public class AssignmentTest extends ServiceTest {
 
 	private String uid = "Kent";
 	private String pass = "1a2b3c4d5e";

@@ -9,6 +9,7 @@ import com.bytes.thinkr.model.FactoryResponseList;
 import com.bytes.thinkr.model.ValidationInfo;
 import com.bytes.thinkr.model.entity.IEntity;
 import com.bytes.thinkr.factory.merge.MergeFactory;
+import com.bytes.thinkr.model.entity.account.Account;
 import com.bytes.thinkr.model.util.HibernateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,6 +40,51 @@ public abstract class EntityFactory<T extends IEntity> {
     }
 
     /**
+     *
+     * @param id
+     * @param entity
+     * @return
+     */
+    public FactoryResponse<T> update(String id, T entity) {
+
+        FactoryResponse<T> response = new FactoryResponse<>();
+        Long entityId = null;
+        try {
+            entityId = Long.parseLong(id);
+        } catch (NumberFormatException e) {
+            LOG.warn("Invalid entity Id: {}", id, e);
+            response.addValidation(
+                    ValidationInfo.Type.Entity,
+                    ValidationInfo.Common.Invalid);
+        }
+
+        // Retrieve the existing entity
+        FactoryResponse<T> findResponse = findById(entityId);
+        if (findResponse.getEntity() != null) {
+            FactoryResponse<T> mergeResponse = merge(entity, findResponse.getEntity());
+
+            if (mergeResponse.getEntity() != null) {
+                response.setEntity(mergeResponse.getEntity());
+            } else {
+
+                LOG.info("Unable to merge. Unable to update entity {}", id);
+                response.addValidation(
+                        ValidationInfo.Type.Entity,
+                        ValidationInfo.Common.UnableToMerge);
+
+            }
+        } else {
+
+            LOG.info("Entity not found. Unable to update entity {}", id);
+            response.addValidation(
+                    ValidationInfo.Type.Entity,
+                    ValidationInfo.Common.NotFound);
+        }
+
+        return response;
+    }
+
+    /**
      * TODO consider changing Long to Serializable
      * Request to retrieveAllByName the entity matching the specified id
      * @param id the entity id
@@ -50,6 +96,8 @@ public abstract class EntityFactory<T extends IEntity> {
         T entity = HibernateUtil.getEntity(entityType, id);
 
         if (entity == null) {
+
+            LOG.info("Unable to find entity: {}", id);
             response.addValidation(
                 ValidationInfo.Type.Entity,
                 ValidationInfo.Common.NotFound);
@@ -112,13 +160,11 @@ public abstract class EntityFactory<T extends IEntity> {
      */
     public boolean save(T entity) {
 
-        List<T> entities = new ArrayList<>();
-        entities.add(entity);
-        return saveAll(entities);
+        LOG.debug("Preparing to commit {}", entity.getClass().getSimpleName());
+        return HibernateUtil.commit(entity);
     }
 
     /**
-     * TODO move hibernate calls to HibernateUtil
      *
      * Request to save the specified entities
      * @param entities the entities to be persisted

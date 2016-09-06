@@ -1,10 +1,12 @@
 package com.bytes.thinkr.service.impl;
 
 import com.bytes.thinkr.factory.AccountFactory;
+import com.bytes.thinkr.factory.EntityFactory;
 import com.bytes.thinkr.factory.SessionFactory;
 import com.bytes.thinkr.model.FactoryResponse;
 import com.bytes.thinkr.model.FactoryResponseList;
 import com.bytes.thinkr.model.entity.account.Account;
+import com.bytes.thinkr.model.entity.assignment.Assignment;
 import com.bytes.thinkr.model.entity.session.Session;
 import com.bytes.thinkr.model.entity.session.SessionList;
 import com.bytes.thinkr.service.ISessionService;
@@ -19,7 +21,9 @@ import java.util.List;
 /**
  * Created by Kent on 1/8/2016.
  */
-public class SessionServiceImpl implements ISessionService {
+public class SessionServiceImpl
+        extends DefaultResourceImpl<Session>
+        implements ISessionService {
 
     private static final Logger LOG = LoggerFactory.getLogger(SessionServiceImpl.class);
 
@@ -83,6 +87,11 @@ public class SessionServiceImpl implements ISessionService {
             return SessionFactory.getInstance().delete(entity);
         }
         return false;
+    }
+
+    @Override
+    protected EntityFactory<Session> getEntityFactory() {
+        return SessionFactory.getInstance();
     }
 
     @Override

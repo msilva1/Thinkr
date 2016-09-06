@@ -310,7 +310,7 @@ public class HibernateUtil {
 
         LOG.debug("Request to merge entity: " + entity);
 
-        boolean result = false;
+        boolean result;
         Transaction tx = null;
         try (Session session = getSessionFactory().openSession()) {
 

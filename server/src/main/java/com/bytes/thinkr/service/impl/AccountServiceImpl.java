@@ -2,6 +2,7 @@ package com.bytes.thinkr.service.impl;
 
 import com.bytes.thinkr.factory.AccountFactory;
 import com.bytes.thinkr.factory.ClientFactory;
+import com.bytes.thinkr.factory.EntityFactory;
 import com.bytes.thinkr.model.FactoryResponse;
 import com.bytes.thinkr.model.FactoryResponseList;
 import com.bytes.thinkr.model.IValidationEnum;
@@ -22,10 +23,12 @@ import java.util.List;
 
 
 @Singleton
-public class AccountServiceImpl implements IAccountService {
+public class AccountServiceImpl
+        extends DefaultResourceImpl<Account>
+        implements IAccountService {
 
     // This class can use INFO or lower logging levels
-	private static final Logger LOGGER = LoggerFactory.getLogger(AccountServiceImpl.class.getName());
+	private static final Logger LOG = LoggerFactory.getLogger(AccountServiceImpl.class.getName());
 	
 	/** The singleton instance */
 	private static AccountServiceImpl instance;
@@ -61,7 +64,7 @@ public class AccountServiceImpl implements IAccountService {
     @Override
     public boolean authenticate(String email, String password) {
 
-        LOGGER.info("Request to authenticate user: {}" + email);
+        LOG.info("Request to authenticate user: {}" + email);
 
         // Check existing client using email
         if (email == null || email.equals(Client.DEFAULT_EMAIL)) {return false; }
@@ -70,7 +73,7 @@ public class AccountServiceImpl implements IAccountService {
 
         // Non-existing account
         if (existing == null) {
-            LOGGER.info("Email is not associated with any known user.");
+            LOG.info("Email is not associated with any known user.");
             return false;
         }
 
@@ -79,24 +82,13 @@ public class AccountServiceImpl implements IAccountService {
 
         // hex value comparison, case doesn't matter
         if (!PasswordUtil.encryptPassword(password).equals(pwdEncrypted)) {
-            LOGGER.debug("Client password does not match: {}", email);
+            LOG.debug("Client password does not match: {}", email);
             return false;
         }
 
-        LOGGER.info("Successfully authenticate client: {} ", email);
+        LOG.info("Successfully authenticate client: {} ", email);
         return true;
     }
-
-    @Override
-	public Account find(String id) {
-
-        Long accountId = Long.parseLong(id);
-        FactoryResponse<Account> response = AccountFactory.getInstance().findById(accountId);
-        if (response.getEntity() != null) {
-            return response.getEntity();
-        }
-        return Account.NOT_FOUND;
-	}
 
     @Override
     public Account findByEmail(String email) {
@@ -115,7 +107,7 @@ public class AccountServiceImpl implements IAccountService {
         List<Account> accounts = response.getEntities();
         AccountList accountList;
         if (accounts == null) {
-            LOGGER.info("Accounts not found");
+            LOG.info("Accounts not found");
             accountList = new AccountList();
         } else {
             accountList = new AccountList(accounts);
@@ -124,7 +116,7 @@ public class AccountServiceImpl implements IAccountService {
         return accountList;
     }
 
-	@Override
+    @Override
 	public Account create(Account account) {
 
 		if (account != null && account.getClient() != null) {
@@ -136,7 +128,7 @@ public class AccountServiceImpl implements IAccountService {
                     client.getUserType());
 		}
 
-        LOGGER.warn("Client is null. Unable to create account.");
+        LOG.warn("Client is null. Unable to create account.");
 		return Account.INVALID;
 	}
 
@@ -155,7 +147,7 @@ public class AccountServiceImpl implements IAccountService {
         Account account = response.getEntity();
         // Existing account
 		if (account != null) {
-            LOGGER.warn("Request to create an existing account: {}", userId);
+            LOG.warn("Request to create an existing account: {}", userId);
 			return Account.EXISTING;
 		}
 
@@ -188,47 +180,6 @@ public class AccountServiceImpl implements IAccountService {
 		return account;
 	}
 
-
-	@Override
-	public Account update(String id, Account account) {
-
-        Long accountId;
-        try {
-            accountId = Long.parseLong(id);
-        } catch (NumberFormatException e) {
-            LOGGER.warn("Invalid account Id: {}", id, e);
-            return Account.INVALID;
-        }
-
-        // Retrieve the existing account
-        FactoryResponse<Account> response = AccountFactory.getInstance().findById(accountId);
-        if (response.getEntity() != null) {
-            response = AccountFactory.getInstance().merge(account, response.getEntity());
-
-            return (response.getEntity() != null)
-                ? response.getEntity()
-                : Account.INVALID;
-        }
-
-        LOGGER.info("Account not found. Unable to update account {}", id);
-		return Account.NOT_FOUND;
-	}
-
-
-	@Override
-	public boolean delete(String accountId) {
-
-        Long id = Long.parseLong(accountId);
-        FactoryResponse<Account> response = AccountFactory.getInstance().findById(id);
-        if (response.getEntity() != null) {
-            return AccountFactory.getInstance().delete(response.getEntity());
-        }
-
-        LOGGER.info("Unable to find account: {}", id);
-        return false;
-	}
-
-
     @Override
     public boolean deleteByEmail(String email) {
 
@@ -237,8 +188,14 @@ public class AccountServiceImpl implements IAccountService {
             return AccountFactory.getInstance().delete(response.getEntity());
         }
 
-        LOGGER.info("Unable to find account with email {}", email);
+        LOG.info("Unable to find account with email {}", email);
         return false;
+    }
+
+
+    @Override
+    protected EntityFactory<Account> getEntityFactory() {
+        return AccountFactory.getInstance();
     }
 
 }

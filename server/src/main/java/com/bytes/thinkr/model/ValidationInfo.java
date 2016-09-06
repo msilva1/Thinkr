@@ -40,6 +40,7 @@ public class ValidationInfo {
         Unspecified,
         InvalidQuery,
         Invalid,
+        UnableToMerge,
         Valid
     }
 

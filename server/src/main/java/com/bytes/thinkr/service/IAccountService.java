@@ -5,36 +5,12 @@ import com.bytes.thinkr.model.entity.account.AccountList;
 
 public interface IAccountService extends IResource<Account> {
 
-
-    /**
-     * @param account the <tt>Account</tt> to be created
-     * @return the created <tt>Account</tt>
-     */
-    Account create(Account account);
-
-    /**
-     * Update an existing <tt>Account</tt>.
-     * Version 1.0 - Existing data cannot be removed this way.
-     * @param id the id of the <tt>Account</tt> to be updated
-     * @param account the updated information
-     * @return the updated <tt>Account</tt>
-     */
-    Account update(String id, Account account);
-
-    /**
-     * Request to delete an <tt>Account</tt> by <tt>Account</tt> id.
-     * @param accountId the <tt>Account</tt> id to be deleted
-     * @return true if successfully deleted
-     */
-    boolean delete(String accountId);
-
     /**
      * Request to delete an <tt>Account</tt> by email address
      * @param email the email address corresponding to the <tt>Account</tt> to be deleted
      * @return true if successfully deleted
      */
     boolean deleteByEmail(String email);
-
 
     /**
      * Request to log in.

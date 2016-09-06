@@ -8,7 +8,7 @@ import com.bytes.thinkr.service.impl.AccountServiceImpl;
 import javax.inject.Singleton;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.util.logging.Level;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,7 +20,7 @@ import org.slf4j.LoggerFactory;
 @Path("account")
 public class AccountService implements IAccountService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AccountService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AccountService.class);
 
     @Path("/version")
     @GET
@@ -51,7 +51,7 @@ public class AccountService implements IAccountService {
 	@Override
 	public Account create(Account account) {
 
-        LOGGER.info("Request to create an account: {}", account);
+        LOG.info("Request to create an account: {}", account);
 		return AccountServiceImpl.getInstance().create(account);
 	}
 	
@@ -63,7 +63,7 @@ public class AccountService implements IAccountService {
 	@Override
 	public Account update(@PathParam("id") String id, Account account) {
 
-        LOGGER.info("Request to update account: {}", id);
+        LOG.info("Request to update account: {}", id);
 		return AccountServiceImpl.getInstance().update(id, account);
 	}
 
@@ -73,7 +73,7 @@ public class AccountService implements IAccountService {
 	@Override
 	public boolean delete(@PathParam("id") String accountId) {
 
-        LOGGER.info("Request to delete account by id: {}", accountId);
+        LOG.info("Request to delete account by id: {}", accountId);
 		return AccountServiceImpl.getInstance().delete(accountId);
 	}
 
@@ -82,7 +82,7 @@ public class AccountService implements IAccountService {
     @Override
     public boolean deleteByEmail(@PathParam("email") String email) {
 
-        LOGGER.info("Request to delete account by email: {}");
+        LOG.info("Request to delete account by email: {}");
         return AccountServiceImpl.getInstance().deleteByEmail(email);
     }
 
@@ -93,7 +93,7 @@ public class AccountService implements IAccountService {
     @Override
     public Account find(@PathParam("id") String accountId) {
 
-        LOGGER.info("Request to find account: {}", accountId);
+        LOG.info("Request to find account: {}", accountId);
         return AccountServiceImpl.getInstance().find(accountId);
     }
 
@@ -113,7 +113,7 @@ public class AccountService implements IAccountService {
             @PathParam("email") String email,
             @PathParam("password") String password) {
 
-        LOGGER.info("Request to log in client: {}", email);
+        LOG.info("Request to log in client: {}", email);
 		return AccountServiceImpl.getInstance().login(email, password);
 	}
 
@@ -124,7 +124,7 @@ public class AccountService implements IAccountService {
     @Override
     public AccountList findAll() {
 
-        LOGGER.info("Request to retrieve all accounts.");
+        LOG.info("Request to retrieve all accounts.");
         return AccountServiceImpl.getInstance().findAll();
     }
 

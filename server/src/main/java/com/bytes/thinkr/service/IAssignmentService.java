@@ -7,24 +7,22 @@ public interface IAssignmentService extends IResource<Assignment>{
 
 	/**
 	 * Create the specified assignment
-	 * @param userId the administrator or teacher 
 	 * @param assignment the assignment to be created
 	 * @return the created assignment
 	 */
-	Assignment create(String userId, Assignment assignment);
+	Assignment create(Assignment assignment);
 	
 	/**
 	 * Create the specified assignment
-	 * @param user the administrator or the teacher that created the assignment
+	 * @param assignmentId the assignment ID
 	 * @param assignment the assignment to be created
 	 * @return the updated assignment
 	 */
-	Assignment update(Assignment assignment);
+	Assignment update(String assignmentId, Assignment assignment);
 	
 	/**
 	 * Delete the specified assignment
-	 * @param user the administrator or the teacher that created the assignment
-	 * @param assignment the assignment id to be deleted
+	 * @param assignmentId the assignment id to be deleted
 	 * @return the created assignment
 	 */
 	boolean delete(String assignmentId);
